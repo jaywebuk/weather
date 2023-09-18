@@ -1,0 +1,119 @@
+h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin: 5px;
+}
+div.currentWeather {
+    margin: 0;
+    /* padding: 0; */
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    width: 300px;
+    /* max-width: 500px; */
+    /* min-width: 360px; */
+    justify-content: center;
+    border: solid thin #333;
+    background-color: #ceebff;
+    user-select: none;
+
+    & p {
+        text-align: center;
+        margin: 5px;
+
+        &.description {
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+    }
+}
+
+/* .currentWeather p {
+    text-align: center;
+    margin: 5px;
+} */
+
+/* p.description {
+    font-weight: 500;
+    font-size: 1.1rem;
+} */
+
+.currentDate {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+.coords {
+    font-size: 0.9rem;
+    margin: 0;
+    padding: 0;
+    /* color: red; */
+    text-align: center;
+}
+
+.topInfo {
+    min-height: 30px;
+    /* outline: solid thin red; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    & img {
+        width: 35px;
+        /* margin: 5px; */
+    }
+}
+
+.topInfo * {
+    margin: 0;
+    padding: 0;
+}
+
+/* .topInfo img {
+    width: 35px;
+    /* margin: 5px; *
+} */
+
+img.refresh {
+    width: 20px;
+    cursor: pointer;
+}
+
+.tempDetails {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+div.wind {
+    display: flex;
+    align-items: center;
+}
+
+div.wind img {
+    margin-right: 10px;
+    width: 22px;
+}
+
+.sunrise {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* width: 100px; */
+    /* outline: solid thin red; */
+}
+
+p.gust {
+    font-size: 0.9rem;
+}
+
+img.warning {
+    /* visibility: hidden; */
+}
+
+.tempDetails p span.feelsLike {
+    font-size: 0.4rem;
+}
