@@ -90,15 +90,7 @@ const getShortDate = (date, timezone) => {
 
 const getTime = (date, timezone) => {
     var newDate = new Date(date * 1000);
-    var today = new Date();
-    // console.log(newDate.getDay() === today.getDay());
-    // console.log(today.getDay());
-    // formattedDate = formattedDate.toLocaleDateString("en-gb", { weekday: "long", year: "numeric", month: "long", day: "numeric", hour: "numeric", minute: "numeric" });
-    if (newDate.getDay() === today.getDay()) {
-        return new Intl.DateTimeFormat("en-GB", { hour: "numeric", minute: "numeric", timeZone: timezone }).format(newDate);
-    } else {
-        return new Intl.DateTimeFormat("en-GB", { weekday: "short", hour: "numeric", minute: "numeric", timeZone: timezone }).format(newDate);
-    }
+    return new Intl.DateTimeFormat("en-GB", { weekday: "short", hour: "numeric", minute: "numeric", timeZone: timezone }).format(newDate);
 };
 
 const getShortTime = (date, timezone) => {

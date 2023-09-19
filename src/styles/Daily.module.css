@@ -10,7 +10,7 @@ section.daily {
     font-weight: normal;
     margin-bottom: 15px;
     outline: solid thin #333;
-    background-color: #ceebff;
+    background-color: #c4e7ff;
     display: inline-block;
     padding: 5px;
     font-size: 1rem;
@@ -22,12 +22,10 @@ div.dayBar {
     justify-content: space-between;
     border: solid thin #333;
     overflow-x: scroll;
-    /* max-width: 100vw; */
-    /* background-color: #000; */
 }
 
 .day {
-    background-color: #ceebff;
+    background-color: #c4e7ff;
     outline: solid thin #333;
     padding: 5px;
     font-size: 0.9rem;
@@ -35,7 +33,6 @@ div.dayBar {
     text-align: center;
     cursor: pointer;
     min-width: 140px;
-    /* min-width: calc(100% / 7); */
     position: relative;
     display: flex;
     flex-direction: column;
@@ -66,16 +63,13 @@ section.daily div.wind {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    /* justify-content: space-between; */
     margin-bottom: 8px;
     width: 80%;
-    /* line-height: 1; */
 }
 
 div.wind p {
     font-size: 1.1rem;
     margin: 0;
-    /* margin-bottom: 10px; */
 }
 
 div.wind img {
@@ -103,7 +97,6 @@ div.wind img {
 .hidden {
     display: none;
     min-width: fit-content;
-    background-color: #ccffec;
 }
 
 .hidden p {
@@ -111,6 +104,11 @@ div.wind img {
     font-size: 0.9rem;
 }
 
-.hidden p.wind {
-    /* font-size: 0.8rem; */
+.day-selected,
+.hidden {
+    background-color: #b7fffb;
+}
+
+.show-hidden-day {
+    display: block;
 }

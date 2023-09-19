@@ -22,7 +22,7 @@ app.get("/weather", (req, res) => {
 
     const data = require("./city.json");
     res.json(data);
-    // console.log(data);
+    console.log(data);
 
     /* const options = {
         method: "GET",
@@ -50,7 +50,7 @@ app.get("/weather/location", (req, res) => {
 
     const data = require("./weather.json");
     res.json(data);
-    // console.log(data);
+    console.log(data);
 
     /* const options = {
         method: "GET",

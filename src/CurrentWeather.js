@@ -1,7 +1,6 @@
 import styles from "./styles/CurrentWeather.module.css";
 import { convertTemp, getCardinals, getWind, toUpper, getLongDate, getUTime, getShortTime } from "./lib/functions";
 import warning from "./images/warning.png";
-// import warning_severe from "./images/warning_severe.png";
 import refresh from "./images/refresh.png";
 import wind from "./images/wind.png";
 import sunrise from "./images/sunrise.png";

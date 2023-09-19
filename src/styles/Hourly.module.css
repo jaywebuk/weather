@@ -9,7 +9,7 @@ section.hourly {
     font-weight: normal;
     margin-bottom: 15px;
     outline: solid thin #333;
-    background-color: #ceebff;
+    background-color: #c4e7ff;
     display: inline-block;
     padding: 5px;
     font-size: 1rem;
@@ -25,7 +25,7 @@ div.hourBar {
 }
 
 .hour {
-    background-color: #ceebff;
+    background-color: #c4e7ff;
     outline: solid thin #333;
     padding: 5px;
     font-size: 0.9rem;
@@ -62,7 +62,6 @@ div.hourBar {
 div.wind {
     display: flex;
     align-items: center;
-    /* justify-content: space-between; */
     margin-bottom: 8px;
 }
 
@@ -79,10 +78,18 @@ div.wind img {
 .hidden {
     display: none;
     min-width: fit-content;
-    background-color: #ccffec;
 }
 
 .hidden p {
     margin: 7px 8px;
     font-size: 0.9rem;
+}
+
+.hour-selected,
+.hidden {
+    background-color: #b7fffb;
+}
+
+.show-hidden-hour {
+    display: block;
 }
