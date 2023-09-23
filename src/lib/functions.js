@@ -1,5 +1,3 @@
-// import React from "react";
-
 const convertTemp = (temp) => {
     let tempConvert = Math.round((temp - 32) * (5 / 9));
     return Object.is(tempConvert, -0) ? 0 : tempConvert;
@@ -69,12 +67,8 @@ function toUpper(word) {
 }
 
 const getLongDate = (date, timezone) => {
-    // console.log(date);
     var newDate = new Date(date * 1000);
-    // formattedDate = formattedDate.toLocaleDateString("en-gb", { weekday: "long", year: "numeric", month: "long", day: "numeric", hour: "numeric", minute: "numeric" });
     return new Intl.DateTimeFormat("en-GB", { weekday: "long", day: "numeric", month: "short", year: "numeric", hour: "numeric", minute: "numeric", timeZone: timezone }).format(newDate);
-
-    // return formattedDate;
 };
 
 const getALertDate = (date, timezone) => {
@@ -83,7 +77,6 @@ const getALertDate = (date, timezone) => {
 };
 
 const getShortDate = (date, timezone) => {
-    // console.log(date);
     var newDate = new Date(date * 1000);
     return new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "2-digit", month: "2-digit", timeZone: timezone }).format(newDate);
 };
@@ -95,16 +88,11 @@ const getTime = (date, timezone) => {
 
 const getShortTime = (date, timezone) => {
     var newDate = new Date(date * 1000);
-    var today = new Date();
-    // console.log(newDate.getDay() === today.getDay());
-    // console.log(today.getDay());
-    // formattedDate = formattedDate.toLocaleDateString("en-gb", { weekday: "long", year: "numeric", month: "long", day: "numeric", hour: "numeric", minute: "numeric" });
     return new Intl.DateTimeFormat("en-GB", { hour: "numeric", minute: "numeric", timeZone: timezone }).format(newDate);
 };
 
 const getUTime = () => {
     var date = new Date();
-    // return date.getHours() + ":" + date.getMinutes() + ":" + date.getUTCSeconds();
     return date.toLocaleTimeString("en-GB");
 };
 

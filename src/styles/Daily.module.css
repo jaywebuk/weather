@@ -112,3 +112,8 @@ div.wind img {
 .show-hidden-day {
     display: block;
 }
+
+.dayDiv {
+    display: flex;
+    min-width: fit-content;
+}
