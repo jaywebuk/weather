@@ -1,3 +1,4 @@
+/* eslint-disable react/forbid-prop-types */
 import PropTypes from 'prop-types';
 import React, { useState, useRef } from 'react';
 import styles from './styles/Daily.module.css';
@@ -19,6 +20,14 @@ function Daily({ data }) {
   const [previousHiddenDay, setPreviousHiddenDay] = useState(null);
   const openHiddenDays = useRef([]);
   const hiddenDaySections = useRef([]);
+
+  Daily.defaultProps = {
+    data: PropTypes.array,
+  };
+
+  Daily.propTypes = {
+    data: PropTypes.array,
+  };
 
   if (!Array.isArray(data) || data.length === 0) {
     return <div>Error: Invalid data</div>;
@@ -95,7 +104,7 @@ function Daily({ data }) {
                 src={wind}
                 style={{ rotate: `${thisDay[key].wind_deg}deg` }}
                 alt=""
-                title={`From the ${getCardinals(thisDay[key].wind_deg)}`}
+                title={`Wind from the ${getCardinals(thisDay[key].wind_deg)}`}
               />
               <p title={toUpper(getWind(Math.round(thisDay[key].wind_speed)))}>
                 {Math.round(thisDay[key].wind_speed)} mph
@@ -104,8 +113,9 @@ function Daily({ data }) {
             <div className={styles.dailyTemp}>
               <img src={sun} alt="Average temperature for the daytime" />
               <p>
-                {convertTemp(thisDay[key].temp.day)}&deg;C /{' '}
-                {Math.round(thisDay[key].temp.day)}&deg;F
+                {convertTemp(thisDay[key].temp.day)}
+                &deg;C / {Math.round(thisDay[key].temp.day)}
+                &deg;F
               </p>
               <p
                 className={styles.openHiddenDay}
@@ -119,8 +129,9 @@ function Daily({ data }) {
             <div className={styles.dailyTemp}>
               <img src={moon} alt="Average temperature for the nightime" />
               <p>
-                {convertTemp(thisDay[key].temp.night)}&deg;C /{' '}
-                {Math.round(thisDay[key].temp.night)}&deg;F
+                {convertTemp(thisDay[key].temp.night)}
+                &deg;C / {Math.round(thisDay[key].temp.night)}
+                &deg;F
               </p>
             </div>
           </section>
@@ -160,9 +171,5 @@ function Daily({ data }) {
     </section>
   );
 }
-
-Daily.propTypes = {
-  data: PropTypes.arrayOf.isRequired,
-};
 
 export default Daily;

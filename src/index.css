@@ -45,8 +45,8 @@ body {
 
 input,
 select {
-  font-size: 1rem;
-  margin-top: 8px;
+  font-size: 1.1rem;
+  margin: 8px;
 }
 
 input[type="text"] {
@@ -79,7 +79,7 @@ form {
   position: relative;
   display: flex;
   flex-direction: column;
-  width: 250px;
+  /* width: 250px; */
 }
 
 .footer {

@@ -1,3 +1,4 @@
+/* eslint-disable react/forbid-prop-types */
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
@@ -7,19 +8,23 @@ import Hourly from './Hourly';
 import Daily from './Daily';
 
 function ShowWeather({ data }) {
+  // console.log(data);
   const [cityData, loadingRef] = data;
 
-  ShowWeather.propTypes = {
-    data: PropTypes.arrayOf.isRequired,
+  ShowWeather.defaultProps = {
+    data: PropTypes.array,
   };
 
-  // console.log(cityData);
+  ShowWeather.propTypes = {
+    data: PropTypes.array,
+  };
+
+  // console.log(cityData.length);
   const [weatherData, setWeatherData] = useState();
   const [refreshData, setRefreshData] = useState();
   const [weatherAlerts, setWeatherAlerts] = useState(false);
 
   const handleRefresh = () => {
-    // e.preventDefault();
     setRefreshData(!refreshData);
   };
   useEffect(() => {
@@ -27,7 +32,6 @@ function ShowWeather({ data }) {
     const { lat } = cityData;
     const { lon } = cityData;
     // console.log(lat, lon);
-    // console.log("cityData", cityData[0]);
 
     const options = {
       method: 'GET',
@@ -59,12 +63,13 @@ function ShowWeather({ data }) {
           ]}
         />
         {weatherAlerts && (
-          <Alerts data={[weatherData.alerts, weatherData.timezone]} />
+          <>
+            {/* {console.log(weatherData.alerts)} */}
+            <Alerts data={[weatherData.alerts, weatherData.timezone]} />
+          </>
         )}
         <Hourly data={[weatherData.hourly, weatherData.timezone]} />
         <Daily data={[weatherData.daily, weatherData.timezone]} />
-        {/* <pre>{JSON.stringify(weatherData)}</pre> */}
-        {/* <pre>{JSON.stringify(cityData)}</pre> */}
         {/* {console.log("weatherData", weatherData)} */}
       </>
     )

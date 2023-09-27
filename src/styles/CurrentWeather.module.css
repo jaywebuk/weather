@@ -17,7 +17,7 @@ div.currentWeather {
   justify-content: center;
   border: solid thin #333;
   background-color: #c4e7ff;
-  user-select: none;
+  /* user-select: none; */
 
   & p {
     text-align: center;

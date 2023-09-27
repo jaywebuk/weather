@@ -1,3 +1,4 @@
+/* eslint-disable react/forbid-prop-types */
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './styles/CurrentWeather.module.css';
@@ -16,9 +17,14 @@ import sunrise from './images/sunrise.png';
 import sunset from './images/sunset.png';
 
 function CurrentWeather({ data }) {
-  CurrentWeather.propTypes = {
-    data: PropTypes.arrayOf.isRequired,
+  CurrentWeather.defaultProps = {
+    data: PropTypes.array,
   };
+
+  CurrentWeather.propTypes = {
+    data: PropTypes.array,
+  };
+
   const [
     [currentWeather, timezone],
     cityData,
@@ -53,13 +59,13 @@ function CurrentWeather({ data }) {
           {getLongDate(currentWeather.dt, timezone)}
         </p>
         <h1>
-          {cityData.name},{cityData.state} ({cityData.country})
+          {cityData.name}, {cityData.state} ({cityData.country})
         </h1>
         <p className={styles.coords}>
           {cityData.lat.toFixed(6)},{cityData.lon.toFixed(6)}
         </p>
         <p className={styles.description}>
-          {toUpper(currentWeather.weather[0].description)} with
+          {toUpper(currentWeather.weather[0].description)} with&nbsp;
           {getWind(currentWeather.wind_speed)}
         </p>
         <div className={styles.tempDetails}>
@@ -92,7 +98,7 @@ function CurrentWeather({ data }) {
         <div className={styles.sunrise}>
           {currentWeather.wind_gust > 0 && (
             <p className={styles.gust}>
-              Gusts of
+              Gusts of&nbsp;
               {Math.round(currentWeather.wind_gust)} mph
             </p>
           )}

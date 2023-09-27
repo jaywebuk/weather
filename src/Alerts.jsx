@@ -1,18 +1,39 @@
+/* /eslint-disable react/forbid-prop-types */
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import styles from './styles/Alerts.module.css';
-import { getALertDate } from './lib/functions';
+import { getAlertDate } from './lib/functions';
 
 function Alerts({ data }) {
+  console.log(data);
   const [alertData, timezone] = data;
   const alertsRef = useRef();
   const arrowRef = useRef();
-  // console.log(alertData);
 
   const [alertOpen, setAlertOpen] = useState(false);
 
+  /*  Alerts.defaultProps = {
+    data: PropTypes.array,
+  }; */
+
   Alerts.propTypes = {
-    data: PropTypes.arrayOf.isRequired,
+    data: PropTypes.arrayOf(
+      PropTypes.oneOfType([
+        // Prop type for the first element (array of objects)
+        PropTypes.arrayOf(
+          PropTypes.shape({
+            sender_name: PropTypes.string.isRequired,
+            event: PropTypes.string.isRequired,
+            start: PropTypes.number.isRequired,
+            end: PropTypes.number.isRequired,
+            description: PropTypes.string.isRequired,
+            tags: PropTypes.arrayOf(PropTypes.string).isRequired,
+          }),
+        ),
+        // Prop type for the second element (string)
+        PropTypes.string.isRequired,
+      ]),
+    ).isRequired,
   };
 
   const alerts = [];
@@ -32,17 +53,18 @@ function Alerts({ data }) {
   };
 
   const getAlerts = () => {
-    const keys = Object.keys(data);
+    const keys = Object.keys(alertData);
     keys.forEach((key) => {
       alerts.push(
         <div className={styles.alert} key={`alert-${i}`}>
-          <p className={styles.title}>{data[key].sender_name}</p>
-          <p className={styles.title}>{data[key].event}</p>
+          <p className={styles.title}>{alertData[key].sender_name}</p>
+          <p className={styles.title}>{alertData[key].event}</p>
           <p className={styles.title}>
-            From: {getALertDate(data[key].start, timezone)} to{' '}
-            {getALertDate(data[key].end, timezone)}
+            From: {getAlertDate(alertData[key].start, timezone)} to{' '}
+            {getAlertDate(alertData[key].end, timezone)}
           </p>
-          <p>{data[key].description}</p>
+          <p>{alertData[key].description}</p>
+          <p className={styles.tags}>Tags: {alertData[key].tags.toString()}</p>
         </div>,
       );
       i += 1;
