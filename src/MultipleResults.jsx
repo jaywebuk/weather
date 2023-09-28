@@ -1,9 +1,14 @@
+/* eslint-disable react/forbid-prop-types */
 import PropTypes from 'prop-types';
 import React from 'react';
 
 function MultipleResults({ data }) {
+  MultipleResults.defaultProps = {
+    data: PropTypes.array,
+  };
+
   MultipleResults.propTypes = {
-    data: PropTypes.arrayOf.isRequired,
+    data: PropTypes.array,
   };
   const [cityData, setData, loadingRef] = data;
   function handleChange(thisData) {
@@ -52,9 +57,11 @@ function MultipleResults({ data }) {
       };
       return (
         // eslint-disable-next-line react/jsx-props-no-spreading
-        <option {...options}>{`${city.name} (${
-          city.country
-        }) ${city.lat.toFixed(6)}, ${city.lon.toFixed(6)}`}</option>
+        <option {...options}>
+          {`${city.name} (${city.country}) ${city.lat.toFixed(
+            6,
+          )}, ${city.lon.toFixed(6)}`}
+        </option>
       );
     });
   };

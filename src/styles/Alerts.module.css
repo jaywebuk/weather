@@ -73,3 +73,7 @@ section.alerts {
 header p.alertArrow {
     right: 5px;
 }
+
+p.tags {
+    font-size: .9rem;
+}

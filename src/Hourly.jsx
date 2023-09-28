@@ -1,3 +1,4 @@
+/* eslint-disable react/forbid-prop-types */
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import styles from './styles/Hourly.module.css';
@@ -18,8 +19,12 @@ function Hourly({ data }) {
   const openHiddenHours = useRef([]);
   const hiddenHourSections = useRef([]);
 
+  Hourly.defaultProps = {
+    data: PropTypes.array,
+  };
+
   Hourly.propTypes = {
-    data: PropTypes.arrayOf.isRequired,
+    data: PropTypes.array,
   };
 
   if (!Array.isArray(data) || data.length === 0) {
@@ -70,6 +75,7 @@ function Hourly({ data }) {
   };
   const getHour = (thisHour) => {
     const keys = Object.keys(thisHour);
+    // console.log('Hourly: ', typeof keys);
 
     keys.forEach((key) => {
       if (key > 24) {

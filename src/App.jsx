@@ -44,20 +44,15 @@ function App() {
     <div className="App" role="main">
       <div className="wrapper">
         <form onSubmit={handleSubmit} role="search">
-          <label className="location-label" htmlFor="city">
-            Search for Weather
-            {/* <div className="form-inputs"> */}
-            <input
-              ref={inputRef}
-              type="text"
-              name="city"
-              id="city"
-              placeholder="Location"
-              style={{ backgroundColor: 'white' }}
-            />
-          </label>
+          <input
+            ref={inputRef}
+            type="text"
+            name="city"
+            id="city"
+            placeholder="Location"
+            style={{ backgroundColor: 'white' }}
+          />
           <input type="submit" className="search-button" value="Go" />
-          {/* </div> */}
         </form>
         <img
           id="loading"
@@ -66,20 +61,26 @@ function App() {
           alt=""
           ref={loadingRef}
         />
-        {data && data.length === 0 && (
+        {data && (
           <>
-            {setLoading('hidden')}
-            <p>No Results were found. Please try again!</p>
+            {data.length === 0 && (
+              <>
+                {setLoading('hidden')}
+                <p>No Results were found. Please try again!</p>
+              </>
+            )}
+
+            {Array.isArray(data) && data.length > 1 && (
+              <MultipleResults data={[data, handleChange, loadingRef]} />
+            )}
+
+            {Array.isArray(data) && data.length === 1 && (
+              <ShowWeather data={[data[0], loadingRef]} />
+            )}
+
+            {!Array.isArray(data) && <ShowWeather data={[data, loadingRef]} />}
           </>
         )}
-        {data && Array.isArray(data) && data.length > 1 && (
-          <MultipleResults data={[data, handleChange, loadingRef]} />
-        )}
-        {data &&
-          (!Array.isArray(data) ||
-            (Array.isArray(data) && data.length === 1)) && (
-            <ShowWeather data={[data, loadingRef]} />
-          )}
         {/* {data && console.log(data)} */}
       </div>
       <Footer />

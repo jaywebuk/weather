@@ -1,7 +1,8 @@
+/* eslint-disable no-unused-vars */
 const PORT = 5000;
 const express = require('express');
 require('dotenv').config();
-// const axios = require('axios');
+const axios = require('axios');
 
 const app = express();
 const cors = require('cors');
@@ -15,17 +16,17 @@ app.get('/', (req, res) => {
 });
 
 app.get('/weather', (req, res) => {
-  //   const { API_KEY } = process.env;
+  const { API_KEY } = process.env;
   if (!req.query.location) {
     res.json();
   }
-  //   const { location } = req.query;
-  /* eslint-disable global-require */
-  const data = require('./city.json');
+  const { location } = req.query;
+
+  /* const data = require('./city.json');
   res.json(data);
-  console.log(data);
-  /* eslint-enable global-require */
-  /* const options = {
+  console.log(data); */
+
+  const options = {
     method: 'GET',
     url: `http://api.openweathermap.org/geo/1.0/direct?q=${location}&limit=10&appid=${API_KEY}`,
   };
@@ -38,22 +39,23 @@ app.get('/weather', (req, res) => {
     })
     .catch((error) => {
       console.error(error);
-    }); */
+    });
 });
 
 app.get('/weather/location', (req, res) => {
-  //   const { API_KEY } = process.env;
+  const { API_KEY } = process.env;
   if (!req.query.lat) {
     res.json();
   }
-  //   const { lat } = req.query;
-  //   const { lon } = req.query;
-  /* eslint-disable global-require */
-  const data = require('./weather.json');
+  const { lat } = req.query;
+  const { lon } = req.query;
+  console.log(lat, lon);
+
+  /* const data = require('./weather.json');
   res.json(data);
-  console.log(data);
-  /* eslint-enable global-require */
-  /* const options = {
+  console.log(data); */
+
+  const options = {
     method: 'GET',
     url: `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=imperial&appid=${API_KEY}`,
   };
@@ -66,5 +68,5 @@ app.get('/weather/location', (req, res) => {
     })
     .catch((error) => {
       console.error(error);
-    }); */
+    });
 });
