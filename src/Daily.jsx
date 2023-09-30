@@ -1,4 +1,3 @@
-/* eslint-disable react/forbid-prop-types */
 import PropTypes from 'prop-types';
 import React, { useState, useRef } from 'react';
 import styles from './styles/Daily.module.css';
@@ -15,18 +14,60 @@ import sun from './images/sun.png';
 import moon from './images/moon.png';
 
 function Daily({ data }) {
+  // console.log(data);
   const [previousDayId, setPreviousDayId] = useState(null);
   const [previousDayElem, setpreviousDayElem] = useState(null);
   const [previousHiddenDay, setPreviousHiddenDay] = useState(null);
   const openHiddenDays = useRef([]);
   const hiddenDaySections = useRef([]);
 
-  Daily.defaultProps = {
-    data: PropTypes.array,
-  };
-
   Daily.propTypes = {
-    data: PropTypes.array,
+    data: PropTypes.arrayOf(
+      PropTypes.oneOfType([
+        PropTypes.arrayOf(
+          PropTypes.shape({
+            clouds: PropTypes.number.isRequired,
+            dew_point: PropTypes.number.isRequired,
+            dt: PropTypes.number.isRequired,
+            feels_like: PropTypes.shape({
+              day: PropTypes.number.isRequired,
+              eve: PropTypes.number.isRequired,
+              morn: PropTypes.number.isRequired,
+              night: PropTypes.number.isRequired,
+            }).isRequired,
+            humidity: PropTypes.number.isRequired,
+            moon_phase: PropTypes.number.isRequired,
+            moonrise: PropTypes.number.isRequired,
+            moonset: PropTypes.number.isRequired,
+            pop: PropTypes.number.isRequired,
+            pressure: PropTypes.number.isRequired,
+            sunrise: PropTypes.number.isRequired,
+            sunset: PropTypes.number.isRequired,
+            temp: PropTypes.shape({
+              day: PropTypes.number.isRequired,
+              eve: PropTypes.number.isRequired,
+              max: PropTypes.number.isRequired,
+              min: PropTypes.number.isRequired,
+              morn: PropTypes.number.isRequired,
+              night: PropTypes.number.isRequired,
+            }).isRequired,
+            uvi: PropTypes.number.isRequired,
+            weather: PropTypes.arrayOf(
+              PropTypes.shape({
+                description: PropTypes.string.isRequired,
+                icon: PropTypes.string.isRequired,
+                id: PropTypes.number.isRequired,
+                main: PropTypes.string.isRequired,
+              }).isRequired,
+            ).isRequired,
+            wind_deg: PropTypes.number.isRequired,
+            wind_gust: PropTypes.number.isRequired,
+            wind_speed: PropTypes.number.isRequired,
+          }).isRequired,
+        ).isRequired,
+        PropTypes.string.isRequired,
+      ]).isRequired,
+    ).isRequired,
   };
 
   if (!Array.isArray(data) || data.length === 0) {
@@ -87,7 +128,7 @@ function Daily({ data }) {
           <section
             className={styles.day}
             onClick={(e) => handleClick(e, key)}
-            onKeyDown={(e) => handleClick(e, key)}
+            onKeyDown={() => null}
             data-hidden={key}
             role="button alert"
             tabIndex={key}

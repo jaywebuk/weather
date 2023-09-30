@@ -49,7 +49,7 @@ app.get('/weather/location', (req, res) => {
   }
   const { lat } = req.query;
   const { lon } = req.query;
-  console.log(lat, lon);
+  // console.log(lat, lon);
 
   /* const data = require('./weather.json');
   res.json(data);
@@ -63,7 +63,8 @@ app.get('/weather/location', (req, res) => {
   axios
     .request(options)
     .then((response) => {
-      console.log(response.data);
+      // console.log(response.data);
+      console.log(`Data received at ${Date()}`);
       res.json(response.data);
     })
     .catch((error) => {

@@ -1,20 +1,15 @@
-/* /eslint-disable react/forbid-prop-types */
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import styles from './styles/Alerts.module.css';
 import { getAlertDate } from './lib/functions';
 
 function Alerts({ data }) {
-  console.log(data);
+  // console.log(data);
   const [alertData, timezone] = data;
   const alertsRef = useRef();
   const arrowRef = useRef();
 
   const [alertOpen, setAlertOpen] = useState(false);
-
-  /*  Alerts.defaultProps = {
-    data: PropTypes.array,
-  }; */
 
   Alerts.propTypes = {
     data: PropTypes.arrayOf(

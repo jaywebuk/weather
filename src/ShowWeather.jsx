@@ -1,4 +1,3 @@
-/* eslint-disable react/forbid-prop-types */
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
@@ -9,16 +8,26 @@ import Daily from './Daily';
 
 function ShowWeather({ data }) {
   // console.log(data);
-  const [cityData, loadingRef] = data;
-
-  ShowWeather.defaultProps = {
-    data: PropTypes.array,
-  };
 
   ShowWeather.propTypes = {
-    data: PropTypes.array,
+    data: PropTypes.arrayOf(
+      PropTypes.oneOfType([
+        PropTypes.arrayOf(
+          PropTypes.shape({
+            country: PropTypes.string.isRequired,
+            lat: PropTypes.number.isRequired,
+            local_names: PropTypes.objectOf(PropTypes.string),
+            lon: PropTypes.number.isRequired,
+            name: PropTypes.string.isRequired,
+            state: PropTypes.string.isRequired,
+          }).isRequired,
+        ),
+        PropTypes.objectOf(PropTypes.any).isRequired,
+      ]),
+    ).isRequired,
   };
 
+  const [cityData, loadingRef] = data;
   // console.log(cityData.length);
   const [weatherData, setWeatherData] = useState();
   const [refreshData, setRefreshData] = useState();
@@ -27,6 +36,7 @@ function ShowWeather({ data }) {
   const handleRefresh = () => {
     setRefreshData(!refreshData);
   };
+
   useEffect(() => {
     loadingRef.current.style.visibility = 'visible';
     const { lat } = cityData;

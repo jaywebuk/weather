@@ -1,26 +1,32 @@
-/* eslint-disable react/forbid-prop-types */
 import PropTypes from 'prop-types';
 import React from 'react';
 
 function MultipleResults({ data }) {
-  MultipleResults.defaultProps = {
-    data: PropTypes.array,
-  };
+  // console.log(data);
 
   MultipleResults.propTypes = {
-    data: PropTypes.array,
+    data: PropTypes.arrayOf(
+      PropTypes.oneOfType([
+        PropTypes.arrayOf(
+          PropTypes.shape({
+            country: PropTypes.string.isRequired,
+            lat: PropTypes.number.isRequired,
+            lon: PropTypes.number.isRequired,
+            name: PropTypes.string.isRequired,
+            state: PropTypes.string.isRequired,
+          }).isRequired,
+        ).isRequired,
+        PropTypes.func.isRequired,
+        PropTypes.object.isRequired,
+      ]).isRequired,
+    ).isRequired,
   };
+
   const [cityData, setData, loadingRef] = data;
   function handleChange(thisData) {
     const { selectedIndex } = thisData.target.options;
     const { lat } = thisData.target.options[selectedIndex].dataset;
     const { lon } = thisData.target.options[selectedIndex].dataset;
-
-    /* const sendData = cityData.filter((obj) => {
-      if (obj.lat === lat && obj.lon === lon) {
-        return obj;
-      }
-    }); */
 
     const keys = Object.keys(cityData);
     // console.log(cityData[0].lat);
@@ -35,13 +41,6 @@ function MultipleResults({ data }) {
         // console.log(cityData[key]);
       }
     });
-    /* const sendData = cityData.filter((obj) => {
-      if (obj.lat === lat && obj.lon === lon) {
-        return obj;
-      }
-    }); */
-
-    // setData(sendData);
   }
 
   const extractData = () => {

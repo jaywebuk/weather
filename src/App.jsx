@@ -34,6 +34,7 @@ function App() {
       .request(options)
       .then((response) => {
         setData(response.data);
+        // console.log(response.data);
       })
       .catch((error) => {
         console.error(error);
@@ -77,7 +78,6 @@ function App() {
             {Array.isArray(data) && data.length === 1 && (
               <ShowWeather data={[data[0], loadingRef]} />
             )}
-
             {!Array.isArray(data) && <ShowWeather data={[data, loadingRef]} />}
           </>
         )}

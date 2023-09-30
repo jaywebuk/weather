@@ -1,4 +1,3 @@
-/* eslint-disable react/forbid-prop-types */
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import styles from './styles/Hourly.module.css';
@@ -12,6 +11,7 @@ import {
 import wind from './images/wind.png';
 
 function Hourly({ data }) {
+  // console.log(data);
   const [previousHourId, setPreviousHourId] = useState(null);
   const [previousHourElem, setPreviousHourElem] = useState(null);
   const [previousHiddenHour, setPreviousHiddenHour] = useState(null);
@@ -19,12 +19,37 @@ function Hourly({ data }) {
   const openHiddenHours = useRef([]);
   const hiddenHourSections = useRef([]);
 
-  Hourly.defaultProps = {
-    data: PropTypes.array,
-  };
-
   Hourly.propTypes = {
-    data: PropTypes.array,
+    data: PropTypes.arrayOf(
+      PropTypes.oneOfType([
+        PropTypes.arrayOf(
+          PropTypes.shape({
+            clouds: PropTypes.number.isRequired,
+            dew_point: PropTypes.number.isRequired,
+            dt: PropTypes.number.isRequired,
+            feels_like: PropTypes.number.isRequired,
+            humidity: PropTypes.number.isRequired,
+            pop: PropTypes.number.isRequired,
+            pressure: PropTypes.number.isRequired,
+            temp: PropTypes.number.isRequired,
+            uvi: PropTypes.number.isRequired,
+            visibility: PropTypes.number.isRequired,
+            wind_deg: PropTypes.number.isRequired,
+            wind_gust: PropTypes.number.isRequired,
+            wind_speed: PropTypes.number.isRequired,
+            weather: PropTypes.arrayOf(
+              PropTypes.shape({
+                description: PropTypes.string.isRequired,
+                icon: PropTypes.string.isRequired,
+                id: PropTypes.number.isRequired,
+                main: PropTypes.string.isRequired,
+              }).isRequired,
+            ).isRequired,
+          }).isRequired,
+        ).isRequired,
+        PropTypes.string.isRequired,
+      ]).isRequired,
+    ).isRequired,
   };
 
   if (!Array.isArray(data) || data.length === 0) {
@@ -89,7 +114,7 @@ function Hourly({ data }) {
           <section
             className={styles.hour}
             onClick={(e) => handleClick(e, key)}
-            onKeyDown={(e) => handleClick(e, key)}
+            onKeyDown={() => null}
             data-hidden={key}
             role="button alert"
             tabIndex={key}
