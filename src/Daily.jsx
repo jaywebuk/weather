@@ -1,5 +1,6 @@
-import PropTypes from 'prop-types';
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
+// import PropTypes from 'prop-types';
+import DailyPropTypes from './lib/DailyPropTypes';
 import styles from './styles/Daily.module.css';
 import {
   convertTemp,
@@ -13,68 +14,21 @@ import wind from './images/wind.png';
 import sun from './images/sun.png';
 import moon from './images/moon.png';
 
-function Daily({ data }) {
-  // console.log(data);
+function Daily({ data, timezone = 'Europe/London' }) {
+  // console.log(data, timezone);
   const [previousDayId, setPreviousDayId] = useState(null);
   const [previousDayElem, setpreviousDayElem] = useState(null);
   const [previousHiddenDay, setPreviousHiddenDay] = useState(null);
   const openHiddenDays = useRef([]);
   const hiddenDaySections = useRef([]);
 
-  Daily.propTypes = {
-    data: PropTypes.arrayOf(
-      PropTypes.oneOfType([
-        PropTypes.arrayOf(
-          PropTypes.shape({
-            clouds: PropTypes.number.isRequired,
-            dew_point: PropTypes.number.isRequired,
-            dt: PropTypes.number.isRequired,
-            feels_like: PropTypes.shape({
-              day: PropTypes.number.isRequired,
-              eve: PropTypes.number.isRequired,
-              morn: PropTypes.number.isRequired,
-              night: PropTypes.number.isRequired,
-            }).isRequired,
-            humidity: PropTypes.number.isRequired,
-            moon_phase: PropTypes.number.isRequired,
-            moonrise: PropTypes.number.isRequired,
-            moonset: PropTypes.number.isRequired,
-            pop: PropTypes.number.isRequired,
-            pressure: PropTypes.number.isRequired,
-            sunrise: PropTypes.number.isRequired,
-            sunset: PropTypes.number.isRequired,
-            temp: PropTypes.shape({
-              day: PropTypes.number.isRequired,
-              eve: PropTypes.number.isRequired,
-              max: PropTypes.number.isRequired,
-              min: PropTypes.number.isRequired,
-              morn: PropTypes.number.isRequired,
-              night: PropTypes.number.isRequired,
-            }).isRequired,
-            uvi: PropTypes.number.isRequired,
-            weather: PropTypes.arrayOf(
-              PropTypes.shape({
-                description: PropTypes.string.isRequired,
-                icon: PropTypes.string.isRequired,
-                id: PropTypes.number.isRequired,
-                main: PropTypes.string.isRequired,
-              }).isRequired,
-            ).isRequired,
-            wind_deg: PropTypes.number.isRequired,
-            wind_gust: PropTypes.number.isRequired,
-            wind_speed: PropTypes.number.isRequired,
-          }).isRequired,
-        ).isRequired,
-        PropTypes.string.isRequired,
-      ]).isRequired,
-    ).isRequired,
-  };
+  Daily.propTypes = DailyPropTypes;
 
   if (!Array.isArray(data) || data.length === 0) {
     return <div>Error: Invalid data</div>;
   }
 
-  const [dayData, timezone] = data;
+  // const [data, timezone] = data;
   const days = [];
   const handleClick = (e, i) => {
     const hiddenId = hiddenDaySections.current[i];
@@ -135,11 +89,7 @@ function Daily({ data }) {
             title="Click to Expand"
           >
             <p>{currentDate}</p>
-            <img
-              src={weatherIcon}
-              alt="Weather Icon"
-              title={toUpper(weatherDescription)}
-            />
+            <img src={weatherIcon} alt="Weather Icon" title={toUpper(weatherDescription)} />
             <div className={styles.wind}>
               <img
                 src={wind}
@@ -188,9 +138,7 @@ function Daily({ data }) {
               {getCardinals(thisDay[key].wind_deg)}
             </p>
             <p>Pressure: {thisDay[key].pressure} mb</p>
-            <p>
-              Chance of Precipitation: {Math.round(thisDay[key].pop * 100)}%
-            </p>
+            <p>Chance of Precipitation: {Math.round(thisDay[key].pop * 100)}%</p>
             <p>
               Sunrise: {getShortTime(thisDay[key].sunrise)} Sunset:{' '}
               {getShortTime(thisDay[key].sunset)}
@@ -208,7 +156,7 @@ function Daily({ data }) {
         <h1>Week Outlook</h1>
       </header>
 
-      <div className={styles.dayBar}>{getDay(dayData)}</div>
+      <div className={styles.dayBar}>{getDay(data)}</div>
     </section>
   );
 }

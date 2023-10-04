@@ -1,5 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
+import CurrentWeatherPropTypes from './lib/CurrentWeatherPropTypes';
 import styles from './styles/CurrentWeather.module.css';
 import {
   convertTemp,
@@ -15,77 +16,43 @@ import wind from './images/wind.png';
 import sunrise from './images/sunrise.png';
 import sunset from './images/sunset.png';
 
-function CurrentWeather({ data }) {
-  // console.log(data);
-
-  CurrentWeather.propTypes = {
-    data: PropTypes.arrayOf(
-      PropTypes.oneOfType([
-        PropTypes.arrayOf(
-          PropTypes.oneOfType([
-            PropTypes.shape({
-              clouds: PropTypes.number.isRequired,
-              dew_point: PropTypes.number.isRequired,
-              dt: PropTypes.number.isRequired,
-              feels_like: PropTypes.number.isRequired,
-              humidity: PropTypes.number.isRequired,
-              pressure: PropTypes.number.isRequired,
-              sunrise: PropTypes.number.isRequired,
-              sunset: PropTypes.number.isRequired,
-              temp: PropTypes.number.isRequired,
-              uvi: PropTypes.number.isRequired,
-              visibility: PropTypes.number.isRequired,
-              wind_deg: PropTypes.number.isRequired,
-              wind_gust: PropTypes.number.isRequired,
-              wind_speed: PropTypes.number.isRequired,
-              weather: PropTypes.arrayOf(
-                PropTypes.shape({
-                  description: PropTypes.string.isRequired,
-                  icon: PropTypes.string.isRequired,
-                  id: PropTypes.number.isRequired,
-                  main: PropTypes.string.isRequired,
-                }).isRequired,
-              ).isRequired,
-            }).isRequired,
-            PropTypes.string.isRequired,
-          ]).isRequired,
-        ).isRequired,
-        PropTypes.shape({
-          country: PropTypes.string.isRequired,
-          lat: PropTypes.number.isRequired,
-          lon: PropTypes.number.isRequired,
-          name: PropTypes.string.isRequired,
-          state: PropTypes.string.isRequired,
-        }).isRequired,
-        PropTypes.func.isRequired,
-        PropTypes.object.isRequired,
-        PropTypes.bool.isRequired,
-      ]).isRequired,
-    ).isRequired,
-  };
-
-  const [
-    [currentWeather, timezone],
+function CurrentWeather({
+  currentWeather,
+  timezone,
+  cityData,
+  handleRefresh,
+  loadingRef,
+  weatherAlerts,
+}) {
+  /* console.log(
+    'currentWeather',
+    currentWeather,
+    '\ntimezone',
+    timezone,
+    '\ncityData',
     cityData,
+    '\nhandleRefresh',
     handleRefresh,
+    '\nloadingRef',
     loadingRef,
-    weatherALerts,
-  ] = data;
-  loadingRef.current.style.visibility = 'hidden';
+    '\nweatherAlerts',
+    weatherAlerts,
+  ); */
+
+  CurrentWeather.propTypes = CurrentWeatherPropTypes;
+  const loading = loadingRef;
+
+  // const [[currentWeather, timezone], cityData, handleRefresh, loadingRef, weatherALerts] = data;
+  loading.current.style.visibility = 'hidden';
 
   return (
     currentWeather && (
       <div className={styles.currentWeather}>
         <div className={styles.topInfo}>
-          <button
-            type="button"
-            onClick={handleRefresh}
-            onKeyDown={handleRefresh}
-          >
+          <button type="button" onClick={handleRefresh} onKeyDown={handleRefresh}>
             <img className={styles.refresh} src={refresh} alt="Refresh Icon" />
           </button>
-          {/* {getUTime()} */}
-          {weatherALerts && (
+          {weatherAlerts && (
             <img
               className={styles.warning}
               src={warning}
@@ -94,9 +61,7 @@ function CurrentWeather({ data }) {
             />
           )}
         </div>
-        <p className={styles.currentDate}>
-          {getLongDate(currentWeather.dt, timezone)}
-        </p>
+        <p className={styles.currentDate}>{getLongDate(currentWeather.dt, timezone)}</p>
         <h1>
           {cityData.name}, {cityData.state} ({cityData.country})
         </h1>

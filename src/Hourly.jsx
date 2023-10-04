@@ -1,16 +1,11 @@
 import React, { useState, useRef } from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
+import HourlyPropTypes from './lib/HourlyPropTypes';
 import styles from './styles/Hourly.module.css';
-import {
-  convertTemp,
-  toUpper,
-  getTime,
-  getCardinals,
-  getWind,
-} from './lib/functions';
+import { convertTemp, toUpper, getTime, getCardinals, getWind } from './lib/functions';
 import wind from './images/wind.png';
 
-function Hourly({ data }) {
+function Hourly({ data, timezone = 'Europe/London' }) {
   // console.log(data);
   const [previousHourId, setPreviousHourId] = useState(null);
   const [previousHourElem, setPreviousHourElem] = useState(null);
@@ -19,44 +14,11 @@ function Hourly({ data }) {
   const openHiddenHours = useRef([]);
   const hiddenHourSections = useRef([]);
 
-  Hourly.propTypes = {
-    data: PropTypes.arrayOf(
-      PropTypes.oneOfType([
-        PropTypes.arrayOf(
-          PropTypes.shape({
-            clouds: PropTypes.number.isRequired,
-            dew_point: PropTypes.number.isRequired,
-            dt: PropTypes.number.isRequired,
-            feels_like: PropTypes.number.isRequired,
-            humidity: PropTypes.number.isRequired,
-            pop: PropTypes.number.isRequired,
-            pressure: PropTypes.number.isRequired,
-            temp: PropTypes.number.isRequired,
-            uvi: PropTypes.number.isRequired,
-            visibility: PropTypes.number.isRequired,
-            wind_deg: PropTypes.number.isRequired,
-            wind_gust: PropTypes.number.isRequired,
-            wind_speed: PropTypes.number.isRequired,
-            weather: PropTypes.arrayOf(
-              PropTypes.shape({
-                description: PropTypes.string.isRequired,
-                icon: PropTypes.string.isRequired,
-                id: PropTypes.number.isRequired,
-                main: PropTypes.string.isRequired,
-              }).isRequired,
-            ).isRequired,
-          }).isRequired,
-        ).isRequired,
-        PropTypes.string.isRequired,
-      ]).isRequired,
-    ).isRequired,
-  };
+  Hourly.propTypes = HourlyPropTypes;
 
   if (!Array.isArray(data) || data.length === 0) {
     return <div>Error: Invalid data</div>;
   }
-
-  const [hourData, timezone] = data;
 
   const hours = [];
   const handleClick = (e, i) => {
@@ -121,11 +83,7 @@ function Hourly({ data }) {
             title="Click to Expand"
           >
             <p>{currentTime}</p>
-            <img
-              src={weatherIcon}
-              alt={weatherDescription}
-              title={weatherDescription}
-            />
+            <img src={weatherIcon} alt={weatherDescription} title={weatherDescription} />
             <div className={styles.wind}>
               <img
                 src={wind}
@@ -188,7 +146,7 @@ function Hourly({ data }) {
         <h1>Next 24 Hours</h1>
       </header>
 
-      <div className={styles.hourBar}>{getHour(hourData)}</div>
+      <div className={styles.hourBar}>{getHour(data)}</div>
     </section>
   );
 }

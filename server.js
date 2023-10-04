@@ -7,6 +7,8 @@ const axios = require('axios');
 const app = express();
 const cors = require('cors');
 
+let requestCount = 0;
+
 app.use(cors());
 
 app.listen(5000, () => console.log(`Server is running on port ${PORT}`));
@@ -34,8 +36,9 @@ app.get('/weather', (req, res) => {
   axios
     .request(options)
     .then((response) => {
-      console.log(response.data);
+      // console.log(response.data);
       res.json(response.data);
+      console.log(`City data received at ${Date()}`);
     })
     .catch((error) => {
       console.error(error);
@@ -59,13 +62,16 @@ app.get('/weather/location', (req, res) => {
     method: 'GET',
     url: `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=imperial&appid=${API_KEY}`,
   };
+  requestCount += 1;
 
   axios
     .request(options)
     .then((response) => {
       // console.log(response.data);
-      console.log(`Data received at ${Date()}`);
-      res.json(response.data);
+      const responseData = response.data;
+      console.log(`Weather data received at ${Date()}`);
+      console.log(`Requests made since server up: ${requestCount}`);
+      res.json(responseData);
     })
     .catch((error) => {
       console.error(error);

@@ -19,6 +19,7 @@ function App() {
   };
 
   const handleSubmit = (e) => {
+    setData(null);
     setLoading('visible');
 
     e.preventDefault();
@@ -55,13 +56,7 @@ function App() {
           />
           <input type="submit" className="search-button" value="Go" />
         </form>
-        <img
-          id="loading"
-          className="loading"
-          src={loading}
-          alt=""
-          ref={loadingRef}
-        />
+        <img id="loading" className="loading" src={loading} alt="" ref={loadingRef} />
         {data && (
           <>
             {data.length === 0 && (
@@ -72,13 +67,13 @@ function App() {
             )}
 
             {Array.isArray(data) && data.length > 1 && (
-              <MultipleResults data={[data, handleChange, loadingRef]} />
+              <MultipleResults data={data} setData={handleChange} loadingRef={loadingRef} />
             )}
 
             {Array.isArray(data) && data.length === 1 && (
-              <ShowWeather data={[data[0], loadingRef]} />
+              <ShowWeather data={data[0]} loadingRef={loadingRef} />
             )}
-            {!Array.isArray(data) && <ShowWeather data={[data, loadingRef]} />}
+            {!Array.isArray(data) && <ShowWeather data={data} loadingRef={loadingRef} />}
           </>
         )}
         {/* {data && console.log(data)} */}

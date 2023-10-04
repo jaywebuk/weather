@@ -1,47 +1,32 @@
+// import PropTypes from 'prop-types';
+
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import { useState, useEffect } from 'react';
+import ShowWeatherPropTypes from './lib/ShowWeatherPropTypes';
 import CurrentWeather from './CurrentWeather';
 import Alerts from './Alerts';
 import Hourly from './Hourly';
 import Daily from './Daily';
 
-function ShowWeather({ data }) {
-  // console.log(data);
+function ShowWeather({ data, loadingRef }) {
+  // console.log(data, loadingRef);
 
-  ShowWeather.propTypes = {
-    data: PropTypes.arrayOf(
-      PropTypes.oneOfType([
-        PropTypes.arrayOf(
-          PropTypes.shape({
-            country: PropTypes.string.isRequired,
-            lat: PropTypes.number.isRequired,
-            local_names: PropTypes.objectOf(PropTypes.string),
-            lon: PropTypes.number.isRequired,
-            name: PropTypes.string.isRequired,
-            state: PropTypes.string.isRequired,
-          }).isRequired,
-        ),
-        PropTypes.objectOf(PropTypes.any).isRequired,
-      ]),
-    ).isRequired,
-  };
+  ShowWeather.propTypes = ShowWeatherPropTypes;
+  const loading = loadingRef;
 
-  const [cityData, loadingRef] = data;
-  // console.log(cityData.length);
+  // const [data, loadingRef] = data;
   const [weatherData, setWeatherData] = useState();
-  const [refreshData, setRefreshData] = useState();
+  const [refreshData, setRefreshData] = useState(false);
   const [weatherAlerts, setWeatherAlerts] = useState(false);
+  const [consoleCount, setConsoleCount] = useState(1);
 
   const handleRefresh = () => {
     setRefreshData(!refreshData);
   };
 
   useEffect(() => {
-    loadingRef.current.style.visibility = 'visible';
-    const { lat } = cityData;
-    const { lon } = cityData;
-    // console.log(lat, lon);
+    loading.current.style.visibility = 'visible';
+    const { lat, lon } = data;
 
     const options = {
       method: 'GET',
@@ -50,37 +35,32 @@ function ShowWeather({ data }) {
     axios
       .request(options)
       .then((response) => {
-        console.log(response.data);
+        console.log(consoleCount, response.data);
+        setConsoleCount((prevCount) => prevCount + 1);
+
         setWeatherData(response.data);
-        setWeatherAlerts(typeof response.data.alerts !== 'undefined');
+        setWeatherAlerts(response.data.alerts !== undefined);
       })
       .catch((error) => {
         console.error(error);
       });
+  }, [refreshData]);
 
-    return () => {};
-  }, [refreshData, cityData]);
   return (
     weatherData && (
       <>
         <CurrentWeather
-          data={[
-            [weatherData.current, weatherData.timezone],
-            cityData,
-            handleRefresh,
-            loadingRef,
-            weatherAlerts,
-          ]}
+          currentWeather={weatherData.current}
+          timezone={weatherData.timezone}
+          cityData={data}
+          handleRefresh={handleRefresh}
+          loadingRef={loadingRef}
+          weatherAlerts={weatherAlerts}
         />
-        {weatherAlerts && (
-          <>
-            {/* {console.log(weatherData.alerts)} */}
-            <Alerts data={[weatherData.alerts, weatherData.timezone]} />
-          </>
-        )}
-        <Hourly data={[weatherData.hourly, weatherData.timezone]} />
-        <Daily data={[weatherData.daily, weatherData.timezone]} />
-        {/* {console.log("weatherData", weatherData)} */}
+        {weatherAlerts && <Alerts data={weatherData.alerts} timezone={weatherData.timezone} />}
+        <Hourly data={weatherData.hourly} timezone={weatherData.timezone} />
+        <Daily data={weatherData.daily} timezone={weatherData.timezone} />
+        {/* {console.log(weatherData.daily)} */}
       </>
     )
   );
