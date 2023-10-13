@@ -1,144 +1,178 @@
-import React, { useState, useRef } from 'react';
-// import PropTypes from 'prop-types';
-import HourlyPropTypes from './lib/HourlyPropTypes';
-import styles from './styles/Hourly.module.css';
+import React, { useState, useRef, useCallback, useMemo, memo } from 'react';
+import { HourlyPropTypes, HourPropTypes, HiddenHourPropTypes } from './lib/HourlyPropTypes';
 import { convertTemp, toUpper, getTime, getCardinals, getWind } from './lib/functions';
+import styles from './styles/Hourly.module.css';
 import wind from './images/wind.png';
 
-function Hourly({ data, timezone = 'Europe/London' }) {
-  // console.log(data);
-  const [previousHourId, setPreviousHourId] = useState(null);
-  const [previousHourElem, setPreviousHourElem] = useState(null);
-  const [previousHiddenHour, setPreviousHiddenHour] = useState(null);
+function Hour({ hourData, timezone, onClick, index, openHiddenHours, hiddenHourSections }) {
+  const currentTime = getTime(hourData.dt, timezone);
+  const weatherIcon = `http://openweathermap.org/img/wn/${hourData.weather[0].icon}.png`;
+  const weatherDescription = toUpper(hourData.weather[0].description);
+  const ohh = openHiddenHours;
 
+  return (
+    <div className={styles.hourDiv}>
+      <section
+        className={styles.hour}
+        onClick={(e) => onClick(e, index)}
+        onKeyDown={() => null}
+        data-hidden={index}
+        role="button alert"
+        tabIndex={index}
+        title="Click to Expand / Close"
+      >
+        <p>{currentTime}</p>
+        <img src={weatherIcon} alt={weatherDescription} title={weatherDescription} />
+        <div className={styles.wind}>
+          <img
+            src={wind}
+            style={{ rotate: `${hourData.wind_deg}deg` }}
+            alt=""
+            title={`Wind from the ${getCardinals(hourData.wind_deg)}`}
+          />
+          <p title={toUpper(getWind(Math.round(hourData.wind_speed)))}>
+            {Math.round(hourData.wind_speed)} mph
+          </p>
+        </div>
+        <p>
+          {convertTemp(hourData.temp)}
+          &deg;C /{Math.round(hourData.temp)}
+          &deg;F
+        </p>
+        <p
+          className={styles.openHiddenHour}
+          ref={(e) => {
+            ohh.current[index] = e;
+          }}
+        >
+          &gt;
+        </p>
+      </section>
+      <HiddenHour
+        key={hourData.dt}
+        hiddenHourSections={hiddenHourSections}
+        hourData={hourData}
+        index={index}
+        weatherDescription={weatherDescription}
+      />
+    </div>
+  );
+}
+
+const HiddenHour = memo(function HiddenHour({
+  hiddenHourSections,
+  hourData,
+  index,
+  weatherDescription,
+}) {
+  const hhs = hiddenHourSections;
+  return (
+    <section
+      className={`${styles.hidden}`}
+      ref={(e) => {
+        hhs.current[index] = e;
+      }}
+    >
+      <p>{weatherDescription}</p>
+      <p className={styles.wind}>
+        {toUpper(getWind(Math.round(hourData.wind_speed)))} from the{' '}
+        {getCardinals(hourData.wind_deg)}
+      </p>
+      <p>
+        Feels Like: {convertTemp(hourData.feels_like)}
+        &deg;C /{Math.round(hourData.feels_like)}
+        &deg;F
+      </p>
+      <p>
+        Pressure:
+        {hourData.pressure} mb
+      </p>
+      <p>
+        Chance of Precipitation:
+        {Math.round(hourData.pop * 100)}%
+      </p>
+    </section>
+  );
+});
+
+function Hourly({ data, timezone = 'Europe/London' }) {
+  const [previousState, setPreviousState] = useState({
+    hourId: null,
+    hourElem: null,
+    hiddenHour: null,
+  });
   const openHiddenHours = useRef([]);
   const hiddenHourSections = useRef([]);
+  const showHiddenHour = (element, thisHourElem, openHour) => {
+    const hour = openHour;
+    element.classList.add(styles['show-hidden-hour']);
+    thisHourElem.classList.add(styles['hour-selected']);
+    hour.innerHTML = '&lt;';
+  };
 
-  Hourly.propTypes = HourlyPropTypes;
+  const smoothScrollIntoView = (element) => {
+    element.scrollIntoView({
+      behavior: 'smooth',
+      block: 'nearest',
+      inline: 'nearest',
+    });
+  };
 
-  if (!Array.isArray(data) || data.length === 0) {
-    return <div>Error: Invalid data</div>;
-  }
+  const hideHiddenHour = useCallback(
+    function hideHiddenHour(element) {
+      element.classList.remove(styles['show-hidden-hour']);
+      previousState.hourElem.classList.remove(styles['hour-selected']);
+      previousState.hiddenHour.innerHTML = '&gt;';
+    },
+    [previousState.hiddenHour, previousState.hourElem],
+  );
 
-  const hours = [];
-  const handleClick = (e, i) => {
-    const hiddenId = hiddenHourSections.current[i];
-    const thisHourElem = e.target.closest('section');
-    const openHour = openHiddenHours.current[i];
-    if (hiddenId === previousHourId) {
-      if (hiddenId.classList.contains(styles['show-hidden-hour'])) {
-        hiddenId.classList.remove(styles['show-hidden-hour']);
-        previousHourElem.classList.remove(styles['hour-selected']);
-        previousHiddenHour.innerHTML = '&gt;';
+  const handleClick = useCallback(
+    function handleClick(e, i) {
+      const hiddenId = hiddenHourSections.current[i];
+      const thisHourElem = e.target.closest('section');
+      const openHour = openHiddenHours.current[i];
+      if (hiddenId === previousState.hourId) {
+        if (hiddenId.classList.contains(styles['show-hidden-hour'])) {
+          hideHiddenHour(hiddenId);
+        } else {
+          showHiddenHour(hiddenId, thisHourElem, openHour);
+        }
       } else {
-        hiddenId.classList.add(styles['show-hidden-hour']);
-        thisHourElem.classList.add(styles['hour-selected']);
-        openHour.innerHTML = '&lt;';
+        showHiddenHour(hiddenId, thisHourElem, openHour);
+        if (previousState.hourId !== null) {
+          hideHiddenHour(previousState.hourId);
+        }
       }
-    } else {
-      hiddenId.classList.add(styles['show-hidden-hour']);
-      thisHourElem.classList.add(styles['hour-selected']);
-      openHour.innerHTML = '&lt;';
-      if (previousHourId !== null) {
-        previousHourId.classList.remove(styles['show-hidden-hour']);
-        previousHourElem.classList.remove(styles['hour-selected']);
-        previousHiddenHour.innerHTML = '&gt;';
-      }
-    }
-    thisHourElem.scrollIntoView({
-      behavior: 'smooth',
-      block: 'nearest',
-      inline: 'nearest',
-    });
-    hiddenId.scrollIntoView({
-      behavior: 'smooth',
-      block: 'nearest',
-      inline: 'nearest',
-    });
 
-    setPreviousHourId(hiddenId);
-    setPreviousHourElem(thisHourElem);
-    setPreviousHiddenHour(openHour);
-  };
-  const getHour = (thisHour) => {
-    const keys = Object.keys(thisHour);
-    // console.log('Hourly: ', typeof keys);
+      smoothScrollIntoView(thisHourElem);
+      smoothScrollIntoView(hiddenId);
 
-    keys.forEach((key) => {
-      if (key > 24) {
-        return;
-      }
-      const currentTime = getTime(thisHour[key].dt, timezone);
-      const weatherIcon = `http://openweathermap.org/img/wn/${thisHour[key].weather[0].icon}.png`;
-      const weatherDescription = toUpper(thisHour[key].weather[0].description);
-      hours.push(
-        <div className={styles.hourDiv} key={`hourly-${key}`}>
-          <section
-            className={styles.hour}
-            onClick={(e) => handleClick(e, key)}
-            onKeyDown={() => null}
-            data-hidden={key}
-            role="button alert"
-            tabIndex={key}
-            title="Click to Expand"
-          >
-            <p>{currentTime}</p>
-            <img src={weatherIcon} alt={weatherDescription} title={weatherDescription} />
-            <div className={styles.wind}>
-              <img
-                src={wind}
-                style={{ rotate: `${thisHour[key].wind_deg}deg` }}
-                alt=""
-                title={`Wind from the ${getCardinals(thisHour[key].wind_deg)}`}
-              />
-              <p title={toUpper(getWind(Math.round(thisHour[key].wind_speed)))}>
-                {Math.round(thisHour[key].wind_speed)} mph
-              </p>
-            </div>
-            <p>
-              {convertTemp(thisHour[key].temp)}
-              &deg;C /{Math.round(thisHour[key].temp)}
-              &deg;F
-            </p>
-            <p
-              className={styles.openHiddenHour}
-              ref={(e) => {
-                openHiddenHours.current[key] = e;
-              }}
-            >
-              &gt;
-            </p>
-          </section>
-          <section
-            className={`${styles.hidden}`}
-            ref={(e) => {
-              hiddenHourSections.current[key] = e;
-            }}
-          >
-            <p>{weatherDescription}</p>
-            <p className={styles.wind}>
-              {toUpper(getWind(Math.round(thisHour[key].wind_speed)))} from the{' '}
-              {getCardinals(thisHour[key].wind_deg)}
-            </p>
-            <p>
-              Feels Like: {convertTemp(thisHour[key].feels_like)}
-              &deg;C /{Math.round(thisHour[key].feels_like)}
-              &deg;F
-            </p>
-            <p>
-              Pressure:
-              {thisHour[key].pressure} mb
-            </p>
-            <p>
-              Chance of Precipitation:
-              {Math.round(thisHour[key].pop * 100)}%
-            </p>
-          </section>
-        </div>,
-      );
-    });
-    return hours;
-  };
+      setPreviousState((prevState) => ({
+        ...prevState,
+        hourId: hiddenId,
+        hourElem: thisHourElem,
+        hiddenHour: openHour,
+      }));
+    },
+    [previousState.hourId, hideHiddenHour],
+  );
+
+  const hours = useMemo(() => {
+    // eslint-disable-next-line no-param-reassign
+    data.length = 24;
+    return data.map((hourData, index) => (
+      <Hour
+        key={hourData.dt}
+        hourData={hourData}
+        timezone={timezone}
+        onClick={handleClick}
+        index={index}
+        openHiddenHours={openHiddenHours}
+        hiddenHourSections={hiddenHourSections}
+      />
+    ));
+  }, [data, handleClick, timezone]);
 
   return (
     <section className={styles.hourly}>
@@ -146,9 +180,13 @@ function Hourly({ data, timezone = 'Europe/London' }) {
         <h1>Next 24 Hours</h1>
       </header>
 
-      <div className={styles.hourBar}>{getHour(data)}</div>
+      <div className={styles.hourBar}>{hours}</div>
     </section>
   );
 }
+
+Hourly.propTypes = HourlyPropTypes;
+Hour.propTypes = HourPropTypes;
+HiddenHour.propTypes = HiddenHourPropTypes;
 
 export default Hourly;

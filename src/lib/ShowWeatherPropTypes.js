@@ -7,7 +7,7 @@ const ShowWeatherPropTypes = {
     local_names: PropTypes.objectOf(PropTypes.string),
     lon: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
-    state: PropTypes.string.isRequired,
+    state: PropTypes.string,
   }).isRequired,
   loadingRef: PropTypes.object.isRequired,
 };

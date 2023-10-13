@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 // import PropTypes from 'prop-types';
 import CurrentWeatherPropTypes from './lib/CurrentWeatherPropTypes';
 import styles from './styles/CurrentWeather.module.css';
@@ -24,32 +24,24 @@ function CurrentWeather({
   loadingRef,
   weatherAlerts,
 }) {
-  /* console.log(
-    'currentWeather',
-    currentWeather,
-    '\ntimezone',
-    timezone,
-    '\ncityData',
-    cityData,
-    '\nhandleRefresh',
-    handleRefresh,
-    '\nloadingRef',
-    loadingRef,
-    '\nweatherAlerts',
-    weatherAlerts,
-  ); */
-
   CurrentWeather.propTypes = CurrentWeatherPropTypes;
   const loading = loadingRef;
+  const refreshButton = useRef();
 
-  // const [[currentWeather, timezone], cityData, handleRefresh, loadingRef, weatherALerts] = data;
   loading.current.style.visibility = 'hidden';
 
   return (
     currentWeather && (
       <div className={styles.currentWeather}>
         <div className={styles.topInfo}>
-          <button type="button" onClick={handleRefresh} onKeyDown={handleRefresh}>
+          <button
+            type="button"
+            onClick={() => {
+              handleRefresh(refreshButton);
+            }}
+            onKeyDown={handleRefresh}
+            ref={refreshButton}
+          >
             <img className={styles.refresh} src={refresh} alt="Refresh Icon" />
           </button>
           {weatherAlerts && (

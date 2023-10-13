@@ -24,7 +24,7 @@ const CurrentWeatherPropTypes = {
     local_names: PropTypes.objectOf(PropTypes.string),
     lon: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
-    state: PropTypes.string.isRequired,
+    state: PropTypes.string,
   }).isRequired,
   handleRefresh: PropTypes.func.isRequired,
   loadingRef: PropTypes.object.isRequired,

@@ -1,12 +1,10 @@
 import React, { useState, useRef } from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import AlertsPropTypes from './lib/AlertsPropTypes';
 import styles from './styles/Alerts.module.css';
 import { getAlertDate } from './lib/functions';
 
 const parseDescription = (description) => {
-  // Simple example: replace URLs with <a> tags
-  // You would need a more robust implementation
   const urlRegex = /(https?:\/\/[^\s]+)/g;
   return description.split(urlRegex).map((part) =>
     urlRegex.test(part) ? (
@@ -20,9 +18,11 @@ const parseDescription = (description) => {
 };
 
 function Alert({ description }) {
-  Alert.propTypes = {
+  /* Alert.propTypes = {
     description: PropTypes.string.isRequired,
-  };
+  }; */
+
+  Alert.propTypes = AlertsPropTypes;
 
   return <p>{parseDescription(description)}</p>;
 }
@@ -79,7 +79,7 @@ function Alerts({ data, timezone }) {
         className={styles.alertsHeader}
         onClick={handleClick}
         onKeyDown={handleClick}
-        title="Click to expand / collapse"
+        title="Click to Expand / Close / collapse"
         role="button"
         tabIndex={0}
       >

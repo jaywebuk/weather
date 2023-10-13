@@ -28,4 +28,6 @@ city.json
 weather*.json*
 test.txt
 test.json
+test.js
 README.md.old
+useToggleSection.js

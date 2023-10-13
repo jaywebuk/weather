@@ -1,3 +1,5 @@
+/* eslint-disable prefer-const */
+/* eslint-disable global-require */
 /* eslint-disable no-unused-vars */
 const PORT = 5000;
 const express = require('express');
@@ -7,7 +9,7 @@ const axios = require('axios');
 const app = express();
 const cors = require('cors');
 
-let requestCount = 0;
+let requestCount = 1;
 
 app.use(cors());
 
@@ -26,7 +28,7 @@ app.get('/weather', (req, res) => {
 
   /* const data = require('./city.json');
   res.json(data);
-  console.log(data); */
+  // console.log(data); */
 
   const options = {
     method: 'GET',
@@ -54,9 +56,12 @@ app.get('/weather/location', (req, res) => {
   const { lon } = req.query;
   // console.log(lat, lon);
 
+  requestCount += 1;
   /* const data = require('./weather.json');
   res.json(data);
-  console.log(data); */
+  // console.log(data);
+  console.log(`Weather data received at ${Date()}`);
+  console.log(`Requests made since server up: ${requestCount}`); */
 
   const options = {
     method: 'GET',

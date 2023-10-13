@@ -86,7 +86,7 @@ div.currentWeather {
     /* margin: 5px; *
 } */
 
-img.refresh {
+img.refresh  {
   width: 20px;
   cursor: pointer;
 }

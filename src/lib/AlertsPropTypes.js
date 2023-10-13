@@ -11,7 +11,7 @@ const AlertsPropTypes = {
       tags: PropTypes.arrayOf(PropTypes.string),
     }).isRequired,
   ).isRequired,
-  timezone: PropTypes.string.isRequired,
+  timezone: PropTypes.string,
 };
 
 export default AlertsPropTypes;

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@welldone-software/why-did-you-render": "^7.0.1",
     "axios": "^1.5.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
@@ -35,6 +36,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "latest",
     "eslint": "^8.2.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "9.0.0",
@@ -43,7 +45,6 @@
     "eslint-plugin-prettier": "5.0.0",
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
-    "prettier": "3.0.3",
-    "@babel/plugin-proposal-private-property-in-object": "latest"
+    "prettier": "3.0.3"
   }
 }

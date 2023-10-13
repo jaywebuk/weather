@@ -1,6 +1,5 @@
-import { useState, useRef } from 'react';
-// import PropTypes from 'prop-types';
-import DailyPropTypes from './lib/DailyPropTypes';
+import React, { useState, useRef, useMemo, useCallback, memo } from 'react';
+import { DailyPropTypes, DayPropTypes, HiddenDayPropTypes } from './lib/DailyPropTypes';
 import styles from './styles/Daily.module.css';
 import {
   convertTemp,
@@ -14,141 +13,175 @@ import wind from './images/wind.png';
 import sun from './images/sun.png';
 import moon from './images/moon.png';
 
-function Daily({ data, timezone = 'Europe/London' }) {
-  // console.log(data, timezone);
-  const [previousDayId, setPreviousDayId] = useState(null);
-  const [previousDayElem, setpreviousDayElem] = useState(null);
-  const [previousHiddenDay, setPreviousHiddenDay] = useState(null);
-  const openHiddenDays = useRef([]);
-  const hiddenDaySections = useRef([]);
-
-  Daily.propTypes = DailyPropTypes;
-
-  if (!Array.isArray(data) || data.length === 0) {
-    return <div>Error: Invalid data</div>;
-  }
-
-  // const [data, timezone] = data;
-  const days = [];
-  const handleClick = (e, i) => {
-    const hiddenId = hiddenDaySections.current[i];
-    const thisDayElem = e.target.closest('section');
-    const openDay = openHiddenDays.current[i];
-    if (hiddenId === previousDayId) {
-      if (hiddenId.classList.contains(styles['show-hidden-day'])) {
-        hiddenId.classList.remove(styles['show-hidden-day']);
-        previousDayElem.classList.remove(styles['day-selected']);
-        previousHiddenDay.innerHTML = '&gt;';
-      } else {
-        hiddenId.classList.add(styles['show-hidden-day']);
-        thisDayElem.classList.add(styles['day-selected']);
-        openDay.innerHTML = '&lt;';
-      }
-    } else {
-      hiddenId.classList.add(styles['show-hidden-day']);
-      thisDayElem.classList.add(styles['day-selected']);
-      openDay.innerHTML = '&lt;';
-      if (previousDayId !== null) {
-        previousDayId.classList.remove(styles['show-hidden-day']);
-        previousDayElem.classList.remove(styles['day-selected']);
-        previousHiddenDay.innerHTML = '&gt;';
-      }
-    }
-    thisDayElem.scrollIntoView({
-      behavior: 'smooth',
-      block: 'nearest',
-      inline: 'nearest',
-    });
-    hiddenId.scrollIntoView({
-      behavior: 'smooth',
-      block: 'nearest',
-      inline: 'nearest',
-    });
-
-    setPreviousDayId(hiddenId);
-    setpreviousDayElem(thisDayElem);
-    setPreviousHiddenDay(openDay);
-  };
-  const getDay = (thisDay) => {
-    const keys = Object.keys(thisDay);
-
-    keys.forEach((key) => {
-      const currentDate = getShortDate(thisDay[key].dt, timezone);
-      const weatherIcon = `http://openweathermap.org/img/wn/${thisDay[key].weather[0].icon}.png`;
-      const weatherDescription = toUpper(thisDay[key].weather[0].description);
-
-      days.push(
-        <div className={styles.dayDiv} key={`daily-${key}`}>
-          <section
-            className={styles.day}
-            onClick={(e) => handleClick(e, key)}
-            onKeyDown={() => null}
-            data-hidden={key}
-            role="button alert"
-            tabIndex={key}
-            title="Click to Expand"
-          >
-            <p>{currentDate}</p>
-            <img src={weatherIcon} alt="Weather Icon" title={toUpper(weatherDescription)} />
-            <div className={styles.wind}>
-              <img
-                src={wind}
-                style={{ rotate: `${thisDay[key].wind_deg}deg` }}
-                alt=""
-                title={`Wind from the ${getCardinals(thisDay[key].wind_deg)}`}
-              />
-              <p title={toUpper(getWind(Math.round(thisDay[key].wind_speed)))}>
-                {Math.round(thisDay[key].wind_speed)} mph
-              </p>
-            </div>
-            <div className={styles.dailyTemp}>
-              <img src={sun} alt="Average temperature for the daytime" />
-              <p>
-                {convertTemp(thisDay[key].temp.day)}
-                &deg;C / {Math.round(thisDay[key].temp.day)}
-                &deg;F
-              </p>
-              <p
-                className={styles.openHiddenDay}
-                ref={(e) => {
-                  openHiddenDays.current[key] = e;
-                }}
-              >
-                &gt;
-              </p>
-            </div>
-            <div className={styles.dailyTemp}>
-              <img src={moon} alt="Average temperature for the nightime" />
-              <p>
-                {convertTemp(thisDay[key].temp.night)}
-                &deg;C / {Math.round(thisDay[key].temp.night)}
-                &deg;F
-              </p>
-            </div>
-          </section>
-          <section
-            className={styles.hidden}
+const Day = memo(function Day({
+  dayData,
+  timezone,
+  onClick,
+  index,
+  openHiddenDays,
+  hiddenDaySections,
+}) {
+  const currentDate = getShortDate(dayData.dt, timezone);
+  const weatherIcon = `http://openweathermap.org/img/wn/${dayData.weather[0].icon}.png`;
+  const weatherDescription = toUpper(dayData.weather[0].description);
+  const ohd = openHiddenDays;
+  return (
+    <div className={styles.dayDiv}>
+      <section
+        className={styles.day}
+        onClick={(e) => onClick(e, index)}
+        onKeyDown={() => null}
+        data-hidden={index}
+        role="button"
+        tabIndex={index}
+        title="Click to Expand / Close"
+      >
+        <p>{currentDate}</p>
+        <img src={weatherIcon} alt="Weather Icon" title={toUpper(weatherDescription)} />
+        <div className={styles.wind}>
+          <img
+            src={wind}
+            style={{ rotate: `${dayData.wind_deg}deg` }}
+            alt=""
+            title={`Wind from the ${getCardinals(dayData.wind_deg)}`}
+          />
+          <p title={toUpper(getWind(Math.round(dayData.wind_speed)))}>
+            {Math.round(dayData.wind_speed)} mph
+          </p>
+        </div>
+        <div className={styles.dailyTemp}>
+          <img src={sun} alt="Average temperature for the daytime" />
+          <p>
+            {convertTemp(dayData.temp.day)}
+            &deg;C / {Math.round(dayData.temp.day)}
+            &deg;F
+          </p>
+          <p
+            className={styles.openHiddenDay}
             ref={(e) => {
-              hiddenDaySections.current[key] = e;
+              ohd.current[index] = e;
             }}
           >
-            <p>{toUpper(thisDay[key].weather[0].description)}</p>
-            <p className={styles.wind}>
-              {toUpper(getWind(thisDay[key].wind_speed))} from the{' '}
-              {getCardinals(thisDay[key].wind_deg)}
-            </p>
-            <p>Pressure: {thisDay[key].pressure} mb</p>
-            <p>Chance of Precipitation: {Math.round(thisDay[key].pop * 100)}%</p>
-            <p>
-              Sunrise: {getShortTime(thisDay[key].sunrise)} Sunset:{' '}
-              {getShortTime(thisDay[key].sunset)}
-            </p>
-          </section>
-        </div>,
-      );
-    });
-    return days;
+            &gt;
+          </p>
+        </div>
+        <div className={styles.dailyTemp}>
+          <img src={moon} alt="Average temperature for the nightime" />
+          <p>
+            {convertTemp(dayData.temp.night)}
+            &deg;C / {Math.round(dayData.temp.night)}
+            &deg;F
+          </p>
+        </div>{' '}
+      </section>
+      <HiddenDay
+        key={dayData.dt}
+        hiddenDaySections={hiddenDaySections}
+        dayData={dayData}
+        index={index}
+      />
+    </div>
+  );
+});
+
+const HiddenDay = memo(function HiddenDay({ hiddenDaySections, dayData, index }) {
+  const hds = hiddenDaySections;
+  return (
+    <section
+      className={styles.hidden}
+      ref={(e) => {
+        hds.current[index] = e;
+      }}
+    >
+      <p>{toUpper(dayData.weather[0].description)}</p>
+      <p className={styles.wind}>
+        {toUpper(getWind(dayData.wind_speed))} from the {getCardinals(dayData.wind_deg)}
+      </p>
+      <p>Pressure: {dayData.pressure} mb</p>
+      <p>Chance of Precipitation: {Math.round(dayData.pop * 100)}%</p>
+      <p>
+        Sunrise: {getShortTime(dayData.sunrise)} Sunset: {getShortTime(dayData.sunset)}
+      </p>{' '}
+    </section>
+  );
+});
+
+const Daily = memo(function Daily({ data, timezone = 'Europe/London' }) {
+  const [previousState, setPreviousState] = useState({
+    dayId: null,
+    dayElem: null,
+    hiddenDay: null,
+  });
+  const openHiddenDays = useRef([]);
+  const hiddenDaySections = useRef([]);
+  const showHiddenDay = (element, thisDayElem, openDay) => {
+    const day = openDay;
+    element.classList.add(styles['show-hidden-day']);
+    thisDayElem.classList.add(styles['day-selected']);
+    day.innerHTML = '&lt;';
   };
+
+  const smoothScrollIntoView = (element) => {
+    element.scrollIntoView({
+      behavior: 'smooth',
+      block: 'nearest',
+      inline: 'nearest',
+    });
+  };
+
+  const hideHiddenDay = useCallback(
+    function hideHiddenDay(element) {
+      element.classList.remove(styles['show-hidden-day']);
+      previousState.dayElem.classList.remove(styles['day-selected']);
+      previousState.hiddenDay.innerHTML = '&gt;';
+    },
+    [previousState.dayElem, previousState.hiddenDay],
+  );
+
+  const handleClick = useCallback(
+    function handleClick(e, i) {
+      const hiddenId = hiddenDaySections.current[i];
+      const thisDayElem = e.target.closest('section');
+      const openDay = openHiddenDays.current[i];
+      if (hiddenId === previousState.dayId) {
+        if (hiddenId.classList.contains(styles['show-hidden-day'])) {
+          hideHiddenDay(hiddenId);
+        } else {
+          showHiddenDay(hiddenId, thisDayElem, openDay);
+        }
+      } else {
+        showHiddenDay(hiddenId, thisDayElem, openDay);
+        if (previousState.dayId !== null) {
+          hideHiddenDay(previousState.dayId);
+        }
+      }
+
+      smoothScrollIntoView(thisDayElem);
+      smoothScrollIntoView(hiddenId);
+
+      setPreviousState((prevState) => ({
+        ...prevState,
+        dayId: hiddenId,
+        dayElem: thisDayElem,
+        hiddenDay: openDay,
+      }));
+    },
+    [hideHiddenDay, previousState.dayId],
+  );
+
+  const days = useMemo(() => {
+    return data.map((dayData, index) => (
+      <Day
+        key={dayData.dt}
+        dayData={dayData}
+        timezone={timezone}
+        onClick={handleClick}
+        index={index}
+        openHiddenDays={openHiddenDays}
+        hiddenDaySections={hiddenDaySections}
+      />
+    ));
+  }, [data, handleClick, timezone]);
 
   return (
     <section className={styles.daily}>
@@ -156,9 +189,13 @@ function Daily({ data, timezone = 'Europe/London' }) {
         <h1>Week Outlook</h1>
       </header>
 
-      <div className={styles.dayBar}>{getDay(data)}</div>
+      <div className={styles.dayBar}>{days}</div>
     </section>
   );
-}
+});
+
+Daily.propTypes = DailyPropTypes;
+Day.propTypes = DayPropTypes;
+HiddenDay.propTypes = HiddenDayPropTypes;
 
 export default Daily;

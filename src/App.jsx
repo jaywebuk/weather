@@ -19,7 +19,7 @@ function App() {
   };
 
   const handleSubmit = (e) => {
-    setData(null);
+    // setData(null);
     setLoading('visible');
 
     e.preventDefault();
