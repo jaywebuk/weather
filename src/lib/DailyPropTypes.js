@@ -17,6 +17,7 @@ const DayPropTypes = {
     moonset: PropTypes.number.isRequired,
     pop: PropTypes.number.isRequired,
     pressure: PropTypes.number.isRequired,
+    rain: PropTypes.number,
     sunrise: PropTypes.number.isRequired,
     sunset: PropTypes.number.isRequired,
     temp: PropTypes.shape({

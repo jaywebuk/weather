@@ -8,7 +8,6 @@ import Hourly from './Hourly';
 import Daily from './Daily';
 
 function ShowWeather({ data, loadingRef }) {
-  ShowWeather.propTypes = ShowWeatherPropTypes;
   const loading = loadingRef;
   const [weatherData, setWeatherData] = useState();
   const [refreshData, setRefreshData] = useState(false);
@@ -88,7 +87,12 @@ function ShowWeather({ data, loadingRef }) {
           weatherAlerts={weatherAlerts}
         />
         {weatherAlerts && <Alerts data={weatherData.alerts} timezone={weatherData.timezone} />}
-        <Hourly data={weatherData.hourly} timezone={weatherData.timezone} />
+        <Hourly
+          data={weatherData.hourly}
+          currentTime={weatherData.current.dt}
+          timezone={weatherData.timezone}
+          timezoneOffset={weatherData.timezone_offset}
+        />
         <Daily
           data={weatherData.daily}
           timezone={weatherData.timezone}
@@ -99,5 +103,7 @@ function ShowWeather({ data, loadingRef }) {
     )
   );
 }
+
+ShowWeather.propTypes = ShowWeatherPropTypes;
 
 export default ShowWeather;

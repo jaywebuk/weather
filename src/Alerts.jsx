@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
-// import PropTypes from 'prop-types';
-import AlertsPropTypes from './lib/AlertsPropTypes';
+import { AlertsPropTypes, AlertPropTypes } from './lib/AlertsPropTypes';
 import styles from './styles/Alerts.module.css';
 import { getAlertDate } from './lib/functions';
 
@@ -18,18 +17,12 @@ const parseDescription = (description) => {
 };
 
 function Alert({ description }) {
-  /* Alert.propTypes = {
-    description: PropTypes.string.isRequired,
-  }; */
-
-  Alert.propTypes = AlertsPropTypes;
+  Alert.propTypes = AlertPropTypes;
 
   return <p>{parseDescription(description)}</p>;
 }
 
 function Alerts({ data, timezone }) {
-  // console.log(data, timezone);
-
   Alerts.propTypes = AlertsPropTypes;
 
   const alertsRef = useRef();

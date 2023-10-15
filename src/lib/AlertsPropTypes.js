@@ -14,4 +14,8 @@ const AlertsPropTypes = {
   timezone: PropTypes.string,
 };
 
-export default AlertsPropTypes;
+const AlertPropTypes = {
+  description: PropTypes.string,
+};
+
+export { AlertsPropTypes, AlertPropTypes };

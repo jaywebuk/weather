@@ -134,6 +134,14 @@ const getShortTime = (date, timezone) => {
   }).format(newDate);
 };
 
+const getDay = (date, timezone) => {
+  const newDate = new Date(date * 1000);
+  return new Intl.DateTimeFormat('en-GB', {
+    weekday: 'short',
+    timeZone: timezone,
+  }).format(newDate);
+};
+
 const getUTime = () => {
   const date = new Date();
   return date.toLocaleTimeString('en-GB');
@@ -150,4 +158,5 @@ export {
   getShortDate,
   getShortTime,
   getAlertDate,
+  getDay,
 };

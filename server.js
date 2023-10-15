@@ -9,7 +9,7 @@ const axios = require('axios');
 const app = express();
 const cors = require('cors');
 
-let requestCount = 1;
+let requestCount = 0;
 
 app.use(cors());
 
@@ -67,7 +67,7 @@ app.get('/weather/location', (req, res) => {
     method: 'GET',
     url: `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=imperial&appid=${API_KEY}`,
   };
-  requestCount += 1;
+  // requestCount += 1;
 
   axios
     .request(options)
@@ -75,7 +75,7 @@ app.get('/weather/location', (req, res) => {
       // console.log(response.data);
       const responseData = response.data;
       console.log(`Weather data received at ${Date()}`);
-      console.log(`Requests made since server up: ${requestCount}`);
+      console.log(`Onecall requests made since server up: ${requestCount}`);
       res.json(responseData);
     })
     .catch((error) => {

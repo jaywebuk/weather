@@ -1,14 +1,36 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useRef, useCallback, useMemo, memo } from 'react';
 import { HourlyPropTypes, HourPropTypes, HiddenHourPropTypes } from './lib/HourlyPropTypes';
-import { convertTemp, toUpper, getTime, getCardinals, getWind } from './lib/functions';
+import {
+  convertTemp,
+  toUpper,
+  getTime,
+  getShortTime,
+  getCardinals,
+  getWind,
+  getDay,
+} from './lib/functions';
 import styles from './styles/Hourly.module.css';
 import wind from './images/wind.png';
 
-function Hour({ hourData, timezone, onClick, index, openHiddenHours, hiddenHourSections }) {
-  const currentTime = getTime(hourData.dt, timezone);
+function Hour({
+  hourData,
+  timezone,
+  onClick,
+  index,
+  openHiddenHours,
+  hiddenHourSections,
+  currentTime,
+  timezoneOffset,
+}) {
+  const todayTime = getTime(hourData.dt, timezone);
+  const currentShortTime = getShortTime(hourData.dt, timezone);
   const weatherIcon = `http://openweathermap.org/img/wn/${hourData.weather[0].icon}.png`;
   const weatherDescription = toUpper(hourData.weather[0].description);
   const ohh = openHiddenHours;
+
+  const today = getDay(currentTime, timezone);
+  const day = getDay(hourData.dt, timezone);
 
   return (
     <div className={styles.hourDiv}>
@@ -21,7 +43,12 @@ function Hour({ hourData, timezone, onClick, index, openHiddenHours, hiddenHourS
         tabIndex={index}
         title="Click to Expand / Close"
       >
-        <p>{currentTime}</p>
+        {/* <p>{today}</p> */}
+        {/* <p>{day}</p> */}
+        {today === day && <p>{currentShortTime}</p>}
+        {today !== day && <p>{todayTime}</p>}
+        {/* <p>{today.getDate()}</p>
+        <p>{day.getDate()}</p> */}
         <img src={weatherIcon} alt={weatherDescription} title={weatherDescription} />
         <div className={styles.wind}>
           <img
@@ -95,7 +122,7 @@ const HiddenHour = memo(function HiddenHour({
   );
 });
 
-function Hourly({ data, timezone = 'Europe/London' }) {
+function Hourly({ data, currentTime, timezone = 'Europe/London', timezoneOffset }) {
   const [previousState, setPreviousState] = useState({
     hourId: null,
     hourElem: null,
@@ -170,6 +197,8 @@ function Hourly({ data, timezone = 'Europe/London' }) {
         index={index}
         openHiddenHours={openHiddenHours}
         hiddenHourSections={hiddenHourSections}
+        currentTime={currentTime}
+        timezoneOffset={timezoneOffset}
       />
     ));
   }, [data, handleClick, timezone]);

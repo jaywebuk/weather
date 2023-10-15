@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
-// import PropTypes from 'prop-types';
+// eslint-disable-next-line no-unused-vars
+import PropTypes from 'prop-types';
 import CurrentWeatherPropTypes from './lib/CurrentWeatherPropTypes';
 import styles from './styles/CurrentWeather.module.css';
 import {
@@ -24,10 +25,8 @@ function CurrentWeather({
   loadingRef,
   weatherAlerts,
 }) {
-  CurrentWeather.propTypes = CurrentWeatherPropTypes;
   const loading = loadingRef;
   const refreshButton = useRef();
-
   loading.current.style.visibility = 'hidden';
 
   return (
@@ -117,5 +116,7 @@ function CurrentWeather({
     )
   );
 }
+
+CurrentWeather.propTypes = CurrentWeatherPropTypes;
 
 export default CurrentWeather;
