@@ -28,7 +28,7 @@ function App() {
 
     const options = {
       method: 'GET',
-      url: `http://localhost:5000/weather?location=${location}`,
+      url: `http://192.168.1.81:5000/weather?location=${location}`,
     };
 
     axios

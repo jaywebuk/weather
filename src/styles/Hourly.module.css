@@ -83,7 +83,7 @@ div.wind img {
 
 .hidden {
     display: none;
-    min-width: fit-content;
+    width: fit-content;
 }
 
 .hidden p {

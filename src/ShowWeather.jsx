@@ -58,7 +58,7 @@ function ShowWeather({ data, loadingRef }) {
 
     const options = {
       method: 'GET',
-      url: `http://localhost:5000/weather/location?lat=${lat}&lon=${lon}`,
+      url: `http://192.168.1.81:5000/weather/location?lat=${lat}&lon=${lon}`,
     };
     axios
       .request(options)
@@ -72,7 +72,7 @@ function ShowWeather({ data, loadingRef }) {
       .catch((error) => {
         console.error(error);
       });
-    // /eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refreshData]);
 
   return (
@@ -95,6 +95,7 @@ function ShowWeather({ data, loadingRef }) {
         />
         <Daily
           data={weatherData.daily}
+          currentTime={weatherData.current.dt}
           timezone={weatherData.timezone}
           weatherAlerts={weatherData.alerts}
         />

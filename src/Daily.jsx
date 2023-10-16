@@ -20,11 +20,16 @@ const Day = memo(function Day({
   index,
   openHiddenDays,
   hiddenDaySections,
+  currentTime,
 }) {
-  const currentDate = getShortDate(dayData.dt, timezone);
+  const thisDaysDate = getShortDate(dayData.dt, timezone);
   const weatherIcon = `http://openweathermap.org/img/wn/${dayData.weather[0].icon}.png`;
   const weatherDescription = toUpper(dayData.weather[0].description);
   const ohd = openHiddenDays;
+
+  const today = getShortDate(currentTime, timezone);
+  const day = getShortDate(dayData.dt, timezone);
+
   return (
     <div className={styles.dayDiv}>
       <section
@@ -36,7 +41,8 @@ const Day = memo(function Day({
         tabIndex={index}
         title="Click to Expand / Close"
       >
-        <p>{currentDate}</p>
+        {today === day && <p>Today</p>}
+        {today !== day && <p>{thisDaysDate}</p>}
         <img src={weatherIcon} alt="Weather Icon" title={toUpper(weatherDescription)} />
         <div className={styles.wind}>
           <img
@@ -106,7 +112,7 @@ const HiddenDay = memo(function HiddenDay({ hiddenDaySections, dayData, index })
   );
 });
 
-const Daily = memo(function Daily({ data, timezone = 'Europe/London' }) {
+const Daily = memo(function Daily({ data, currentTime, timezone = 'Europe/London' }) {
   const [previousState, setPreviousState] = useState({
     dayId: null,
     dayElem: null,
@@ -179,9 +185,10 @@ const Daily = memo(function Daily({ data, timezone = 'Europe/London' }) {
         index={index}
         openHiddenDays={openHiddenDays}
         hiddenDaySections={hiddenDaySections}
+        currentTime={currentTime}
       />
     ));
-  }, [data, handleClick, timezone]);
+  }, [currentTime, data, handleClick, timezone]);
 
   return (
     <section className={styles.daily}>

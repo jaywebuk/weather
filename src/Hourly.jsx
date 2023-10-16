@@ -43,12 +43,8 @@ function Hour({
         tabIndex={index}
         title="Click to Expand / Close"
       >
-        {/* <p>{today}</p> */}
-        {/* <p>{day}</p> */}
         {today === day && <p>{currentShortTime}</p>}
         {today !== day && <p>{todayTime}</p>}
-        {/* <p>{today.getDate()}</p>
-        <p>{day.getDate()}</p> */}
         <img src={weatherIcon} alt={weatherDescription} title={weatherDescription} />
         <div className={styles.wind}>
           <img
@@ -187,7 +183,7 @@ function Hourly({ data, currentTime, timezone = 'Europe/London', timezoneOffset 
 
   const hours = useMemo(() => {
     // eslint-disable-next-line no-param-reassign
-    data.length = 24;
+    // data.length = 24;
     return data.map((hourData, index) => (
       <Hour
         key={hourData.dt}
@@ -201,12 +197,12 @@ function Hourly({ data, currentTime, timezone = 'Europe/London', timezoneOffset 
         timezoneOffset={timezoneOffset}
       />
     ));
-  }, [data, handleClick, timezone]);
+  }, [currentTime, data, handleClick, timezone, timezoneOffset]);
 
   return (
     <section className={styles.hourly}>
       <header>
-        <h1>Next 24 Hours</h1>
+        <h1>Next 48 Hours</h1>
       </header>
 
       <div className={styles.hourBar}>{hours}</div>
