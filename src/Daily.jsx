@@ -101,7 +101,7 @@ const HiddenDay = memo(function HiddenDay({ hiddenDaySections, dayData, index })
     >
       <p>{toUpper(dayData.weather[0].description)}</p>
       <p className={styles.wind}>
-        {toUpper(getWind(dayData.wind_speed))} from the {getCardinals(dayData.wind_deg)}
+        {toUpper(getWind(Math.round(dayData.wind_speed)))} from the {getCardinals(dayData.wind_deg)}
       </p>
       <p>Pressure: {dayData.pressure} mb</p>
       <p>Chance of Precipitation: {Math.round(dayData.pop * 100)}%</p>
