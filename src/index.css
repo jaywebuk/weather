@@ -9,7 +9,6 @@ html,
 body {
   width: 100%;
   height: 100%;
-  /* max-width: 100vw; */
   background-color: rgb(230, 240, 250);
   font-family: "Roboto", sans-serif;
   margin: 0;
@@ -17,30 +16,16 @@ body {
 }
 
 #root {
-  /* overflow: hidden; */
   height: 100%;
-  /* width: 100vw; */
-  /* max-height: 100vh; */
-  /* width: 1300px;
-    w100%    */
-  /* max-width: 100vw; */
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
-  /* margin: 0;
-    padding: 0; */
 }
 
 .App {
   text-align: center;
   height: 100%;
-  /* width: 100%; */
   display: grid;
   grid-template-rows: 1fr 55px;
-  /* align-content: center; */
-  /* justify-content: center; */
-  /* justify-items: center; */
-  /* margin: 0 auto; */
 }
 
 input,
@@ -69,7 +54,6 @@ select {
 }
 .wrapper {
   grid-row: 1/2;
-  /* height: 100%; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -79,7 +63,6 @@ form {
   position: relative;
   display: flex;
   flex-direction: column;
-  /* width: 250px; */
 }
 
 .footer {
@@ -94,14 +77,6 @@ form {
     }
   }
 }
-
-/* .footer p {
-    margin: 5px;
-}
-
-p.provider {
-    font-size: 0.9rem;
-} */
 
 .multipleForm {
   width: auto;

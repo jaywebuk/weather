@@ -6,18 +6,15 @@ h1 {
 }
 div.currentWeather {
   margin: 0;
-  /* padding: 0; */
   margin-top: 20px;
   display: flex;
   flex-direction: column;
   padding: 5px;
   min-width: 320px;
   max-width: 420px;
-  /* min-width: 360px; */
   justify-content: center;
   border: solid thin #333;
   background-color: #c4e7ff;
-  /* user-select: none; */
 
   & p {
     text-align: center;
@@ -30,16 +27,6 @@ div.currentWeather {
   }
 }
 
-/* .currentWeather p {
-    text-align: center;
-    margin: 5px;
-} */
-
-/* p.description {
-    font-weight: 500;
-    font-size: 1.1rem;
-} */
-
 .currentDate {
   font-size: 1.1rem;
   font-weight: 500;
@@ -50,29 +37,23 @@ div.currentWeather {
   font-size: 0.9rem;
   margin: 0;
   padding: 0;
-  /* color: red; */
   text-align: center;
 }
 
 .topInfo {
   min-height: 30px;
-  /* outline: solid thin red; */
   display: flex;
   justify-content: space-between;
   align-items: center;
 
   & img {
     width: 35px;
-    /* margin: 5px; */
   }
 
   & button {
     border: solid thin #333;
-    /* background-color: #a7dcff; */
     padding: 4px;
-    /* line-height: 1; */
     display: flex;
-    /* box-shadow: 1px 1px 1px 0px rgba(0, 0, 0, 0.75); */
   }
 }
 
@@ -80,11 +61,6 @@ div.currentWeather {
   margin: 0;
   padding: 0;
 }
-
-/* .topInfo img {
-    width: 35px;
-    /* margin: 5px; *
-} */
 
 img.refresh  {
   width: 20px;
@@ -111,16 +87,10 @@ div.wind img {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* width: 100px; */
-  /* outline: solid thin red; */
 }
 
 p.gust {
   font-size: 0.9rem;
-}
-
-img.warning {
-  /* visibility: hidden; */
 }
 
 .tempDetails p span.feelsLike {

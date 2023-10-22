@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useState, useRef, useCallback, useMemo, memo } from 'react';
 import { HourlyPropTypes, HourPropTypes, HiddenHourPropTypes } from './lib/HourlyPropTypes';
 import {
@@ -21,7 +20,6 @@ function Hour({
   openHiddenHours,
   hiddenHourSections,
   currentTime,
-  timezoneOffset,
 }) {
   const todayTime = getTime(hourData.dt, timezone);
   const currentShortTime = getShortTime(hourData.dt, timezone);
@@ -182,8 +180,6 @@ function Hourly({ data, currentTime, timezone = 'Europe/London', timezoneOffset 
   );
 
   const hours = useMemo(() => {
-    // eslint-disable-next-line no-param-reassign
-    // data.length = 24;
     return data.map((hourData, index) => (
       <Hour
         key={hourData.dt}

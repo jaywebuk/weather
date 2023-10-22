@@ -2,8 +2,6 @@ import React from 'react';
 import MultipleResultsPropTypes from './lib/MultipleResultsPropTypes';
 
 function MultipleResults({ data, setData, loadingRef }) {
-  // console.log(data, setData, loadingRef);
-
   MultipleResults.propTypes = MultipleResultsPropTypes;
   const loading = loadingRef;
 

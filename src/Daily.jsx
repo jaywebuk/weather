@@ -107,7 +107,7 @@ const HiddenDay = memo(function HiddenDay({ hiddenDaySections, dayData, index })
       <p>Chance of Precipitation: {Math.round(dayData.pop * 100)}%</p>
       <p>
         Sunrise: {getShortTime(dayData.sunrise)} Sunset: {getShortTime(dayData.sunset)}
-      </p>{' '}
+      </p>
     </section>
   );
 });

@@ -30,22 +30,6 @@ section.alerts {
     width: 430px;
 }
 
-/* section.alerts header {
-    user-select: none;
-    cursor: pointer;
-    position: relative;
-} */
-
-/* .alerts header span {
-    margin-left: 5px;
-    font-size: 1.4rem;
-    font-weight: normal;
-} */
-
-/* .alerts h1 {
-    font-size: 1.2rem;
-} */
-
 .alert:not(:last-child) {
     border-bottom: dashed thin #333;
 }
@@ -54,21 +38,11 @@ section.alerts {
     display: none;
     text-align: justify;
     margin-inline: 10px;
-    /* margin-inline: 5px; */
 
     & p.title {
         text-align: center;
     }
 }
-
-/* header.alertsHeader p {
-    line-height: 1;
-    position: absolute;
-    top: 0;
-    margin: 0;
-    color: #456;
-    font-size: 1.6rem;
-} */
 
 header p.alertArrow {
     right: 5px;

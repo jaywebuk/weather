@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import ShowWeatherPropTypes from './lib/ShowWeatherPropTypes';
@@ -14,7 +13,6 @@ function ShowWeather({ data, loadingRef }) {
   const [weatherAlerts, setWeatherAlerts] = useState(false);
   const [consoleCount, setConsoleCount] = useState(1);
   const [fetchCount, setFetchCount] = useState(0);
-  // const refButt = useRef(null);
   const handleRefresh = (refreshButton) => {
     const refButt = refreshButton;
     setFetchCount(0);
@@ -44,11 +42,6 @@ function ShowWeather({ data, loadingRef }) {
     // eslint-disable-next-line consistent-return
     return () => clearTimeout(timeoutId);
   };
-
-  /* useEffect(() => {
-    return handleRefresh();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); */
 
   useEffect(() => {
     setFetchCount((prevCount) => prevCount + 1);

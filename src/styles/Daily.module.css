@@ -97,7 +97,6 @@ div.wind img {
 .hidden {
     display: none;
     width: fit-content;
-    /* min-width: fit-content; */
     overflow: auto;
 }
 
