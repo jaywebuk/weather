@@ -57,7 +57,7 @@ function Hour({
         </div>
         <p>
           {convertTemp(hourData.temp)}
-          &deg;C /{Math.round(hourData.temp)}
+          &deg;C / {Math.round(hourData.temp)}
           &deg;F
         </p>
         <p
@@ -101,17 +101,11 @@ const HiddenHour = memo(function HiddenHour({
       </p>
       <p>
         Feels Like: {convertTemp(hourData.feels_like)}
-        &deg;C /{Math.round(hourData.feels_like)}
+        &deg;C / {Math.round(hourData.feels_like)}
         &deg;F
       </p>
-      <p>
-        Pressure:
-        {hourData.pressure} mb
-      </p>
-      <p>
-        Chance of Precipitation:
-        {Math.round(hourData.pop * 100)}%
-      </p>
+      <p>Pressure: {hourData.pressure} mb</p>
+      <p>Chance of Precipitation: {Math.round(hourData.pop * 100)}%</p>
     </section>
   );
 });

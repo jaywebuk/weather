@@ -57,7 +57,7 @@ function CurrentWeather({
           {cityData.name}, {cityData.state} ({cityData.country})
         </h1>
         <p className={styles.coords}>
-          {cityData.lat.toFixed(6)},{cityData.lon.toFixed(6)}
+          {cityData.lat.toFixed(6)}, {cityData.lon.toFixed(6)}
         </p>
         <p className={styles.description}>
           {toUpper(currentWeather.weather[0].description)} with&nbsp;
@@ -80,7 +80,7 @@ function CurrentWeather({
           </div>
           <p>
             {convertTemp(currentWeather.temp)}
-            &deg;C /{Math.round(currentWeather.temp)}
+            &deg;C / {Math.round(currentWeather.temp)}
             &deg;F
             <br />
             <span className="feelsLike" style={{ fontSize: '0.8rem' }}>

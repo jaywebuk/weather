@@ -25,11 +25,11 @@ app.get('/weather', (req, res) => {
   }
   const { location } = req.query;
 
-  const data = require('./city.json');
+  /* const data = require('./city.json');
   res.json(data);
-  // console.log(data);
+  // console.log(data); */
 
-  /* const options = {
+  const options = {
     method: 'GET',
     url: `http://api.openweathermap.org/geo/1.0/direct?q=${location}&limit=10&appid=${API_KEY}`,
   };
@@ -43,7 +43,7 @@ app.get('/weather', (req, res) => {
     })
     .catch((error) => {
       console.error(error);
-    }); */
+    });
 });
 
 app.get('/weather/location', (req, res) => {
@@ -56,17 +56,16 @@ app.get('/weather/location', (req, res) => {
   // console.log(lat, lon);
 
   requestCount += 1;
-  const data = require('./weather.json');
+  /* const data = require('./weather.json');
   res.json(data);
   // console.log(data);
   console.log(`Weather data received at ${Date()}`);
-  console.log(`Requests made since server up: ${requestCount}`);
+  console.log(`Requests made since server up: ${requestCount}`); */
 
-  /* const options = {
+  const options = {
     method: 'GET',
     url: `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=imperial&appid=${API_KEY}`,
   };
-  // requestCount += 1;
 
   axios
     .request(options)
@@ -79,5 +78,5 @@ app.get('/weather/location', (req, res) => {
     })
     .catch((error) => {
       console.error(error);
-    }); */
+    });
 });
