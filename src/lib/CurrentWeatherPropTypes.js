@@ -25,7 +25,6 @@ const CurrentWeatherPropTypes = {
     ),
   }).isRequired,
   handleRefresh: PropTypes.func.isRequired,
-  loadingRef: PropTypes.object.isRequired,
   weatherAlerts: PropTypes.bool.isRequired,
 };
 

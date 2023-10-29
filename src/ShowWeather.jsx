@@ -6,13 +6,15 @@ import Alerts from './Alerts';
 import Hourly from './Hourly';
 import Daily from './Daily';
 
-function ShowWeather({ data, loadingRef }) {
-  const loading = loadingRef;
+function ShowWeather({ data, setLoading }) {
   const [weatherData, setWeatherData] = useState();
   const [refreshData, setRefreshData] = useState(false);
   const [weatherAlerts, setWeatherAlerts] = useState(false);
   const [consoleCount, setConsoleCount] = useState(1);
   const [fetchCount, setFetchCount] = useState(0);
+  const [longLoading, setLongLoading] = useState(false);
+  const [abortFetch, setAbortFetch] = useState(false);
+
   const handleRefresh = (refreshButton) => {
     const refButt = refreshButton;
     setFetchCount(0);
@@ -43,15 +45,27 @@ function ShowWeather({ data, loadingRef }) {
     return () => clearTimeout(timeoutId);
   };
 
+  function newAbortSignal(timeoutMs) {
+    const abortController = new AbortController();
+    setTimeout(() => abortController.abort(), timeoutMs || 0);
+
+    return abortController.signal;
+  }
+
   useEffect(() => {
     setFetchCount((prevCount) => prevCount + 1);
     if (fetchCount >= 1) return;
-    loading.current.style.visibility = 'visible';
+    setLoading('visible');
     const { lat, lon } = data;
+
+    const timeoutId = setTimeout(() => {
+      setLongLoading(true);
+    }, 10000);
 
     const options = {
       method: 'GET',
       url: `http://192.168.1.81:5000/weather/location?lat=${lat}&lon=${lon}`,
+      signal: newAbortSignal(30000),
     };
     axios
       .request(options)
@@ -61,40 +75,66 @@ function ShowWeather({ data, loadingRef }) {
 
         setWeatherData(() => response.data);
         setWeatherAlerts(response.data.alerts !== undefined);
+        clearTimeout(timeoutId);
+        setLongLoading(false);
+        setLoading('hidden');
       })
       .catch((error) => {
         console.error(error);
+        setLongLoading(false);
+        clearTimeout(timeoutId);
+        setAbortFetch(true);
+        setLoading('hidden');
       });
+
+    // eslint-disable-next-line consistent-return
+    return () => {
+      clearTimeout(timeoutId);
+      setLongLoading(false);
+      setAbortFetch(false);
+      setLoading('hidden');
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refreshData]);
 
   return (
-    weatherData && (
-      <>
-        <CurrentWeather
-          currentWeather={weatherData.current}
-          timezone={weatherData.timezone}
-          cityData={data}
-          handleRefresh={handleRefresh}
-          loadingRef={loadingRef}
-          weatherAlerts={weatherAlerts}
-        />
-        {weatherAlerts && <Alerts data={weatherData.alerts} timezone={weatherData.timezone} />}
-        <Hourly
-          data={weatherData.hourly}
-          currentTime={weatherData.current.dt}
-          timezone={weatherData.timezone}
-          timezoneOffset={weatherData.timezone_offset}
-        />
-        <Daily
-          data={weatherData.daily}
-          currentTime={weatherData.current.dt}
-          timezone={weatherData.timezone}
-          weatherAlerts={weatherData.alerts}
-        />
-        {/* {console.log(weatherData.daily)} */}
-      </>
-    )
+    <>
+      {longLoading && (
+        <div>
+          <p>This is taking longer than usual. Please wait...</p>
+        </div>
+      )}
+      {abortFetch && (
+        <div>
+          <p>Request took too long or there was a connection error. Please try again.</p>
+        </div>
+      )}
+      {weatherData && (
+        <>
+          <CurrentWeather
+            currentWeather={weatherData.current}
+            timezone={weatherData.timezone}
+            cityData={data}
+            handleRefresh={handleRefresh}
+            weatherAlerts={weatherAlerts}
+          />
+          {weatherAlerts && <Alerts data={weatherData.alerts} timezone={weatherData.timezone} />}
+          <Hourly
+            data={weatherData.hourly}
+            currentTime={weatherData.current.dt}
+            timezone={weatherData.timezone}
+            timezoneOffset={weatherData.timezone_offset}
+          />
+          <Daily
+            data={weatherData.daily}
+            currentTime={weatherData.current.dt}
+            timezone={weatherData.timezone}
+            weatherAlerts={weatherData.alerts}
+          />
+          {/* {console.log(weatherData.daily)} */}
+        </>
+      )}
+    </>
   );
 }
 

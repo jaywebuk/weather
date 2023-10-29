@@ -17,17 +17,9 @@ import wind from './images/wind.png';
 import sunrise from './images/sunrise.png';
 import sunset from './images/sunset.png';
 
-function CurrentWeather({
-  currentWeather,
-  timezone,
-  cityData,
-  handleRefresh,
-  loadingRef,
-  weatherAlerts,
-}) {
-  const loading = loadingRef;
+function CurrentWeather({ currentWeather, timezone, cityData, handleRefresh, weatherAlerts }) {
   const refreshButton = useRef();
-  loading.current.style.visibility = 'hidden';
+  // loading.current.style.visibility = 'hidden';
 
   return (
     currentWeather && (

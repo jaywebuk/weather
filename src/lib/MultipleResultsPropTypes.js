@@ -10,7 +10,6 @@ const MultipleResultsPropTypes = {
     }).isRequired,
   ).isRequired,
   setData: PropTypes.func.isRequired,
-  loadingRef: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default MultipleResultsPropTypes;

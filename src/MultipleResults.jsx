@@ -1,9 +1,8 @@
 import React from 'react';
 import MultipleResultsPropTypes from './lib/MultipleResultsPropTypes';
 
-function MultipleResults({ data, setData, loadingRef }) {
+function MultipleResults({ data, setData, setLoading }) {
   MultipleResults.propTypes = MultipleResultsPropTypes;
-  const loading = loadingRef;
 
   function handleChange(thisData) {
     const { selectedIndex } = thisData.target.options;
@@ -20,7 +19,7 @@ function MultipleResults({ data, setData, loadingRef }) {
   }
 
   const extractData = () => {
-    loading.current.style.visibility = 'hidden';
+    setLoading('hidden');
     let id = 0;
     return data.map((city) => {
       id += 1;
