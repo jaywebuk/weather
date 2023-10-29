@@ -2,7 +2,6 @@
 /* eslint-disable no-unused-vars */
 const PORT = 5000;
 const express = require('express');
-const throttle = require('express-throttle');
 require('dotenv').config();
 const axios = require('axios');
 
@@ -12,7 +11,6 @@ const cors = require('cors');
 let requestCount = 0;
 
 app.use(cors());
-// app.use(throttle(10));
 
 app.listen(5000, () => console.log(`Server is running on port ${PORT}`));
 
