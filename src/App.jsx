@@ -30,9 +30,9 @@ function App() {
 
   const handleSubmit = (e) => {
     setData(null);
-    setLoading('visible');
     setLongLoading(false);
     setAbortFetch(false);
+    setLoading('visible');
 
     e.preventDefault();
 
