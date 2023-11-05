@@ -1,3 +1,5 @@
+// import { useCallback } from 'react';
+
 const convertTemp = (temp) => {
   const tempConvert = Math.round((temp - 32) * (5 / 9));
   return Object.is(tempConvert, -0) ? 0 : tempConvert;
@@ -147,6 +149,14 @@ const getUTime = () => {
   return date.toLocaleTimeString('en-GB');
 };
 
+const smoothScrollIntoView = (element) => {
+  element.scrollIntoView({
+    behavior: 'smooth',
+    block: 'nearest',
+    inline: 'nearest',
+  });
+};
+
 export {
   convertTemp,
   getCardinals,
@@ -159,4 +169,5 @@ export {
   getShortTime,
   getAlertDate,
   getDay,
+  smoothScrollIntoView,
 };

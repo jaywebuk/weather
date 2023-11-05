@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo, useCallback, memo } from 'react';
+import React, { useState, useRef, useCallback, memo, useMemo } from 'react';
 import { DailyPropTypes, DayPropTypes, HiddenDayPropTypes } from './lib/DailyPropTypes';
 import styles from './styles/Daily.module.css';
 import {
@@ -8,6 +8,7 @@ import {
   getCardinals,
   getWind,
   getShortTime,
+  smoothScrollIntoView,
 } from './lib/functions';
 import wind from './images/wind.png';
 import sun from './images/sun.png';
@@ -112,7 +113,7 @@ const HiddenDay = memo(function HiddenDay({ hiddenDaySections, dayData, index })
   );
 });
 
-const Daily = memo(function Daily({ data, currentTime, timezone = 'Europe/London' }) {
+function Daily({ data, currentTime, timezone = 'Europe/London' }) {
   const [previousState, setPreviousState] = useState({
     dayId: null,
     dayElem: null,
@@ -125,14 +126,6 @@ const Daily = memo(function Daily({ data, currentTime, timezone = 'Europe/London
     element.classList.add(styles['show-hidden-day']);
     thisDayElem.classList.add(styles['day-selected']);
     day.innerHTML = '&lt;';
-  };
-
-  const smoothScrollIntoView = (element) => {
-    element.scrollIntoView({
-      behavior: 'smooth',
-      block: 'nearest',
-      inline: 'nearest',
-    });
   };
 
   const hideHiddenDay = useCallback(
@@ -199,7 +192,7 @@ const Daily = memo(function Daily({ data, currentTime, timezone = 'Europe/London
       <div className={styles.dayBar}>{days}</div>
     </section>
   );
-});
+}
 
 Daily.propTypes = DailyPropTypes;
 Day.propTypes = DayPropTypes;

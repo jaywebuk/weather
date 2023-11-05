@@ -1,5 +1,6 @@
-import React, { useState, useRef, useCallback, useMemo, memo } from 'react';
+import React, { useState, useRef, useCallback, memo, useMemo } from 'react';
 import { HourlyPropTypes, HourPropTypes, HiddenHourPropTypes } from './lib/HourlyPropTypes';
+import styles from './styles/Hourly.module.css';
 import {
   convertTemp,
   toUpper,
@@ -8,11 +9,11 @@ import {
   getCardinals,
   getWind,
   getDay,
+  smoothScrollIntoView,
 } from './lib/functions';
-import styles from './styles/Hourly.module.css';
 import wind from './images/wind.png';
 
-function Hour({
+const Hour = memo(function Hour({
   hourData,
   timezone,
   onClick,
@@ -40,6 +41,7 @@ function Hour({
         role="button alert"
         tabIndex={index}
         title="Click to Expand / Close"
+        key={currentShortTime}
       >
         {today === day && <p>{currentShortTime}</p>}
         {today !== day && <p>{todayTime}</p>}
@@ -78,7 +80,7 @@ function Hour({
       />
     </div>
   );
-}
+});
 
 const HiddenHour = memo(function HiddenHour({
   hiddenHourSections,
@@ -110,7 +112,7 @@ const HiddenHour = memo(function HiddenHour({
   );
 });
 
-function Hourly({ data, currentTime, timezone = 'Europe/London', timezoneOffset }) {
+function Hourly({ data, currentTime, timezone = 'Europe/London' }) {
   const [previousState, setPreviousState] = useState({
     hourId: null,
     hourElem: null,
@@ -123,14 +125,6 @@ function Hourly({ data, currentTime, timezone = 'Europe/London', timezoneOffset 
     element.classList.add(styles['show-hidden-hour']);
     thisHourElem.classList.add(styles['hour-selected']);
     hour.innerHTML = '&lt;';
-  };
-
-  const smoothScrollIntoView = (element) => {
-    element.scrollIntoView({
-      behavior: 'smooth',
-      block: 'nearest',
-      inline: 'nearest',
-    });
   };
 
   const hideHiddenHour = useCallback(
@@ -184,10 +178,9 @@ function Hourly({ data, currentTime, timezone = 'Europe/London', timezoneOffset 
         openHiddenHours={openHiddenHours}
         hiddenHourSections={hiddenHourSections}
         currentTime={currentTime}
-        timezoneOffset={timezoneOffset}
       />
     ));
-  }, [currentTime, data, handleClick, timezone, timezoneOffset]);
+  }, [currentTime, data, handleClick, timezone]);
 
   return (
     <section className={styles.hourly}>
