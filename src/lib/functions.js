@@ -1,5 +1,3 @@
-// import { useCallback } from 'react';
-
 const convertTemp = (temp) => {
   const tempConvert = Math.round((temp - 32) * (5 / 9));
   return Object.is(tempConvert, -0) ? 0 : tempConvert;
@@ -32,13 +30,11 @@ function getCardinals(deg) {
     const key = keys[i];
     const [min, max] = cardinals[key];
     if (deg >= min && deg <= max) {
-      // console.log(key);
       return key;
     }
   }
 
-  //   console.log('degrees');
-  return 'degrees'; // Return 'wind' if no match is found.
+  return 'degrees'; // Return 'degrees' if no match is found.
 }
 
 function getWind(windSpeed) {
@@ -65,12 +61,9 @@ function getWind(windSpeed) {
     const key = keys[i];
     const [min, max] = windDesc[key];
     if (windSpeed >= min && windSpeed <= max) {
-      // console.log(key);
       return key;
     }
   }
-
-  //   console.log('wind');
   return 'wind'; // Return 'wind' if no match is found.
 }
 
