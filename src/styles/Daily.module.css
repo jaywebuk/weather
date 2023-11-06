@@ -108,6 +108,8 @@ div.wind img {
 .day-selected,
 .hidden {
     background-color: #b7fffb;
+    height: 100%;
+    cursor: pointer;
 }
 
 .show-hidden-day {
@@ -117,4 +119,6 @@ div.wind img {
 .dayDiv {
     display: flex;
     min-width: fit-content;
+    border: none;
+    padding: 0;
 }

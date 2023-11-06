@@ -32,19 +32,19 @@ const Hour = memo(function Hour({
   const day = getDay(hourData.dt, timezone);
 
   return (
-    <div className={styles.hourDiv}>
+    <button className={styles.hourDiv} type="button" onClick={(e) => onClick(e, index)}>
       <section
         className={styles.hour}
-        onClick={(e) => onClick(e, index)}
-        onKeyDown={() => null}
+        role="alert"
         data-hidden={index}
-        role="button alert"
         tabIndex={index}
         title="Click to Expand / Close"
         key={currentShortTime}
       >
+        {/* We show just the time */}
         {today === day && <p>{currentShortTime}</p>}
-        {today !== day && <p>{todayTime}</p>}
+        {/* We show the day and the time because it is the next day */}
+        {today !== day && <p>{todayTime}</p>}{' '}
         <img src={weatherIcon} alt={weatherDescription} title={weatherDescription} />
         <div className={styles.wind}>
           <img
@@ -78,7 +78,7 @@ const Hour = memo(function Hour({
         index={index}
         weatherDescription={weatherDescription}
       />
-    </div>
+    </button>
   );
 });
 
@@ -120,12 +120,12 @@ function Hourly({ data, currentTime, timezone = 'Europe/London' }) {
   });
   const openHiddenHours = useRef([]);
   const hiddenHourSections = useRef([]);
-  const showHiddenHour = (element, thisHourElem, openHour) => {
+  const showHiddenHour = useCallback(function showHiddenHour(element, thisHourElem, openHour) {
     const hour = openHour;
     element.classList.add(styles['show-hidden-hour']);
     thisHourElem.classList.add(styles['hour-selected']);
     hour.innerHTML = '&lt;';
-  };
+  }, []);
 
   const hideHiddenHour = useCallback(
     function hideHiddenHour(element) {

@@ -32,13 +32,11 @@ const Day = memo(function Day({
   const day = getShortDate(dayData.dt, timezone);
 
   return (
-    <div className={styles.dayDiv}>
+    <button className={styles.dayDiv} type="button" onClick={(e) => onClick(e, index)}>
       <section
         className={styles.day}
-        onClick={(e) => onClick(e, index)}
-        onKeyDown={() => null}
         data-hidden={index}
-        role="button"
+        role="alert"
         tabIndex={index}
         title="Click to Expand / Close"
       >
@@ -87,7 +85,7 @@ const Day = memo(function Day({
         dayData={dayData}
         index={index}
       />
-    </div>
+    </button>
   );
 });
 

@@ -1,6 +1,8 @@
 .hourDiv {
     display: flex;
     min-width: fit-content;
+    border: none;
+    padding: 0;
 }
 
 section.hourly {
@@ -94,6 +96,8 @@ div.wind img {
 .hour-selected,
 .hidden {
     background-color: #b7fffb;
+    height: 100%;
+    cursor: pointer;
 }
 
 .show-hidden-hour {
