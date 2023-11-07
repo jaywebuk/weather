@@ -18,13 +18,6 @@ app.get('/', (req, res) => {
   res.json();
 });
 
-function newAbortSignal(timeoutMs) {
-  const abortController = new AbortController();
-  setTimeout(() => abortController.abort(), timeoutMs || 0);
-
-  return abortController.signal;
-}
-
 app.get('/weather', (req, res) => {
   const json = require('./city.json');
   res.json(json);
