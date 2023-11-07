@@ -41,7 +41,7 @@ const Hour = memo(function Hour({
         title="Click to Expand / Close"
         key={currentShortTime}
       >
-        {/* We show just the time */}
+        {/* If the hour is today's date we show just the time */}
         {today === day && <p>{currentShortTime}</p>}
         {/* We show the day and the time because it is the next day */}
         {today !== day && <p>{todayTime}</p>}{' '}
@@ -164,7 +164,7 @@ function Hourly({ data, currentTime, timezone = 'Europe/London' }) {
         hiddenHour: openHour,
       }));
     },
-    [previousState.hourId, hideHiddenHour],
+    [previousState.hourId, hideHiddenHour, showHiddenHour],
   );
 
   const hours = useMemo(() => {
