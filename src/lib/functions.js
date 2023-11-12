@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const convertTemp = (temp) => {
   const tempConvert = Math.round((temp - 32) * (5 / 9));
   return Object.is(tempConvert, -0) ? 0 : tempConvert;
@@ -150,6 +151,51 @@ const smoothScrollIntoView = (element) => {
   });
 };
 
+// eslint-disable-next-line no-unused-vars
+function showHiddenElement(element, thisElem, openElem, styles) {
+  // console.log(styles);
+  const elem = openElem;
+  element.classList.add(styles['show-hidden-elem']);
+  thisElem.classList.add(styles['elem-selected']);
+  elem.innerHTML = '&lt;';
+}
+
+function hideHiddenElement(element, styles, previousState) {
+  const prevState = previousState;
+  console.log(previousState);
+  element.classList.remove(styles['show-hidden-elem']);
+  prevState.thisElem.classList.remove(styles['elem-selected']);
+  prevState.hiddenElem.innerHTML = '&gt;';
+}
+
+/* function handleClick(e, i) {
+  const hiddenId = hiddenHourSections.current[i];
+  const thisElem = e.target.closest('section');
+  const openHour = openHiddenHours.current[i];
+  if (hiddenId === previousState.hourId) {
+    if (hiddenId.classList.contains(styles['show-hidden-hour'])) {
+      hideHiddenHour(hiddenId);
+    } else {
+      showHiddenHour(hiddenId, thisElem, openHour);
+    }
+  } else {
+    showHiddenHour(hiddenId, thisElem, openHour);
+    if (previousState.hourId !== null) {
+      hideHiddenHour(previousState.hourId);
+    }
+  }
+
+  smoothScrollIntoView(thisElem);
+  smoothScrollIntoView(hiddenId);
+
+  setPreviousState((prevState) => ({
+    ...prevState,
+    hourId: hiddenId,
+    hourElem: thisElem,
+    hiddenHour: openHour,
+  }));
+} */
+
 export {
   convertTemp,
   getCardinals,
@@ -163,4 +209,6 @@ export {
   getAlertDate,
   getDay,
   smoothScrollIntoView,
+  showHiddenElement,
+  hideHiddenElement,
 };

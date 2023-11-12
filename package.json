@@ -16,7 +16,7 @@
   },
   "scripts": {
     "start:frontend": "react-scripts start",
-    "start:backend": "nodemon server.js",
+    "start:backend": "nodemon --env-file=.env server.js",
     "start:backendTest": "nodemon server_test.js",
     "backend": "server.js",
     "build": "react-scripts build",

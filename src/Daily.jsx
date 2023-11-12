@@ -9,6 +9,8 @@ import {
   getWind,
   getShortTime,
   smoothScrollIntoView,
+  hideHiddenElement,
+  showHiddenElement,
 } from './lib/functions';
 import wind from './images/wind.png';
 import sun from './images/sun.png';
@@ -19,14 +21,14 @@ const Day = memo(function Day({
   timezone,
   onClick,
   index,
-  openHiddenDays,
-  hiddenDaySections,
+  openHiddenElem,
+  hiddenElemSections,
   currentTime,
 }) {
   const thisDaysDate = getShortDate(dayData.dt, timezone);
   const weatherIcon = `http://openweathermap.org/img/wn/${dayData.weather[0].icon}.png`;
   const weatherDescription = toUpper(dayData.weather[0].description);
-  const ohd = openHiddenDays;
+  const ohd = openHiddenElem;
 
   const today = getShortDate(currentTime, timezone);
   const day = getShortDate(dayData.dt, timezone);
@@ -81,7 +83,7 @@ const Day = memo(function Day({
       </section>
       <HiddenDay
         key={dayData.dt}
-        hiddenDaySections={hiddenDaySections}
+        hiddenElemSections={hiddenElemSections}
         dayData={dayData}
         index={index}
       />
@@ -89,8 +91,8 @@ const Day = memo(function Day({
   );
 });
 
-const HiddenDay = memo(function HiddenDay({ hiddenDaySections, dayData, index }) {
-  const hds = hiddenDaySections;
+const HiddenDay = memo(function HiddenDay({ hiddenElemSections, dayData, index }) {
+  const hds = hiddenElemSections;
   return (
     <section
       className={styles.hidden}
@@ -113,57 +115,42 @@ const HiddenDay = memo(function HiddenDay({ hiddenDaySections, dayData, index })
 
 function Daily({ data, currentTime, timezone = 'Europe/London' }) {
   const [previousState, setPreviousState] = useState({
-    dayId: null,
-    dayElem: null,
-    hiddenDay: null,
+    thisId: null,
+    thisElem: null,
+    hiddenElem: null,
   });
-  const openHiddenDays = useRef([]);
-  const hiddenDaySections = useRef([]);
-  const showHiddenDay = (element, thisDayElem, openDay) => {
-    const day = openDay;
-    element.classList.add(styles['show-hidden-day']);
-    thisDayElem.classList.add(styles['day-selected']);
-    day.innerHTML = '&lt;';
-  };
-
-  const hideHiddenDay = useCallback(
-    function hideHiddenDay(element) {
-      element.classList.remove(styles['show-hidden-day']);
-      previousState.dayElem.classList.remove(styles['day-selected']);
-      previousState.hiddenDay.innerHTML = '&gt;';
-    },
-    [previousState.dayElem, previousState.hiddenDay],
-  );
+  const openHiddenElem = useRef([]);
+  const hiddenElemSections = useRef([]);
 
   const handleClick = useCallback(
     function handleClick(e, i) {
-      const hiddenId = hiddenDaySections.current[i];
-      const thisDayElem = e.target.closest('section');
-      const openDay = openHiddenDays.current[i];
-      if (hiddenId === previousState.dayId) {
-        if (hiddenId.classList.contains(styles['show-hidden-day'])) {
-          hideHiddenDay(hiddenId);
+      const hiddenId = hiddenElemSections.current[i];
+      const thisElem = e.target.closest('section');
+      const openElem = openHiddenElem.current[i];
+      if (hiddenId === previousState.thisId) {
+        if (hiddenId.classList.contains(styles['show-hidden-elem'])) {
+          hideHiddenElement(hiddenId, styles, previousState);
         } else {
-          showHiddenDay(hiddenId, thisDayElem, openDay);
+          showHiddenElement(hiddenId, thisElem, openElem, styles);
         }
       } else {
-        showHiddenDay(hiddenId, thisDayElem, openDay);
-        if (previousState.dayId !== null) {
-          hideHiddenDay(previousState.dayId);
+        showHiddenElement(hiddenId, thisElem, openElem, styles);
+        if (previousState.thisId !== null) {
+          hideHiddenElement(previousState.thisId, styles, previousState);
         }
       }
 
-      smoothScrollIntoView(thisDayElem);
+      smoothScrollIntoView(thisElem);
       smoothScrollIntoView(hiddenId);
 
       setPreviousState((prevState) => ({
         ...prevState,
-        dayId: hiddenId,
-        dayElem: thisDayElem,
-        hiddenDay: openDay,
+        thisId: hiddenId,
+        thisElem,
+        hiddenElem: openElem,
       }));
     },
-    [hideHiddenDay, previousState.dayId],
+    [previousState],
   );
 
   const days = useMemo(() => {
@@ -174,8 +161,8 @@ function Daily({ data, currentTime, timezone = 'Europe/London' }) {
         timezone={timezone}
         onClick={handleClick}
         index={index}
-        openHiddenDays={openHiddenDays}
-        hiddenDaySections={hiddenDaySections}
+        openHiddenElem={openHiddenElem}
+        hiddenElemSections={hiddenElemSections}
         currentTime={currentTime}
       />
     ));

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useRef, useCallback, memo, useMemo } from 'react';
 import { HourlyPropTypes, HourPropTypes, HiddenHourPropTypes } from './lib/HourlyPropTypes';
 import styles from './styles/Hourly.module.css';
@@ -10,6 +11,8 @@ import {
   getWind,
   getDay,
   smoothScrollIntoView,
+  hideHiddenElement,
+  showHiddenElement,
 } from './lib/functions';
 import wind from './images/wind.png';
 
@@ -18,15 +21,15 @@ const Hour = memo(function Hour({
   timezone,
   onClick,
   index,
-  openHiddenHours,
-  hiddenHourSections,
+  openHiddenElem,
+  hiddenElemSections,
   currentTime,
 }) {
   const todayTime = getTime(hourData.dt, timezone);
   const currentShortTime = getShortTime(hourData.dt, timezone);
   const weatherIcon = `http://openweathermap.org/img/wn/${hourData.weather[0].icon}.png`;
   const weatherDescription = toUpper(hourData.weather[0].description);
-  const ohh = openHiddenHours;
+  const ohh = openHiddenElem;
 
   const today = getDay(currentTime, timezone);
   const day = getDay(hourData.dt, timezone);
@@ -73,7 +76,7 @@ const Hour = memo(function Hour({
       </section>
       <HiddenHour
         key={hourData.dt}
-        hiddenHourSections={hiddenHourSections}
+        hiddenElemSections={hiddenElemSections}
         hourData={hourData}
         index={index}
         weatherDescription={weatherDescription}
@@ -83,12 +86,12 @@ const Hour = memo(function Hour({
 });
 
 const HiddenHour = memo(function HiddenHour({
-  hiddenHourSections,
+  hiddenElemSections,
   hourData,
   index,
   weatherDescription,
 }) {
-  const hhs = hiddenHourSections;
+  const hhs = hiddenElemSections;
   return (
     <section
       className={`${styles.hidden}`}
@@ -114,57 +117,42 @@ const HiddenHour = memo(function HiddenHour({
 
 function Hourly({ data, currentTime, timezone = 'Europe/London' }) {
   const [previousState, setPreviousState] = useState({
-    hourId: null,
-    hourElem: null,
-    hiddenHour: null,
+    thisId: null,
+    thisElem: null,
+    hiddenElem: null,
   });
-  const openHiddenHours = useRef([]);
-  const hiddenHourSections = useRef([]);
-  const showHiddenHour = useCallback(function showHiddenHour(element, thisHourElem, openHour) {
-    const hour = openHour;
-    element.classList.add(styles['show-hidden-hour']);
-    thisHourElem.classList.add(styles['hour-selected']);
-    hour.innerHTML = '&lt;';
-  }, []);
-
-  const hideHiddenHour = useCallback(
-    function hideHiddenHour(element) {
-      element.classList.remove(styles['show-hidden-hour']);
-      previousState.hourElem.classList.remove(styles['hour-selected']);
-      previousState.hiddenHour.innerHTML = '&gt;';
-    },
-    [previousState.hiddenHour, previousState.hourElem],
-  );
+  const openHiddenElem = useRef([]);
+  const hiddenElemSections = useRef([]);
 
   const handleClick = useCallback(
     function handleClick(e, i) {
-      const hiddenId = hiddenHourSections.current[i];
-      const thisHourElem = e.target.closest('section');
-      const openHour = openHiddenHours.current[i];
-      if (hiddenId === previousState.hourId) {
-        if (hiddenId.classList.contains(styles['show-hidden-hour'])) {
-          hideHiddenHour(hiddenId);
+      const hiddenId = hiddenElemSections.current[i];
+      const thisElem = e.target.closest('section');
+      const openElem = openHiddenElem.current[i];
+      if (hiddenId === previousState.thisId) {
+        if (hiddenId.classList.contains(styles['show-hidden-elem'])) {
+          hideHiddenElement(hiddenId, styles, previousState);
         } else {
-          showHiddenHour(hiddenId, thisHourElem, openHour);
+          showHiddenElement(hiddenId, thisElem, openElem, styles);
         }
       } else {
-        showHiddenHour(hiddenId, thisHourElem, openHour);
-        if (previousState.hourId !== null) {
-          hideHiddenHour(previousState.hourId);
+        showHiddenElement(hiddenId, thisElem, openElem, styles);
+        if (previousState.thisId !== null) {
+          hideHiddenElement(previousState.thisId, styles, previousState);
         }
       }
 
-      smoothScrollIntoView(thisHourElem);
+      smoothScrollIntoView(thisElem);
       smoothScrollIntoView(hiddenId);
 
       setPreviousState((prevState) => ({
         ...prevState,
-        hourId: hiddenId,
-        hourElem: thisHourElem,
-        hiddenHour: openHour,
+        thisId: hiddenId,
+        thisElem,
+        hiddenElem: openElem,
       }));
     },
-    [previousState.hourId, hideHiddenHour, showHiddenHour],
+    [previousState],
   );
 
   const hours = useMemo(() => {
@@ -175,8 +163,8 @@ function Hourly({ data, currentTime, timezone = 'Europe/London' }) {
         timezone={timezone}
         onClick={handleClick}
         index={index}
-        openHiddenHours={openHiddenHours}
-        hiddenHourSections={hiddenHourSections}
+        openHiddenElem={openHiddenElem}
+        hiddenElemSections={hiddenElemSections}
         currentTime={currentTime}
       />
     ));
