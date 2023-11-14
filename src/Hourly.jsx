@@ -13,6 +13,7 @@ import {
   smoothScrollIntoView,
   hideHiddenElement,
   showHiddenElement,
+  handleClick,
 } from './lib/functions';
 import wind from './images/wind.png';
 
@@ -21,15 +22,15 @@ const Hour = memo(function Hour({
   timezone,
   onClick,
   index,
-  openHiddenElem,
-  hiddenElemSections,
+  openHiddenHour,
+  hiddenHourSections,
   currentTime,
 }) {
   const todayTime = getTime(hourData.dt, timezone);
   const currentShortTime = getShortTime(hourData.dt, timezone);
   const weatherIcon = `http://openweathermap.org/img/wn/${hourData.weather[0].icon}.png`;
   const weatherDescription = toUpper(hourData.weather[0].description);
-  const ohh = openHiddenElem;
+  const ohh = openHiddenHour;
 
   const today = getDay(currentTime, timezone);
   const day = getDay(hourData.dt, timezone);
@@ -76,7 +77,7 @@ const Hour = memo(function Hour({
       </section>
       <HiddenHour
         key={hourData.dt}
-        hiddenElemSections={hiddenElemSections}
+        hiddenHourSections={hiddenHourSections}
         hourData={hourData}
         index={index}
         weatherDescription={weatherDescription}
@@ -86,12 +87,12 @@ const Hour = memo(function Hour({
 });
 
 const HiddenHour = memo(function HiddenHour({
-  hiddenElemSections,
+  hiddenHourSections,
   hourData,
   index,
   weatherDescription,
 }) {
-  const hhs = hiddenElemSections;
+  const hhs = hiddenHourSections;
   return (
     <section
       className={`${styles.hidden}`}
@@ -116,43 +117,27 @@ const HiddenHour = memo(function HiddenHour({
 });
 
 function Hourly({ data, currentTime, timezone = 'Europe/London' }) {
-  const [previousState, setPreviousState] = useState({
+  const [previousHiddenHour, setPreviousHiddenHour] = useState({
     thisId: null,
     thisElem: null,
     hiddenElem: null,
   });
-  const openHiddenElem = useRef([]);
-  const hiddenElemSections = useRef([]);
+  const openHiddenHour = useRef([]);
+  const hiddenHourSections = useRef([]);
 
-  const handleClick = useCallback(
-    function handleClick(e, i) {
-      const hiddenId = hiddenElemSections.current[i];
-      const thisElem = e.target.closest('section');
-      const openElem = openHiddenElem.current[i];
-      if (hiddenId === previousState.thisId) {
-        if (hiddenId.classList.contains(styles['show-hidden-elem'])) {
-          hideHiddenElement(hiddenId, styles, previousState);
-        } else {
-          showHiddenElement(hiddenId, thisElem, openElem, styles);
-        }
-      } else {
-        showHiddenElement(hiddenId, thisElem, openElem, styles);
-        if (previousState.thisId !== null) {
-          hideHiddenElement(previousState.thisId, styles, previousState);
-        }
-      }
-
-      smoothScrollIntoView(thisElem);
-      smoothScrollIntoView(hiddenId);
-
-      setPreviousState((prevState) => ({
-        ...prevState,
-        thisId: hiddenId,
-        thisElem,
-        hiddenElem: openElem,
-      }));
+  const handleClickCallback = useCallback(
+    function handleClickCallback(e, i) {
+      handleClick(
+        e,
+        i,
+        hiddenHourSections,
+        openHiddenHour,
+        previousHiddenHour,
+        setPreviousHiddenHour,
+        styles,
+      );
     },
-    [previousState],
+    [previousHiddenHour],
   );
 
   const hours = useMemo(() => {
@@ -161,14 +146,14 @@ function Hourly({ data, currentTime, timezone = 'Europe/London' }) {
         key={hourData.dt}
         hourData={hourData}
         timezone={timezone}
-        onClick={handleClick}
+        onClick={handleClickCallback}
         index={index}
-        openHiddenElem={openHiddenElem}
-        hiddenElemSections={hiddenElemSections}
+        openHiddenHour={openHiddenHour}
+        hiddenHourSections={hiddenHourSections}
         currentTime={currentTime}
       />
     ));
-  }, [currentTime, data, handleClick, timezone]);
+  }, [currentTime, data, handleClickCallback, timezone]);
 
   return (
     <section className={styles.hourly}>

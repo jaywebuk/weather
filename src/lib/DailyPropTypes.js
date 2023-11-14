@@ -44,7 +44,7 @@ const DayPropTypes = {
   timezone: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   index: PropTypes.number.isRequired,
-  openHiddenDays: PropTypes.object.isRequired,
+  openHiddenDay: PropTypes.object.isRequired,
   hiddenDaySections: PropTypes.object.isRequired,
 };
 

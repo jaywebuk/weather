@@ -1,8 +1,6 @@
 /* eslint-disable global-require */
-/* eslint-disable no-unused-vars */
 const PORT = 5000;
 const express = require('express');
-const axios = require('axios');
 
 const app = express();
 const cors = require('cors');

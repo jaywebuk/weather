@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useRef, useCallback, memo, useMemo } from 'react';
 import { DailyPropTypes, DayPropTypes, HiddenDayPropTypes } from './lib/DailyPropTypes';
 import styles from './styles/Daily.module.css';
@@ -8,9 +9,7 @@ import {
   getCardinals,
   getWind,
   getShortTime,
-  smoothScrollIntoView,
-  hideHiddenElement,
-  showHiddenElement,
+  handleClick,
 } from './lib/functions';
 import wind from './images/wind.png';
 import sun from './images/sun.png';
@@ -21,14 +20,14 @@ const Day = memo(function Day({
   timezone,
   onClick,
   index,
-  openHiddenElem,
-  hiddenElemSections,
+  openHiddenDay,
+  hiddenDaySections,
   currentTime,
 }) {
   const thisDaysDate = getShortDate(dayData.dt, timezone);
   const weatherIcon = `http://openweathermap.org/img/wn/${dayData.weather[0].icon}.png`;
   const weatherDescription = toUpper(dayData.weather[0].description);
-  const ohd = openHiddenElem;
+  const ohd = openHiddenDay;
 
   const today = getShortDate(currentTime, timezone);
   const day = getShortDate(dayData.dt, timezone);
@@ -83,7 +82,7 @@ const Day = memo(function Day({
       </section>
       <HiddenDay
         key={dayData.dt}
-        hiddenElemSections={hiddenElemSections}
+        hiddenDaySections={hiddenDaySections}
         dayData={dayData}
         index={index}
       />
@@ -91,8 +90,8 @@ const Day = memo(function Day({
   );
 });
 
-const HiddenDay = memo(function HiddenDay({ hiddenElemSections, dayData, index }) {
-  const hds = hiddenElemSections;
+const HiddenDay = memo(function HiddenDay({ hiddenDaySections, dayData, index }) {
+  const hds = hiddenDaySections;
   return (
     <section
       className={styles.hidden}
@@ -114,43 +113,26 @@ const HiddenDay = memo(function HiddenDay({ hiddenElemSections, dayData, index }
 });
 
 function Daily({ data, currentTime, timezone = 'Europe/London' }) {
-  const [previousState, setPreviousState] = useState({
+  const [previousHiddenDay, setPreviousHiddenDay] = useState({
     thisId: null,
     thisElem: null,
     hiddenElem: null,
   });
-  const openHiddenElem = useRef([]);
-  const hiddenElemSections = useRef([]);
-
-  const handleClick = useCallback(
-    function handleClick(e, i) {
-      const hiddenId = hiddenElemSections.current[i];
-      const thisElem = e.target.closest('section');
-      const openElem = openHiddenElem.current[i];
-      if (hiddenId === previousState.thisId) {
-        if (hiddenId.classList.contains(styles['show-hidden-elem'])) {
-          hideHiddenElement(hiddenId, styles, previousState);
-        } else {
-          showHiddenElement(hiddenId, thisElem, openElem, styles);
-        }
-      } else {
-        showHiddenElement(hiddenId, thisElem, openElem, styles);
-        if (previousState.thisId !== null) {
-          hideHiddenElement(previousState.thisId, styles, previousState);
-        }
-      }
-
-      smoothScrollIntoView(thisElem);
-      smoothScrollIntoView(hiddenId);
-
-      setPreviousState((prevState) => ({
-        ...prevState,
-        thisId: hiddenId,
-        thisElem,
-        hiddenElem: openElem,
-      }));
+  const openHiddenDay = useRef([]);
+  const hiddenDaySections = useRef([]);
+  const handleClickCallback = useCallback(
+    function handleClickCallback(e, i) {
+      handleClick(
+        e,
+        i,
+        hiddenDaySections,
+        openHiddenDay,
+        previousHiddenDay,
+        setPreviousHiddenDay,
+        styles,
+      );
     },
-    [previousState],
+    [previousHiddenDay],
   );
 
   const days = useMemo(() => {
@@ -159,14 +141,14 @@ function Daily({ data, currentTime, timezone = 'Europe/London' }) {
         key={dayData.dt}
         dayData={dayData}
         timezone={timezone}
-        onClick={handleClick}
+        onClick={handleClickCallback}
         index={index}
-        openHiddenElem={openHiddenElem}
-        hiddenElemSections={hiddenElemSections}
+        openHiddenDay={openHiddenDay}
+        hiddenDaySections={hiddenDaySections}
         currentTime={currentTime}
       />
     ));
-  }, [currentTime, data, handleClick, timezone]);
+  }, [currentTime, data, handleClickCallback, timezone]);
 
   return (
     <section className={styles.daily}>

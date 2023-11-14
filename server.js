@@ -1,5 +1,3 @@
-/* eslint-disable global-require */
-/* eslint-disable no-unused-vars */
 const PORT = 5000;
 const express = require('express');
 const axios = require('axios');
@@ -40,7 +38,6 @@ app.get('/weather', (req, res) => {
   axios
     .request(options)
     .then((response) => {
-      // console.log(response.data);
       res.json(response.data);
       console.log(`City data received at ${Date()}`);
     })
@@ -56,7 +53,6 @@ app.get('/weather/location', (req, res) => {
   }
   const { lat } = req.query;
   const { lon } = req.query;
-  // console.log(lat, lon);
 
   requestCount += 1;
 
@@ -69,7 +65,6 @@ app.get('/weather/location', (req, res) => {
   axios
     .request(options)
     .then((response) => {
-      // console.log(response.data);
       const responseData = response.data;
       console.log(`Weather data received at ${Date()}`);
       console.log(`Onecall requests made since server up: ${requestCount}`);
