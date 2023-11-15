@@ -86,10 +86,14 @@ div.wind img {
 .hidden {
     display: none;
     width: fit-content;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 5px;
+    box-sizing: border-box;
 }
 
 .hidden p {
-    margin: 7px 8px;
+    margin: 0;
     font-size: 0.9rem;
 }
 
@@ -101,5 +105,5 @@ div.wind img {
 }
 
 .show-hidden-elem {
-    display: block;
+    display: flex;
 }

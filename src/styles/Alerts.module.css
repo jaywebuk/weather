@@ -28,6 +28,7 @@ section.alerts {
     border: solid thin #333;
     margin-block: 10px;
     width: 430px;
+    max-width: 100vw;
 }
 
 .alert:not(:last-child) {
