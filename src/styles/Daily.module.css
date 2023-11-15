@@ -105,14 +105,14 @@ div.wind img {
     font-size: 0.9rem;
 }
 
-.day-selected,
+.elem-selected,
 .hidden {
     background-color: #b7fffb;
     height: 100%;
     cursor: pointer;
 }
 
-.show-hidden-day {
+.show-hidden-elem {
     display: block;
 }
 

@@ -8,7 +8,7 @@ import {
   getCardinals,
   getWind,
   getShortTime,
-  smoothScrollIntoView,
+  handleClick,
 } from './lib/functions';
 import wind from './images/wind.png';
 import sun from './images/sun.png';
@@ -19,14 +19,14 @@ const Day = memo(function Day({
   timezone,
   onClick,
   index,
-  openHiddenDays,
+  openHiddenDay,
   hiddenDaySections,
   currentTime,
 }) {
   const thisDaysDate = getShortDate(dayData.dt, timezone);
   const weatherIcon = `http://openweathermap.org/img/wn/${dayData.weather[0].icon}.png`;
   const weatherDescription = toUpper(dayData.weather[0].description);
-  const ohd = openHiddenDays;
+  const ohd = openHiddenDay;
 
   const today = getShortDate(currentTime, timezone);
   const day = getShortDate(dayData.dt, timezone);
@@ -112,58 +112,26 @@ const HiddenDay = memo(function HiddenDay({ hiddenDaySections, dayData, index })
 });
 
 function Daily({ data, currentTime, timezone = 'Europe/London' }) {
-  const [previousState, setPreviousState] = useState({
-    dayId: null,
-    dayElem: null,
-    hiddenDay: null,
+  const [previousHiddenDay, setPreviousHiddenDay] = useState({
+    thisId: null,
+    thisElem: null,
+    hiddenElem: null,
   });
-  const openHiddenDays = useRef([]);
+  const openHiddenDay = useRef([]);
   const hiddenDaySections = useRef([]);
-  const showHiddenDay = (element, thisDayElem, openDay) => {
-    const day = openDay;
-    element.classList.add(styles['show-hidden-day']);
-    thisDayElem.classList.add(styles['day-selected']);
-    day.innerHTML = '&lt;';
-  };
-
-  const hideHiddenDay = useCallback(
-    function hideHiddenDay(element) {
-      element.classList.remove(styles['show-hidden-day']);
-      previousState.dayElem.classList.remove(styles['day-selected']);
-      previousState.hiddenDay.innerHTML = '&gt;';
+  const handleClickCallback = useCallback(
+    function handleClickCallback(e, i) {
+      handleClick(
+        e,
+        i,
+        hiddenDaySections,
+        openHiddenDay,
+        previousHiddenDay,
+        setPreviousHiddenDay,
+        styles,
+      );
     },
-    [previousState.dayElem, previousState.hiddenDay],
-  );
-
-  const handleClick = useCallback(
-    function handleClick(e, i) {
-      const hiddenId = hiddenDaySections.current[i];
-      const thisDayElem = e.target.closest('section');
-      const openDay = openHiddenDays.current[i];
-      if (hiddenId === previousState.dayId) {
-        if (hiddenId.classList.contains(styles['show-hidden-day'])) {
-          hideHiddenDay(hiddenId);
-        } else {
-          showHiddenDay(hiddenId, thisDayElem, openDay);
-        }
-      } else {
-        showHiddenDay(hiddenId, thisDayElem, openDay);
-        if (previousState.dayId !== null) {
-          hideHiddenDay(previousState.dayId);
-        }
-      }
-
-      smoothScrollIntoView(thisDayElem);
-      smoothScrollIntoView(hiddenId);
-
-      setPreviousState((prevState) => ({
-        ...prevState,
-        dayId: hiddenId,
-        dayElem: thisDayElem,
-        hiddenDay: openDay,
-      }));
-    },
-    [hideHiddenDay, previousState.dayId],
+    [previousHiddenDay],
   );
 
   const days = useMemo(() => {
@@ -172,14 +140,14 @@ function Daily({ data, currentTime, timezone = 'Europe/London' }) {
         key={dayData.dt}
         dayData={dayData}
         timezone={timezone}
-        onClick={handleClick}
+        onClick={handleClickCallback}
         index={index}
-        openHiddenDays={openHiddenDays}
+        openHiddenDay={openHiddenDay}
         hiddenDaySections={hiddenDaySections}
         currentTime={currentTime}
       />
     ));
-  }, [currentTime, data, handleClick, timezone]);
+  }, [currentTime, data, handleClickCallback, timezone]);
 
   return (
     <section className={styles.daily}>

@@ -9,7 +9,7 @@ import {
   getCardinals,
   getWind,
   getDay,
-  smoothScrollIntoView,
+  handleClick,
 } from './lib/functions';
 import wind from './images/wind.png';
 
@@ -18,7 +18,7 @@ const Hour = memo(function Hour({
   timezone,
   onClick,
   index,
-  openHiddenHours,
+  openHiddenHour,
   hiddenHourSections,
   currentTime,
 }) {
@@ -26,7 +26,7 @@ const Hour = memo(function Hour({
   const currentShortTime = getShortTime(hourData.dt, timezone);
   const weatherIcon = `http://openweathermap.org/img/wn/${hourData.weather[0].icon}.png`;
   const weatherDescription = toUpper(hourData.weather[0].description);
-  const ohh = openHiddenHours;
+  const ohh = openHiddenHour;
 
   const today = getDay(currentTime, timezone);
   const day = getDay(hourData.dt, timezone);
@@ -113,57 +113,27 @@ const HiddenHour = memo(function HiddenHour({
 });
 
 function Hourly({ data, currentTime, timezone = 'Europe/London' }) {
-  const [previousState, setPreviousState] = useState({
-    hourId: null,
-    hourElem: null,
-    hiddenHour: null,
+  const [previousHiddenHour, setPreviousHiddenHour] = useState({
+    thisId: null,
+    thisElem: null,
+    hiddenElem: null,
   });
-  const openHiddenHours = useRef([]);
+  const openHiddenHour = useRef([]);
   const hiddenHourSections = useRef([]);
-  const showHiddenHour = useCallback(function showHiddenHour(element, thisHourElem, openHour) {
-    const hour = openHour;
-    element.classList.add(styles['show-hidden-hour']);
-    thisHourElem.classList.add(styles['hour-selected']);
-    hour.innerHTML = '&lt;';
-  }, []);
 
-  const hideHiddenHour = useCallback(
-    function hideHiddenHour(element) {
-      element.classList.remove(styles['show-hidden-hour']);
-      previousState.hourElem.classList.remove(styles['hour-selected']);
-      previousState.hiddenHour.innerHTML = '&gt;';
+  const handleClickCallback = useCallback(
+    function handleClickCallback(e, i) {
+      handleClick(
+        e,
+        i,
+        hiddenHourSections,
+        openHiddenHour,
+        previousHiddenHour,
+        setPreviousHiddenHour,
+        styles,
+      );
     },
-    [previousState.hiddenHour, previousState.hourElem],
-  );
-
-  const handleClick = useCallback(
-    function handleClick(e, i) {
-      const hiddenId = hiddenHourSections.current[i];
-      const thisHourElem = e.target.closest('section');
-      const openHour = openHiddenHours.current[i];
-      if (hiddenId === previousState.hourId) {
-        if (hiddenId.classList.contains(styles['show-hidden-hour'])) {
-          hideHiddenHour(hiddenId);
-        } else {
-          showHiddenHour(hiddenId, thisHourElem, openHour);
-        }
-      } else {
-        showHiddenHour(hiddenId, thisHourElem, openHour);
-        if (previousState.hourId !== null) {
-          hideHiddenHour(previousState.hourId);
-        }
-      }
-
-      smoothScrollIntoView(thisHourElem);
-      smoothScrollIntoView(hiddenId);
-
-      setPreviousState((prevState) => ({
-        ...prevState,
-        hourId: hiddenId,
-        hourElem: thisHourElem,
-        hiddenHour: openHour,
-      }));
-    },
+    [previousHiddenHour],
     [previousState.hourId, hideHiddenHour],
   );
 
@@ -173,14 +143,14 @@ function Hourly({ data, currentTime, timezone = 'Europe/London' }) {
         key={hourData.dt}
         hourData={hourData}
         timezone={timezone}
-        onClick={handleClick}
+        onClick={handleClickCallback}
         index={index}
-        openHiddenHours={openHiddenHours}
+        openHiddenHour={openHiddenHour}
         hiddenHourSections={hiddenHourSections}
         currentTime={currentTime}
       />
     ));
-  }, [currentTime, data, handleClick, timezone]);
+  }, [currentTime, data, handleClickCallback, timezone]);
 
   return (
     <section className={styles.hourly}>

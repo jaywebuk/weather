@@ -72,7 +72,6 @@ function ShowWeather({ data, setLoading }) {
       .then((response) => {
         console.log(consoleCount, response.data);
         setConsoleCount((prevCount) => prevCount + 1);
-
         setWeatherData(() => response.data);
         setWeatherAlerts(response.data.alerts !== undefined);
         clearTimeout(timeoutId);

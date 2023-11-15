@@ -27,7 +27,7 @@ const HourPropTypes = {
   timezone: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   index: PropTypes.number.isRequired,
-  openHiddenHours: PropTypes.object.isRequired,
+  openHiddenHour: PropTypes.object.isRequired,
   hiddenHourSections: PropTypes.object.isRequired,
 };
 

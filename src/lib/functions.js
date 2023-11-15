@@ -150,6 +150,75 @@ const smoothScrollIntoView = (element) => {
   });
 };
 
+function showHiddenElement(element, thisElem, openElem, styles) {
+  const elem = openElem;
+  element.classList.add(styles['show-hidden-elem']);
+  thisElem.classList.add(styles['elem-selected']);
+  elem.innerHTML = '&lt;';
+}
+
+function hideHiddenElement(element, styles, previousState) {
+  const prevState = previousState;
+  element.classList.remove(styles['show-hidden-elem']);
+  prevState.thisElem.classList.remove(styles['elem-selected']);
+  prevState.hiddenElem.innerHTML = '&gt;';
+}
+
+function handleClick(
+  e,
+  i,
+  hiddenElemSections,
+  openHiddenElem,
+  previousState,
+  setPreviousState,
+  styles,
+) {
+  // console.log(previousState);
+  const hiddenId = hiddenElemSections.current[i];
+  const thisElem = e.target.closest('section');
+  const openElem = openHiddenElem.current[i];
+  if (hiddenId === previousState.thisId) {
+    if (hiddenId.classList.contains(styles['show-hidden-elem'])) {
+      hideHiddenElement(hiddenId, styles, previousState);
+    } else {
+      showHiddenElement(hiddenId, thisElem, openElem, styles);
+    }
+  } else {
+    showHiddenElement(hiddenId, thisElem, openElem, styles);
+    if (previousState.thisId !== null) {
+      hideHiddenElement(previousState.thisId, styles, previousState);
+    }
+  }
+
+  smoothScrollIntoView(thisElem);
+  smoothScrollIntoView(hiddenId);
+
+  setPreviousState((prevState) => ({
+    ...prevState,
+    thisId: hiddenId,
+    thisElem,
+    hiddenElem: openElem,
+  }));
+
+  // eslint-disable-next-line no-param-reassign
+  // previousState = setPreviousState({ thisId: hiddenId, thisElem, hiddenElem: openElem });
+
+  /* setPreviousState((prevState) => {
+    const newState = {
+      ...prevState,
+      thisId: hiddenId,
+      thisElem,
+      hiddenElem: openElem,
+    };
+    console.log(newState);
+    return newState;
+  }); */
+
+  // console.log({ thisId: hiddenId, thisElem, hiddenElem: openElem });
+
+  // return { thisId: hiddenId, thisElem, hiddenElem: openElem };
+}
+
 export {
   convertTemp,
   getCardinals,
@@ -163,4 +232,7 @@ export {
   getAlertDate,
   getDay,
   smoothScrollIntoView,
+  showHiddenElement,
+  hideHiddenElement,
+  handleClick,
 };
