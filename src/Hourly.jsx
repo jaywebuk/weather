@@ -134,7 +134,6 @@ function Hourly({ data, currentTime, timezone = 'Europe/London' }) {
       );
     },
     [previousHiddenHour],
-    [previousState.hourId, hideHiddenHour],
   );
 
   const hours = useMemo(() => {
