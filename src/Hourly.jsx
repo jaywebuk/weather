@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useState, useRef, useCallback, memo, useMemo } from 'react';
 import { HourlyPropTypes, HourPropTypes, HiddenHourPropTypes } from './lib/HourlyPropTypes';
 import styles from './styles/Hourly.module.css';
@@ -10,9 +9,6 @@ import {
   getCardinals,
   getWind,
   getDay,
-  smoothScrollIntoView,
-  hideHiddenElement,
-  showHiddenElement,
   handleClick,
 } from './lib/functions';
 import wind from './images/wind.png';

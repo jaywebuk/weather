@@ -1,4 +1,5 @@
 import React from 'react';
+import GitHub from './images/GitHub_32.png';
 
 function Footer() {
   const startYear = 2023;
@@ -8,6 +9,16 @@ function Footer() {
   return (
     <footer className="footer">
       <p>Copyright &copy; 2023 {endDate} Jason Robinson</p>
+      <div className="socialMedia">
+        <a
+          href="https://github.com/jaywebuk"
+          aria-label="GitHub Link"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <img src={GitHub} alt="" />
+        </a>
+      </div>
       <p className="provider">
         Weather data provided by{' '}
         <a href="https://openweathermap.org/" target="_blank" rel="noreferrer">

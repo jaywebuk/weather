@@ -1,9 +1,10 @@
-/* eslint-disable global-require */
-const PORT = 5000;
 const express = require('express');
+const cors = require('cors');
+const cityData = require('./city.json');
+const weatherData = require('./weather.json');
 
 const app = express();
-const cors = require('cors');
+const PORT = 5000;
 
 let requestCount = 0;
 
@@ -16,15 +17,13 @@ app.get('/', (req, res) => {
 });
 
 app.get('/weather', (req, res) => {
-  const json = require('./city.json');
-  res.json(json);
+  res.json(cityData);
   console.log(`Test city data received at ${Date()}`);
 });
 
 app.get('/weather/location', (req, res) => {
   requestCount += 1;
-  const json = require('./weather.json');
-  res.json(json);
+  res.json(weatherData);
   console.log(`Test weather data received at ${Date()}`);
   console.log(`Requests made since test server up: ${requestCount}`);
 });
