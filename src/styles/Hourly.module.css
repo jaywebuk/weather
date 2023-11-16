@@ -16,7 +16,7 @@ section.hourly {
     font-weight: normal;
     margin-bottom: 15px;
     outline: solid thin #333;
-    background-color: #c4e7ff;
+    background-color: #d2e0ff;
     display: inline-block;
     padding: 5px;
     font-size: 1rem;
@@ -32,7 +32,7 @@ div.hourBar {
 }
 
 .hour {
-    background-color: #c4e7ff;
+    background-color: #d2e0ff;
     outline: solid thin #333;
     padding: 5px;
     font-size: 0.9rem;
@@ -99,7 +99,8 @@ div.wind img {
 
 .elem-selected,
 .hidden {
-    background-color: #b7fffb;
+    /* background-color: #b7fffb; */
+    background-color: #c2fff7;
     height: 100%;
     cursor: pointer;
 }

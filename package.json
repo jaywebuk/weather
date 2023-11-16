@@ -1,6 +1,6 @@
 {
   "name": "weather",
-  "version": "0.1.0",
+  "version": "0.1.0-beta",
   "private": true,
   "dependencies": {
     "@welldone-software/why-did-you-render": "^7.0.1",
