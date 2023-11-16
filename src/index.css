@@ -9,7 +9,7 @@ html,
 body {
   width: 100%;
   height: 100%;
-  background-color: rgb(230, 240, 250);
+  background-color: #e6f4fa;
   font-family: "Roboto", sans-serif;
   margin: 0;
   overflow-x: hidden;
@@ -79,18 +79,23 @@ form {
     margin: 5px;
 
     &.provider {
-      font-size: 0.9rem;
+      font-size: .95rem;
     }
   }
-
-  .socialMedia {
+  
+  & .socialMedia {
     position: absolute;
     right: 15px;
     bottom: 10px;
+  }
+  
+  & a {
+    color: #00f;
   }
 }
 
 .multipleForm {
   width: auto;
+  max-width: 100vw;
   color: red;
 }

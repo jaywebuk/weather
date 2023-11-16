@@ -10,7 +10,7 @@ section.daily {
     font-weight: normal;
     margin-bottom: 15px;
     outline: solid thin #333;
-    background-color: #c4e7ff;
+    background-color: #d2e0ff;
     display: inline-block;
     padding: 5px;
     font-size: 1rem;
@@ -25,7 +25,7 @@ div.dayBar {
 }
 
 .day {
-    background-color: #c4e7ff;
+    background-color: #d2e0ff;
     outline: solid thin #333;
     padding: 5px;
     font-size: 0.9rem;
@@ -97,23 +97,26 @@ div.wind img {
 .hidden {
     display: none;
     width: fit-content;
-    overflow: auto;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 5px;
+    box-sizing: border-box;
 }
 
 .hidden p {
-    margin: 14px 8px;
+    margin: 0;
     font-size: 0.9rem;
 }
 
 .elem-selected,
 .hidden {
-    background-color: #b7fffb;
+    background-color: #c2fff7;
     height: 100%;
     cursor: pointer;
 }
 
 .show-hidden-elem {
-    display: block;
+    display: flex;
 }
 
 .dayDiv {

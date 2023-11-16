@@ -14,7 +14,7 @@ div.currentWeather {
   max-width: 420px;
   justify-content: center;
   border: solid thin #333;
-  background-color: #c4e7ff;
+  background-color: #d2e0ff;
 
   & p {
     text-align: center;
