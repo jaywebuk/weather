@@ -13,4 +13,4 @@ Get an api key from openweathermap.org and add it to .env.
 
 ### `serve -s build` # to serve the production build.
 
-### if you need to install 'serve' # `npm install -g serve`
+### If you need to install 'serve' # `npm install -g serve`
