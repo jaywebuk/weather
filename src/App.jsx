@@ -40,7 +40,9 @@ function App() {
       setLongLoading(true);
     }, 10000);
 
-    const location = inputRef.current.value;
+    const location = encodeURIComponent(inputRef.current.value.trim());
+    // console.log(location);
+    // const location = inputRef.current.value;
 
     const options = {
       method: 'GET',
