@@ -21,7 +21,7 @@ function getCardinals(deg) {
     'west-north-west': [281, 304],
     'north-west': [304, 326],
     'north-north-west': [326, 349],
-    N2: [349, 361],
+    n2: [349, 361],
   };
 
   const keys = Object.keys(cardinals);
@@ -30,7 +30,7 @@ function getCardinals(deg) {
     const key = keys[i];
     const [min, max] = cardinals[key];
     if (deg >= min && deg <= max) {
-      return key;
+      return key === 'n2' ? 'north' : key;
     }
   }
 
