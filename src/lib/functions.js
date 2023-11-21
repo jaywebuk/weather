@@ -25,16 +25,15 @@ function getCardinals(deg) {
   };
 
   const keys = Object.keys(cardinals);
-  // The for loop is the only loop I could get working properly.
-  for (let i = 0; i < keys.length; i += 1) {
-    const key = keys[i];
+  let direction = 'direction';
+  keys.forEach((key) => {
     const [min, max] = cardinals[key];
     if (deg >= min && deg <= max) {
-      return key === 'n2' ? 'north' : key;
+      direction = key === 'n2' ? 'north' : key;
     }
-  }
+  });
 
-  return 'degrees'; // Return 'degrees' if no match is found.
+  return direction;
 }
 
 function getWind(windSpeed) {
@@ -55,16 +54,15 @@ function getWind(windSpeed) {
   };
 
   const keys = Object.keys(windDesc);
-
-  // The for loop is the only loop I could get working properly.
-  for (let i = 0; i < keys.length; i += 1) {
-    const key = keys[i];
+  let wind = 'wind';
+  keys.forEach((key) => {
     const [min, max] = windDesc[key];
     if (windSpeed >= min && windSpeed <= max) {
-      return key;
+      wind = key;
     }
-  }
-  return 'wind'; // Return 'wind' if no match is found.
+  });
+
+  return wind;
 }
 
 function toUpper(word) {
@@ -173,7 +171,6 @@ function handleClick(
   setPreviousState,
   styles,
 ) {
-  // console.log(previousState);
   const hiddenId = hiddenElemSections.current[i];
   const thisElem = e.target.closest('section');
   const openElem = openHiddenElem.current[i];
@@ -199,24 +196,6 @@ function handleClick(
     thisElem,
     hiddenElem: openElem,
   }));
-
-  // eslint-disable-next-line no-param-reassign
-  // previousState = setPreviousState({ thisId: hiddenId, thisElem, hiddenElem: openElem });
-
-  /* setPreviousState((prevState) => {
-    const newState = {
-      ...prevState,
-      thisId: hiddenId,
-      thisElem,
-      hiddenElem: openElem,
-    };
-    console.log(newState);
-    return newState;
-  }); */
-
-  // console.log({ thisId: hiddenId, thisElem, hiddenElem: openElem });
-
-  // return { thisId: hiddenId, thisElem, hiddenElem: openElem };
 }
 
 export {
