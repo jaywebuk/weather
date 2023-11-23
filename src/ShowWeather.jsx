@@ -10,7 +10,7 @@ function ShowWeather({ data, setLoading }) {
   const [weatherData, setWeatherData] = useState();
   const [refreshData, setRefreshData] = useState(false);
   const [weatherAlerts, setWeatherAlerts] = useState(false);
-  const [consoleCount, setConsoleCount] = useState(1);
+  // const [consoleCount, setConsoleCount] = useState(1);
   const [fetchCount, setFetchCount] = useState(0);
   const [longLoading, setLongLoading] = useState(false);
   const [abortFetch, setAbortFetch] = useState(false);
@@ -70,8 +70,8 @@ function ShowWeather({ data, setLoading }) {
     axios
       .request(options)
       .then((response) => {
-        console.log(consoleCount, response.data);
-        setConsoleCount((prevCount) => prevCount + 1);
+        // console.log(consoleCount, response.data);
+        // setConsoleCount((prevCount) => prevCount + 1);
         setWeatherData(() => response.data);
         setWeatherAlerts(response.data.alerts !== undefined);
         clearTimeout(timeoutId);
