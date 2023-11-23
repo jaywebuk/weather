@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import ShowWeatherPropTypes from './lib/ShowWeatherPropTypes';
@@ -131,7 +130,6 @@ function ShowWeather({ data, setLoading }) {
             timezone={weatherData.timezone}
             weatherAlerts={weatherData.alerts}
           />
-          {/* {console.log(weatherData.daily)} */}
         </>
       )}
     </>
