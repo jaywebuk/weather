@@ -5,7 +5,7 @@ const convertTemp = (temp) => {
 
 function getCardinals(deg) {
   const cardinals = {
-    north: [0, 11],
+    north: [0, 349, 11, 361],
     'north-north-east': [11, 34],
     'north-east': [34, 56],
     'east-north-east': [56, 79],
@@ -21,15 +21,14 @@ function getCardinals(deg) {
     'west-north-west': [281, 304],
     'north-west': [304, 326],
     'north-north-west': [326, 349],
-    n2: [349, 361],
   };
 
   const keys = Object.keys(cardinals);
   let direction = 'direction';
   keys.forEach((key) => {
-    const [min, max] = cardinals[key];
-    if (deg >= min && deg <= max) {
-      direction = key === 'n2' ? 'north' : key;
+    const [min1, max1, min2 = 0, max2 = 0] = cardinals[key];
+    if ((deg >= min1 && deg < max1) || (min2 !== 0 && deg >= min2 && deg < max2)) {
+      direction = key;
     }
   });
 
