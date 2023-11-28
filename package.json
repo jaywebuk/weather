@@ -1,12 +1,13 @@
 {
   "name": "weather",
-  "version": "RC1",
+  "version": "0.9.0-beta",
   "private": true,
   "dependencies": {
     "@welldone-software/why-did-you-render": "^7.0.1",
     "axios": "^1.5.0",
     "cors": "^2.8.5",
     "express": "^4.18.2",
+    "express-rate-limit": "^7.1.5",
     "express-validator": "^7.0.1",
     "nodemon": "^3.0.1",
     "prop-types": "^15.8.1",

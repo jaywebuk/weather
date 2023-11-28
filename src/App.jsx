@@ -8,6 +8,7 @@ import loading from './images/loading.gif';
 
 function App() {
   const [data, setData] = useState();
+  const [requestError, setRequestError] = useState();
   const inputRef = useRef(null);
   const loadingRef = useRef();
   const [longLoading, setLongLoading] = useState(false);
@@ -30,6 +31,7 @@ function App() {
 
   const handleSubmit = (e) => {
     setData(null);
+    setRequestError(null);
     setLongLoading(false);
     setAbortFetch(false);
     setLoading('visible');
@@ -41,8 +43,6 @@ function App() {
     }, 10000);
 
     const location = encodeURIComponent(inputRef.current.value.trim());
-    // console.log(location);
-    // const location = inputRef.current.value;
 
     const options = {
       method: 'GET',
@@ -53,19 +53,19 @@ function App() {
     axios
       .request(options)
       .then((response) => {
-        setData(response.data);
         clearTimeout(timeoutId);
         setAbortFetch(false);
         setLongLoading(false);
         setLoading('hidden');
-        // console.log(response.data);
+        setData(response.data);
       })
       .catch((error) => {
-        console.error(error);
+        console.error(error.response.data);
         setLongLoading(false);
         clearTimeout(timeoutId);
         setAbortFetch(true);
         setLoading('hidden');
+        setRequestError(error.response.data);
       });
   };
 
@@ -79,12 +79,12 @@ function App() {
             <p>This is taking longer than usual. Please wait...</p>
           </div>
         )}
-        {abortFetch && (
+        {abortFetch && !requestError && (
           <div>
             <p>Request took too long or there was a connection error. Please try again.</p>
           </div>
         )}
-        {data && (
+        {data && !requestError && (
           <>
             {data.length === 0 && (
               <>
@@ -103,6 +103,7 @@ function App() {
             {!Array.isArray(data) && <ShowWeather data={data} setLoading={setLoading} />}
           </>
         )}
+        {requestError && <p>{requestError.error}</p>}
         {/* {data && console.log(data)} */}
       </div>
       <Footer />

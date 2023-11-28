@@ -1,14 +1,25 @@
 const PORT = 5000;
 const express = require('express');
+const rateLimit = require('express-rate-limit');
 const axios = require('axios');
 const { validationResult, check } = require('express-validator');
 
 const app = express();
 const cors = require('cors');
 
+app.use(cors());
+
 let requestCount = 0;
 
-app.use(cors());
+const limiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 10, // Limit each IP to 10 requests per windowMs
+  message: {
+    error: `Limit is 10 requests per minute. Please wait and try again.`,
+  },
+});
+
+app.use(limiter);
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
 
@@ -51,7 +62,7 @@ app.get(
 
       const response = await axios.request(options);
       res.json(response.data);
-      console.log(`City data received at ${new Date()}`);
+      console.log(requestCount, `City data received at ${new Date()}`);
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Internal Server Error' });
@@ -99,7 +110,7 @@ app.get(
 
       const response = await axios.request(options);
       const responseData = response.data;
-      console.log(`Weather data received at ${new Date()}`);
+      console.log(requestCount, `Weather data received at ${new Date()}`);
       console.log(`Onecall requests made since server up: ${requestCount}`);
       res.json(responseData);
     } catch (error) {
