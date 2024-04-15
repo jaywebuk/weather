@@ -11,7 +11,8 @@ const HourPropTypes = {
     pressure: PropTypes.number.isRequired,
     temp: PropTypes.number.isRequired,
     uvi: PropTypes.number.isRequired,
-    visibility: PropTypes.number.isRequired,
+    // visibility: PropTypes.number.isRequired,
+    visibility: PropTypes.number,
     weather: PropTypes.arrayOf(
       PropTypes.shape({
         description: PropTypes.string.isRequired,

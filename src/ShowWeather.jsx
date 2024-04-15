@@ -65,7 +65,8 @@ function ShowWeather({ data, setLoading }) {
 
     const options = {
       method: 'GET',
-      url: `http://192.168.1.81:5000/weather/location?lat=${lat}&lon=${lon}`,
+      // url: `http://192.168.1.81:5000/weather/location?lat=${lat}&lon=${lon}`,
+      url: `http://localhost:5000/weather/location?lat=${lat}&lon=${lon}`,
       signal: newAbortSignal(30000),
     };
     axios
