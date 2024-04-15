@@ -29,45 +29,47 @@ function App() {
     return abortController.signal;
   }
 
-  const handleSubmit = (e) => {
+  const startLongLoading = () => {
+    const timeoutId = setTimeout(() => {
+      setLongLoading(true);
+    }, 10000);
+
+    return timeoutId;
+  };
+
+  const fetchData = async (location) => {
+    const options = {
+      method: 'GET',
+      url: `http://localhost:5000/weather?location=${location}`,
+      signal: newAbortSignal(30000),
+    };
+
+    const response = await axios(options);
+    return response.data;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
     setData(null);
     setRequestError(null);
     setLongLoading(false);
     setAbortFetch(false);
     setLoading('visible');
 
-    e.preventDefault();
-
-    const timeoutId = setTimeout(() => {
-      setLongLoading(true);
-    }, 10000);
+    const timeoutId = startLongLoading();
 
     const location = encodeURIComponent(inputRef.current.value.trim());
 
-    const options = {
-      method: 'GET',
-      // url: `http://192.168.1.81:5000/weather?location=${location}`,
-      url: `http://localhost:5000/weather?location=${location}`,
-      signal: newAbortSignal(30000),
-    };
-
-    axios
-      .request(options)
-      .then((response) => {
-        clearTimeout(timeoutId);
-        setAbortFetch(false);
-        setLongLoading(false);
-        setLoading('hidden');
-        setData(response.data);
-      })
-      .catch((error) => {
-        console.error(error.response.data);
-        setLongLoading(false);
-        clearTimeout(timeoutId);
-        setAbortFetch(true);
-        setLoading('hidden');
-        setRequestError(error.response.data);
-      });
+    try {
+      const fetchedData = await fetchData(location);
+      setData(fetchedData);
+    } catch (error) {
+      setRequestError(error.message);
+    } finally {
+      clearTimeout(timeoutId);
+      setLoading('hidden');
+    }
   };
 
   return (
@@ -82,16 +84,16 @@ function App() {
         )}
         {abortFetch && !requestError && (
           <div>
-            <p>Request took too long or there was a connection error. Please try again.</p>
+            <p>
+              Unfortunately the request took too long or there was a connection error. Please try
+              again.
+            </p>
           </div>
         )}
         {data && !requestError && (
           <>
-            {data.length === 0 && (
-              <>
-                {setLoading('hidden')}
-                <p>No Results were found. Please try again!</p>
-              </>
+            {Array.isArray(data) && data.length === 0 && (
+              <p>No Results were found. Please try again!</p>
             )}
 
             {Array.isArray(data) && data.length > 1 && (

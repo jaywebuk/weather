@@ -7,22 +7,22 @@ function getCardinals(deg) {
   let direction = 'direction';
 
   const cardinals = {
-    north: [0, 349, 11, 361],
-    'north-north-east': [11, 34],
-    'north-east': [34, 56],
-    'east-north-east': [56, 79],
-    east: [79, 101],
-    'east-south-east': [101, 124],
-    'south-east': [124, 146],
-    'south-south-east': [146, 169],
-    south: [169, 191],
-    'south-south-west': [191, 214],
-    'south-west': [214, 236],
-    'west-south-west': [236, 259],
-    west: [259, 281],
-    'west-north-west': [281, 304],
-    'north-west': [304, 326],
-    'north-north-west': [326, 349],
+    North: [0, 349, 11, 361],
+    'North-North-East': [11, 34],
+    'North-East': [34, 56],
+    'East-North-East': [56, 79],
+    East: [79, 101],
+    'East-south-East': [101, 124],
+    'south-East': [124, 146],
+    'south-south-East': [146, 169],
+    South: [169, 191],
+    'south-south-West': [191, 214],
+    'south-West': [214, 236],
+    'West-south-West': [236, 259],
+    West: [259, 281],
+    'West-North-West': [281, 304],
+    'North-West': [304, 326],
+    'North-North-West': [326, 349],
   };
 
   const keys = Object.keys(cardinals);
