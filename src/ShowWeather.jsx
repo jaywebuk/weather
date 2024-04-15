@@ -10,10 +10,10 @@ function ShowWeather({ data, setLoading }) {
   const [weatherData, setWeatherData] = useState();
   const [refreshData, setRefreshData] = useState(false);
   const [weatherAlerts, setWeatherAlerts] = useState(false);
-  const [consoleCount, setConsoleCount] = useState(1);
   const [fetchCount, setFetchCount] = useState(0);
   const [longLoading, setLongLoading] = useState(false);
   const [abortFetch, setAbortFetch] = useState(false);
+  const [requestError, setRequestError] = useState(null);
 
   const handleRefresh = (refreshButton) => {
     const refButt = refreshButton;
@@ -55,6 +55,7 @@ function ShowWeather({ data, setLoading }) {
   useEffect(() => {
     setFetchCount((prevCount) => prevCount + 1);
     if (fetchCount >= 1) return;
+    setRequestError(null);
     setLoading('visible');
     const { lat, lon } = data;
 
@@ -64,14 +65,13 @@ function ShowWeather({ data, setLoading }) {
 
     const options = {
       method: 'GET',
-      url: `http://192.168.1.81:5000/weather/location?lat=${lat}&lon=${lon}`,
+      // url: `http://192.168.1.81:5000/weather/location?lat=${lat}&lon=${lon}`,
+      url: `http://localhost:5000/weather/location?lat=${lat}&lon=${lon}`,
       signal: newAbortSignal(30000),
     };
     axios
       .request(options)
       .then((response) => {
-        console.log(consoleCount, response.data);
-        setConsoleCount((prevCount) => prevCount + 1);
         setWeatherData(() => response.data);
         setWeatherAlerts(response.data.alerts !== undefined);
         clearTimeout(timeoutId);
@@ -84,6 +84,7 @@ function ShowWeather({ data, setLoading }) {
         clearTimeout(timeoutId);
         setAbortFetch(true);
         setLoading('hidden');
+        setRequestError(error.response.data);
       });
 
     // eslint-disable-next-line consistent-return
@@ -103,7 +104,7 @@ function ShowWeather({ data, setLoading }) {
           <p>This is taking longer than usual. Please wait...</p>
         </div>
       )}
-      {abortFetch && (
+      {abortFetch && !requestError && (
         <div>
           <p>Request took too long or there was a connection error. Please try again.</p>
         </div>
@@ -130,9 +131,9 @@ function ShowWeather({ data, setLoading }) {
             timezone={weatherData.timezone}
             weatherAlerts={weatherData.alerts}
           />
-          {/* {console.log(weatherData.daily)} */}
         </>
       )}
+      {requestError && <p>{requestError.error}</p>}
     </>
   );
 }

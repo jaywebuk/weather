@@ -4,8 +4,10 @@ const convertTemp = (temp) => {
 };
 
 function getCardinals(deg) {
+  let direction = 'direction';
+
   const cardinals = {
-    north: [0, 11],
+    north: [0, 349, 11, 361],
     'north-north-east': [11, 34],
     'north-east': [34, 56],
     'east-north-east': [56, 79],
@@ -21,20 +23,18 @@ function getCardinals(deg) {
     'west-north-west': [281, 304],
     'north-west': [304, 326],
     'north-north-west': [326, 349],
-    N2: [349, 361],
   };
 
   const keys = Object.keys(cardinals);
-  // The for loop is the only loop I could get working properly.
-  for (let i = 0; i < keys.length; i += 1) {
-    const key = keys[i];
-    const [min, max] = cardinals[key];
-    if (deg >= min && deg <= max) {
-      return key;
-    }
-  }
 
-  return 'degrees'; // Return 'degrees' if no match is found.
+  keys.forEach((key) => {
+    const [min1, max1, min2 = 0, max2 = 0] = cardinals[key];
+    if ((deg >= min1 && deg < max1) || (min2 !== 0 && deg >= min2 && deg < max2)) {
+      direction = key;
+    }
+  });
+
+  return direction;
 }
 
 function getWind(windSpeed) {
@@ -55,16 +55,15 @@ function getWind(windSpeed) {
   };
 
   const keys = Object.keys(windDesc);
-
-  // The for loop is the only loop I could get working properly.
-  for (let i = 0; i < keys.length; i += 1) {
-    const key = keys[i];
+  let wind = 'wind';
+  keys.forEach((key) => {
     const [min, max] = windDesc[key];
     if (windSpeed >= min && windSpeed <= max) {
-      return key;
+      wind = key;
     }
-  }
-  return 'wind'; // Return 'wind' if no match is found.
+  });
+
+  return wind;
 }
 
 function toUpper(word) {
@@ -173,7 +172,6 @@ function handleClick(
   setPreviousState,
   styles,
 ) {
-  // console.log(previousState);
   const hiddenId = hiddenElemSections.current[i];
   const thisElem = e.target.closest('section');
   const openElem = openHiddenElem.current[i];
@@ -199,24 +197,6 @@ function handleClick(
     thisElem,
     hiddenElem: openElem,
   }));
-
-  // eslint-disable-next-line no-param-reassign
-  // previousState = setPreviousState({ thisId: hiddenId, thisElem, hiddenElem: openElem });
-
-  /* setPreviousState((prevState) => {
-    const newState = {
-      ...prevState,
-      thisId: hiddenId,
-      thisElem,
-      hiddenElem: openElem,
-    };
-    console.log(newState);
-    return newState;
-  }); */
-
-  // console.log({ thisId: hiddenId, thisElem, hiddenElem: openElem });
-
-  // return { thisId: hiddenId, thisElem, hiddenElem: openElem };
 }
 
 export {

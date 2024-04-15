@@ -1,5 +1,6 @@
 import React from 'react';
-import GitHub from './images/GitHub_32.png';
+import GitHub from './images/GitHub-dark-48.png';
+import linkedIn from './images/LI-In-Bug.png';
 
 function Footer() {
   const startYear = 2023;
@@ -17,6 +18,14 @@ function Footer() {
           rel="noreferrer"
         >
           <img src={GitHub} alt="" />
+        </a>
+        <a
+          href="https://www.linkedin.com/in/jason-robinson-13010520a/"
+          aria-label="LinkedIn Link"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <img src={linkedIn} alt="" />
         </a>
       </div>
       <p className="provider">

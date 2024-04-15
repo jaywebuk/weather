@@ -83,15 +83,35 @@ form {
     }
   }
   
-  & .socialMedia {
+  /* & .socialMedia {
     position: absolute;
     right: 15px;
     bottom: 10px;
+    /* outline: solid thin blue; *
+    width: 90px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  } */
+
+  & img {
+    width: 40px;
   }
   
   & a {
     color: #00f;
   }
+}
+
+.footer .socialMedia {
+  position: absolute;
+  right: 15px;
+  bottom: 10px;
+  /* outline: solid thin blue; */
+  width: 90px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .multipleForm {

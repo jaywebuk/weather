@@ -9,6 +9,7 @@ function SearchForm({ handleSubmit, inputRef }) {
         id="city"
         placeholder="Location"
         style={{ backgroundColor: 'white' }}
+        required
       />
       <input type="submit" className="search-button" value="Go" />
     </form>
