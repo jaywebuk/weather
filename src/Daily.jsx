@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, memo, useMemo } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import { DailyPropTypes, DayPropTypes, HiddenDayPropTypes } from './lib/DailyPropTypes';
 import styles from './styles/Daily.module.css';
 import {
@@ -14,15 +14,7 @@ import wind from './images/wind.png';
 import sun from './images/sun.png';
 import moon from './images/moon.png';
 
-const Day = memo(function Day({
-  dayData,
-  timezone,
-  onClick,
-  index,
-  openHiddenDay,
-  hiddenDaySections,
-  currentTime,
-}) {
+function Day({ dayData, timezone, onClick, index, openHiddenDay, hiddenDaySections, currentTime }) {
   const thisDaysDate = getShortDate(dayData.dt, timezone);
   const weatherIcon = `http://openweathermap.org/img/wn/${dayData.weather[0].icon}.png`;
   const weatherDescription = toUpper(dayData.weather[0].description);
@@ -87,9 +79,9 @@ const Day = memo(function Day({
       />
     </button>
   );
-});
+}
 
-const HiddenDay = memo(function HiddenDay({ hiddenDaySections, dayData, index }) {
+function HiddenDay({ hiddenDaySections, dayData, index }) {
   const hds = hiddenDaySections;
   return (
     <section
@@ -109,7 +101,7 @@ const HiddenDay = memo(function HiddenDay({ hiddenDaySections, dayData, index })
       </p>
     </section>
   );
-});
+}
 
 function Daily({ data, currentTime, timezone = 'Europe/London' }) {
   const [previousHiddenDay, setPreviousHiddenDay] = useState({
@@ -134,20 +126,18 @@ function Daily({ data, currentTime, timezone = 'Europe/London' }) {
     [previousHiddenDay],
   );
 
-  const days = useMemo(() => {
-    return data.map((dayData, index) => (
-      <Day
-        key={dayData.dt}
-        dayData={dayData}
-        timezone={timezone}
-        onClick={handleClickCallback}
-        index={index}
-        openHiddenDay={openHiddenDay}
-        hiddenDaySections={hiddenDaySections}
-        currentTime={currentTime}
-      />
-    ));
-  }, [currentTime, data, handleClickCallback, timezone]);
+  const days = data.map((dayData, index) => (
+    <Day
+      key={dayData.dt}
+      dayData={dayData}
+      timezone={timezone}
+      onClick={handleClickCallback}
+      index={index}
+      openHiddenDay={openHiddenDay}
+      hiddenDaySections={hiddenDaySections}
+      currentTime={currentTime}
+    />
+  ));
 
   return (
     <section className={styles.daily}>
