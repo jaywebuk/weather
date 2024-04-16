@@ -99,7 +99,6 @@ div.wind img {
 
 .elem-selected,
 .hidden {
-    /* background-color: #b7fffb; */
     background-color: #c2fff7;
     height: 100%;
     cursor: pointer;
