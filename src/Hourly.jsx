@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, memo, useMemo } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import { HourlyPropTypes, HourPropTypes, HiddenHourPropTypes } from './lib/HourlyPropTypes';
 import styles from './styles/Hourly.module.css';
 import {
@@ -13,7 +13,7 @@ import {
 } from './lib/functions';
 import wind from './images/wind.png';
 
-const Hour = memo(function Hour({
+function Hour({
   hourData,
   timezone,
   onClick,
@@ -80,14 +80,9 @@ const Hour = memo(function Hour({
       />
     </button>
   );
-});
+}
 
-const HiddenHour = memo(function HiddenHour({
-  hiddenHourSections,
-  hourData,
-  index,
-  weatherDescription,
-}) {
+function HiddenHour({ hiddenHourSections, hourData, index, weatherDescription }) {
   const hhs = hiddenHourSections;
   return (
     <section
@@ -110,7 +105,7 @@ const HiddenHour = memo(function HiddenHour({
       <p>Chance of Precipitation: {Math.round(hourData.pop * 100)}%</p>
     </section>
   );
-});
+}
 
 function Hourly({ data, currentTime, timezone = 'Europe/London' }) {
   const [previousHiddenHour, setPreviousHiddenHour] = useState({
@@ -136,20 +131,18 @@ function Hourly({ data, currentTime, timezone = 'Europe/London' }) {
     [previousHiddenHour],
   );
 
-  const hours = useMemo(() => {
-    return data.map((hourData, index) => (
-      <Hour
-        key={hourData.dt}
-        hourData={hourData}
-        timezone={timezone}
-        onClick={handleClickCallback}
-        index={index}
-        openHiddenHour={openHiddenHour}
-        hiddenHourSections={hiddenHourSections}
-        currentTime={currentTime}
-      />
-    ));
-  }, [currentTime, data, handleClickCallback, timezone]);
+  const hours = data.map((hourData, index) => (
+    <Hour
+      key={hourData.dt}
+      hourData={hourData}
+      timezone={timezone}
+      onClick={handleClickCallback}
+      index={index}
+      openHiddenHour={openHiddenHour}
+      hiddenHourSections={hiddenHourSections}
+      currentTime={currentTime}
+    />
+  ));
 
   return (
     <section className={styles.hourly}>
