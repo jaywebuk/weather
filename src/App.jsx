@@ -72,6 +72,17 @@ function App() {
     }
   };
 
+  const renderShowWeather = (isArray) => {
+    if (isArray === 1) {
+      return <ShowWeather data={data[0]} setLoading={setLoading} />;
+    }
+    return <ShowWeather data={data} setLoading={setLoading} />;
+  };
+
+  const renderMultipleResults = () => {
+    return <MultipleResults data={data} setData={handleChange} setLoading={setLoading} />;
+  };
+
   return (
     <div className="App" role="main">
       <div className="wrapper">
@@ -96,18 +107,15 @@ function App() {
               <p>No Results were found. Please try again!</p>
             )}
 
-            {Array.isArray(data) && data.length > 1 && (
-              <MultipleResults data={data} setData={handleChange} setLoading={setLoading} />
-            )}
+            {Array.isArray(data) && data.length > 1 && renderMultipleResults()}
 
-            {Array.isArray(data) && data.length === 1 && (
-              <ShowWeather data={data[0]} setLoading={setLoading} />
-            )}
-            {!Array.isArray(data) && <ShowWeather data={data} setLoading={setLoading} />}
+            {Array.isArray(data) && data.length === 1 && renderShowWeather(1)}
+
+            {!Array.isArray(data) && renderShowWeather()}
           </>
         )}
         {requestError && <p>{requestError.error}</p>}
-        {/* {data && console.log(data)} */}
+        {data && console.log(data)}
       </div>
       <Footer />
     </div>

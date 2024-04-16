@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 // eslint-disable-next-line no-unused-vars
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import CurrentWeatherPropTypes from './lib/CurrentWeatherPropTypes';
 import styles from './styles/CurrentWeather.module.css';
 import {
