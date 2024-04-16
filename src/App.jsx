@@ -114,7 +114,7 @@ function App() {
           </>
         )}
         {requestError && <p>{requestError.error}</p>}
-        {data && console.log(data)}
+        {/* {data && console.log(data)} */}
       </div>
       <Footer />
     </div>
