@@ -19,7 +19,6 @@ import sunset from './images/sunset.png';
 
 function CurrentWeather({ currentWeather, timezone, cityData, handleRefresh, weatherAlerts }) {
   const refreshButton = useRef();
-  // loading.current.style.visibility = 'hidden';
 
   return (
     currentWeather && (

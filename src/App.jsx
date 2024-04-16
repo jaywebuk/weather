@@ -72,8 +72,8 @@ function App() {
     }
   };
 
-  const renderShowWeather = (isArray) => {
-    if (isArray === 1) {
+  const renderShowWeather = () => {
+    if (Array.isArray(data)) {
       return <ShowWeather data={data[0]} setLoading={setLoading} />;
     }
     return <ShowWeather data={data} setLoading={setLoading} />;
@@ -109,9 +109,8 @@ function App() {
 
             {Array.isArray(data) && data.length > 1 && renderMultipleResults()}
 
-            {Array.isArray(data) && data.length === 1 && renderShowWeather(1)}
-
-            {!Array.isArray(data) && renderShowWeather()}
+            {((Array.isArray(data) && data.length === 1) || !Array.isArray(data)) &&
+              renderShowWeather()}
           </>
         )}
         {requestError && <p>{requestError.error}</p>}
