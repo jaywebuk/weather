@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 // eslint-disable-next-line no-unused-vars
 // import PropTypes from 'prop-types';
 import CurrentWeatherPropTypes from './lib/CurrentWeatherPropTypes';
@@ -17,8 +17,22 @@ import wind from './images/wind.png';
 import sunrise from './images/sunrise.png';
 import sunset from './images/sunset.png';
 
+function roundToNearestMinute(date) {
+  date.setSeconds(0, 0);
+  return date;
+}
+
 function CurrentWeather({ currentWeather, timezone, cityData, handleRefresh, weatherAlerts }) {
+  const [currentTime, setCurrentTime] = useState(roundToNearestMinute(new Date()));
   const refreshButton = useRef();
+
+  useEffect(() => {
+    const timer = setInterval(() => setCurrentTime(new Date()), 60000);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
 
   return (
     currentWeather && (
@@ -42,6 +56,13 @@ function CurrentWeather({ currentWeather, timezone, cityData, handleRefresh, wea
               title="Weather warnings issued"
             />
           )}
+          <p className={styles.currentTime}>
+            {currentTime.toLocaleTimeString('en-GB', {
+              hour: '2-digit',
+              minute: '2-digit',
+              timeZone: timezone,
+            })}
+          </p>
         </div>
         <p className={styles.currentDate}>{getLongDate(currentWeather.dt, timezone)}</p>
         <h1>

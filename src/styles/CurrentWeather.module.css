@@ -24,9 +24,15 @@ div.currentWeather {
       font-weight: 500;
       font-size: 1.1rem;
     }
+    
+    &.currentTime {
+      font-size: 1rem;
+      font-weight: 500;
+      margin: 0;
+    }
+    
   }
 }
-
 .currentDate {
   font-size: 1.1rem;
   font-weight: 500;
