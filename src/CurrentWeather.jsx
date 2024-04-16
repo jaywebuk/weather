@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 // eslint-disable-next-line no-unused-vars
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import CurrentWeatherPropTypes from './lib/CurrentWeatherPropTypes';
 import styles from './styles/CurrentWeather.module.css';
 import {
@@ -19,7 +19,6 @@ import sunset from './images/sunset.png';
 
 function CurrentWeather({ currentWeather, timezone, cityData, handleRefresh, weatherAlerts }) {
   const refreshButton = useRef();
-  // loading.current.style.visibility = 'hidden';
 
   return (
     currentWeather && (
