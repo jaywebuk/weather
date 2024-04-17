@@ -90,7 +90,7 @@ function HiddenDay({ hiddenDaySections, dayData, index }) {
         hds.current[index] = e;
       }}
     >
-      <p>{toUpper(dayData.weather[0].description)}</p>
+      <p>{dayData.summary}</p>
       <p className={styles.wind}>
         {toUpper(getWind(Math.round(dayData.wind_speed)))} from the {getCardinals(dayData.wind_deg)}
       </p>

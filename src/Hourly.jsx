@@ -57,6 +57,7 @@ function Hour({
             {Math.round(hourData.wind_speed)} mph
           </p>
         </div>
+        <p className={styles.gust}>Gust: {Math.round(hourData.wind_gust)}mph</p>
         <p>
           {convertTemp(hourData.temp)}
           &deg;C / {Math.round(hourData.temp)}

@@ -18,7 +18,7 @@ function ShowWeather({ data, setLoading }) {
   const handleRefresh = (refreshButton) => {
     const refButt = refreshButton;
     setFetchCount(0);
-    if (!refButt.current) return;
+    if (!refButt.current) return undefined;
     refButt.current.setAttribute('disabled', 'disabled');
     refButt.current.style.opacity = '0.3';
     const now = new Date();
@@ -41,7 +41,6 @@ function ShowWeather({ data, setLoading }) {
 
     setRefreshData(!refreshData);
 
-    // eslint-disable-next-line consistent-return
     return () => clearTimeout(timeoutId);
   };
 
@@ -54,7 +53,7 @@ function ShowWeather({ data, setLoading }) {
 
   useEffect(() => {
     setFetchCount((prevCount) => prevCount + 1);
-    if (fetchCount >= 1) return;
+    if (fetchCount >= 1) return undefined;
     setRequestError(null);
     setLoading('visible');
     const { lat, lon } = data;
@@ -87,7 +86,6 @@ function ShowWeather({ data, setLoading }) {
         setRequestError(error.response.data);
       });
 
-    // eslint-disable-next-line consistent-return
     return () => {
       clearTimeout(timeoutId);
       setLongLoading(false);
@@ -134,6 +132,7 @@ function ShowWeather({ data, setLoading }) {
         </>
       )}
       {requestError && <p>{requestError.error}</p>}
+      {/* {weatherData && console.log(weatherData)} */}
     </>
   );
 }

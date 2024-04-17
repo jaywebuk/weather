@@ -1,5 +1,5 @@
 section.daily {
-    margin-top: 20px;
+    margin-top: 10px;
     width: 1122px;
     max-width: 97vw;
     text-align: center;
@@ -8,11 +8,11 @@ section.daily {
 
 .daily h1 {
     font-weight: normal;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     outline: solid thin #333;
     background-color: #d2e0ff;
     display: inline-block;
-    padding: 5px;
+    padding: 3px;
     font-size: 1rem;
 }
 

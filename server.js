@@ -102,9 +102,9 @@ app.get(
     try {
       const options = {
         method: 'GET',
-        url: `https://api.openweathermap.org/data/2.5/onecall?lat=${encodeURIComponent(
+        url: `https://api.openweathermap.org/data/3.0/onecall?lat=${encodeURIComponent(
           lat,
-        )}&lon=${encodeURIComponent(lon)}&units=imperial&appid=${API_KEY}`,
+        )}&lon=${encodeURIComponent(lon)}&units=imperial&exclude=minutely&appid=${API_KEY}`,
         signal: newAbortSignal(30000),
       };
 
@@ -112,6 +112,7 @@ app.get(
       const responseData = response.data;
       console.log(requestCount, `Weather data received at ${new Date()}`);
       console.log(`Onecall requests made since server up: ${requestCount}`);
+      // console.log(responseData);
       res.json(responseData);
     } catch (error) {
       console.error(error);

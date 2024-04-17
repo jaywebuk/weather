@@ -2,7 +2,7 @@ const express = require('express');
 const rateLimit = require('express-rate-limit');
 const cors = require('cors');
 const cityData = require('./city.json');
-const weatherData = require('./weather.json');
+const weatherData = require('./weather5.json');
 
 const app = express();
 app.use(cors());

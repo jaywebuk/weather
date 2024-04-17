@@ -14,11 +14,11 @@ section.hourly {
 
 .hourly h1 {
     font-weight: normal;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     outline: solid thin #333;
     background-color: #d2e0ff;
     display: inline-block;
-    padding: 5px;
+    padding: 3px;
     font-size: 1rem;
 }
 
@@ -70,7 +70,7 @@ div.hourBar {
 div.wind {
     display: flex;
     align-items: center;
-    margin-bottom: 8px;
+    /* margin-bottom: 8px; */
 }
 
 div.wind p {
@@ -106,4 +106,10 @@ div.wind img {
 
 .show-hidden-elem {
     display: flex;
+}
+
+p.gust {
+    font-size: 0.8rem;
+    margin: 5px;
+    padding: 0;
 }
