@@ -1,25 +1,33 @@
+require('dotenv').config();
+
 const PORT = 5000;
-const express = require('express');
-const rateLimit = require('express-rate-limit');
 const axios = require('axios');
 const { validationResult, check } = require('express-validator');
+const express = require('express');
+const cors = require('cors');
+const rateLimit = require('express-rate-limit');
+
+if (!process.env.API_KEY) {
+  console.error('API_KEY is not set');
+  process.exit(1);
+}
+
+const { API_KEY } = process.env;
 
 const app = express();
-const cors = require('cors');
-
 app.use(cors());
 
 let requestCount = 0;
 
-const limiter = rateLimit({
-  windowMs: 60 * 1000, // 1 minute
-  max: 10, // Limit each IP to 10 requests per windowMs
-  message: {
-    error: `Limit is 10 requests per minute. Please wait and try again.`,
-  },
-});
-
-app.use(limiter);
+app.use(
+  rateLimit({
+    windowMs: 60 * 1000, // 1 minute
+    max: 10, // Limit each IP to 10 requests per windowMs
+    message: {
+      error: `Limit is 10 requests per minute. Please wait and try again.`,
+    },
+  }),
+);
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
 
@@ -36,15 +44,19 @@ function newAbortSignal(timeoutMs) {
 
 app.get(
   '/weather',
-  [check('location').notEmpty().withMessage('Location cannot be empty')],
-  // eslint-disable-next-line consistent-return
+  [
+    check('location')
+      .notEmpty()
+      .withMessage('Location cannot be empty')
+      .isString()
+      .withMessage('Location must be a string'),
+  ],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { API_KEY } = process.env;
     if (!req.query.location) {
       return res.json();
     }
@@ -67,6 +79,7 @@ app.get(
       console.error(error);
       res.status(500).json({ error: 'Internal Server Error' });
     }
+    return null;
   },
 );
 
@@ -84,14 +97,12 @@ app.get(
       .isNumeric()
       .withMessage('Longitude must be numeric'),
   ],
-  // eslint-disable-next-line consistent-return
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { API_KEY } = process.env;
     if (!req.query.lat || !req.query.lon) {
       return res.json();
     }
@@ -112,11 +123,11 @@ app.get(
       const responseData = response.data;
       console.log(requestCount, `Weather data received at ${new Date()}`);
       console.log(`Onecall requests made since server up: ${requestCount}`);
-      // console.log(responseData);
       res.json(responseData);
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Internal Server Error' });
     }
+    return null;
   },
 );
