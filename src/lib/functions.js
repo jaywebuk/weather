@@ -25,9 +25,9 @@ function getCardinals(deg) {
     'North-North-West': [326, 349],
   };
 
-  const keys = Object.keys(cardinals);
+  const cardinalDirections = Object.keys(cardinals);
 
-  keys.forEach((key) => {
+  cardinalDirections.forEach((key) => {
     const [min1, max1, min2 = 0, max2 = 0] = cardinals[key];
     if ((deg >= min1 && deg < max1) || (min2 !== 0 && deg >= min2 && deg < max2)) {
       direction = key;
@@ -41,22 +41,22 @@ function getWind(windSpeed) {
   const windDesc = {
     'a calm breeze': [0, 0],
     'light air': [1, 3],
-    'a light breeze': [4, 7],
-    'a gentle breeze': [8, 12],
-    'a moderate breeze': [13, 18],
-    'a fresh breeze': [19, 24],
-    'a strong breeze': [25, 31],
-    'high wind': [32, 38],
-    'a gale force wind': [39, 46],
-    'a strong gale': [47, 54],
-    'storm winds': [55, 63],
-    'a violent storm': [64, 72],
-    'a hurricane': [73, 200],
+    'a light breeze': [3.01, 7],
+    'a gentle breeze': [7.01, 12],
+    'a moderate breeze': [12.01, 18],
+    'a fresh breeze': [18.01, 24],
+    'a strong breeze': [24.01, 31],
+    'high wind': [31.01, 38],
+    'a gale force wind': [38.01, 46],
+    'a strong gale': [46.01, 54],
+    'storm winds': [54.01, 63],
+    'a violent storm': [63.01, 72],
+    'a hurricane': [72.01, 200],
   };
 
-  const keys = Object.keys(windDesc);
+  const windDescriptions = Object.keys(windDesc);
   let wind = 'wind';
-  keys.forEach((key) => {
+  windDescriptions.forEach((key) => {
     const [min, max] = windDesc[key];
     if (windSpeed >= min && windSpeed <= max) {
       wind = key;

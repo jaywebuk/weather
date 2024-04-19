@@ -40,7 +40,7 @@ function Day({ dayData, timezone, onClick, index, openHiddenDay, hiddenDaySectio
             src={wind}
             style={{ rotate: `${dayData.wind_deg}deg` }}
             alt=""
-            title={`Wind from the ${getCardinals(dayData.wind_deg)}`}
+            title={`From the ${getCardinals(dayData.wind_deg)}`}
           />
           <p title={toUpper(getWind(Math.round(dayData.wind_speed)))}>
             {Math.round(dayData.wind_speed)} mph
