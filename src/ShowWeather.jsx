@@ -14,6 +14,7 @@ function ShowWeather({ data, setLoading }) {
   const [longLoading, setLongLoading] = useState(false);
   const [abortFetch, setAbortFetch] = useState(false);
   const [requestError, setRequestError] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const handleRefresh = (refreshButton) => {
     const refButt = refreshButton;
@@ -79,6 +80,7 @@ function ShowWeather({ data, setLoading }) {
       })
       .catch((error) => {
         console.error(error);
+        setErrorMessage('Shucks, an error occurred. Please try again.');
         setLongLoading(false);
         clearTimeout(timeoutId);
         setAbortFetch(true);
@@ -97,6 +99,7 @@ function ShowWeather({ data, setLoading }) {
 
   return (
     <>
+      {errorMessage && <div>{errorMessage}</div>}
       {longLoading && (
         <div>
           <p>This is taking longer than usual. Please wait...</p>
