@@ -1,7 +1,9 @@
 /* eslint-disable react/prop-types */
+import React from 'react';
+
 function SearchForm({ handleSubmit, inputRef }) {
   return (
-    <form onSubmit={handleSubmit} role="search">
+    <form onSubmit={handleSubmit} role="search" id="searchForm">
       <input
         ref={inputRef}
         type="text"

@@ -15,6 +15,8 @@ import sun from './images/sun.png';
 import moon from './images/moon.png';
 
 function Day({ dayData, timezone, onClick, index, openHiddenDay, hiddenDaySections, currentTime }) {
+  // eslint-disable-next-line no-unused-vars
+  const whyDidYouRender = true;
   const thisDaysDate = getShortDate(dayData.dt, timezone);
   const weatherIcon = `http://openweathermap.org/img/wn/${dayData.weather[0].icon}.png`;
   const weatherDescription = toUpper(dayData.weather[0].description);

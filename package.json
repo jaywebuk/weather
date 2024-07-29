@@ -5,11 +5,6 @@
   "dependencies": {
     "@welldone-software/why-did-you-render": "^7.0.1",
     "axios": "^1.5.0",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.18.2",
-    "express-rate-limit": "^7.1.5",
-    "express-validator": "^7.0.1",
     "nodemon": "^3.0.1",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
@@ -20,9 +15,6 @@
   },
   "scripts": {
     "start:frontend": "react-scripts start",
-    "start:backend": "nodemon --env-file=.env server.js",
-    "start:backendTest": "nodemon server_test.js",
-    "backend": "server.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

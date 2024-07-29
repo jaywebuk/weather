@@ -85,7 +85,9 @@ function ShowWeather({ data, setLoading }) {
         clearTimeout(timeoutId);
         setAbortFetch(true);
         setLoading('hidden');
-        setRequestError(error.response.data);
+        if (error.response.data) {
+          setRequestError(error.response.data);
+        }
       });
 
     return () => {
