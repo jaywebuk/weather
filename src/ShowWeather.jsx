@@ -7,21 +7,23 @@ import Hourly from './Hourly';
 import Daily from './Daily';
 
 function ShowWeather({ data, setLoading }) {
-  const [weatherData, setWeatherData] = useState();
-  const [refreshData, setRefreshData] = useState(false);
-  const [weatherAlerts, setWeatherAlerts] = useState(false);
-  const [fetchCount, setFetchCount] = useState(0);
-  const [longLoading, setLongLoading] = useState(false);
-  const [abortFetch, setAbortFetch] = useState(false);
-  const [requestError, setRequestError] = useState(null);
-  const [errorMessage, setErrorMessage] = useState(null);
+  // Declare state variables
+  const [weatherData, setWeatherData] = useState(); // To store the weather data
+  const [refreshData, setRefreshData] = useState(false); // To control the refresh functionality
+  const [weatherAlerts, setWeatherAlerts] = useState(false); // To store the weather alerts
+  const [fetchCount, setFetchCount] = useState(0); // To count the number of fetches
+  const [longLoading, setLongLoading] = useState(false); // To indicate long loading
+  const [abortFetch, setAbortFetch] = useState(false); // To indicate if the fetch was aborted
+  const [requestError, setRequestError] = useState(null); // To store any request errors
+  const [errorMessage, setErrorMessage] = useState(null); // To store any error messages
 
+  // handleRefresh function handles the refresh button click event
   const handleRefresh = (refreshButton) => {
     const refButt = refreshButton;
     setFetchCount(0);
     if (!refButt.current) return undefined;
-    refButt.current.setAttribute('disabled', 'disabled');
-    refButt.current.style.opacity = '0.3';
+    refButt.current.setAttribute('disabled', 'disabled'); // Disable the refresh button
+    refButt.current.style.opacity = '0.3'; // Set the opacity of the refresh button to 0.3
     const now = new Date();
     const target = new Date(
       now.getFullYear(),
@@ -32,51 +34,53 @@ function ShowWeather({ data, setLoading }) {
       0,
       0,
     );
-    const delay = target - now;
+    const delay = target - now; // Calculate the delay before enabling the refresh button
     const timeoutId = setTimeout(() => {
       if (!refButt.current) return;
 
-      refButt.current.removeAttribute('disabled');
-      refButt.current.style.opacity = '1';
+      refButt.current.removeAttribute('disabled'); // Enable the refresh button
+      refButt.current.style.opacity = '1'; // Set the opacity of the refresh button to 1
     }, delay);
 
-    setRefreshData(!refreshData);
+    setRefreshData(!refreshData); // Toggle the refreshData state variable
 
-    return () => clearTimeout(timeoutId);
+    return () => clearTimeout(timeoutId); // Clear the timeout when the component unmounts
   };
 
+  // newAbortSignal function creates a new abort signal with a timeout
   function newAbortSignal(timeoutMs) {
     const abortController = new AbortController();
-    setTimeout(() => abortController.abort(), timeoutMs || 0);
+    setTimeout(() => abortController.abort(), timeoutMs || 0); // Abort the request after the specified timeout
 
-    return abortController.signal;
+    return abortController.signal; // Return the abort signal
   }
 
+  // useEffect hook to fetch the weather data
   useEffect(() => {
     setFetchCount((prevCount) => prevCount + 1);
     if (fetchCount >= 1) return undefined;
     setRequestError(null);
-    setLoading('visible');
+    setLoading('visible'); // Set the loading state variable to 'visible'
     const { lat, lon } = data;
 
     const timeoutId = setTimeout(() => {
-      setLongLoading(true);
+      setLongLoading(true); // Set the longLoading state variable to true if the request takes too long
     }, 10000);
 
     const options = {
       method: 'GET',
       // url: `http://192.168.1.81:5000/weather/location?lat=${lat}&lon=${lon}`,
       url: `http://localhost:5000/weather/location?lat=${lat}&lon=${lon}`,
-      signal: newAbortSignal(30000),
+      signal: newAbortSignal(30000), // Use the abort signal to cancel the request if it takes too long
     };
     axios
       .request(options)
       .then((response) => {
-        setWeatherData(() => response.data);
-        setWeatherAlerts(response.data.alerts !== undefined);
-        clearTimeout(timeoutId);
-        setLongLoading(false);
-        setLoading('hidden');
+        setWeatherData(() => response.data); // Set the weather data
+        setWeatherAlerts(response.data.alerts !== undefined); // Set the weather alerts
+        clearTimeout(timeoutId); // Clear the timeout
+        setLongLoading(false); // Set the longLoading state variable to false
+        setLoading('hidden'); // Set the loading state variable to 'hidden'
       })
       .catch((error) => {
         console.error(error);
@@ -91,14 +95,15 @@ function ShowWeather({ data, setLoading }) {
       });
 
     return () => {
-      clearTimeout(timeoutId);
-      setLongLoading(false);
-      setAbortFetch(false);
-      setLoading('hidden');
+      clearTimeout(timeoutId); // Clear the timeout when the component unmounts
+      setLongLoading(false); // Set the longLoading state variable to false
+      setAbortFetch(false); // Set the abortFetch state variable to false
+      setLoading('hidden'); // Set the loading state variable to 'hidden'
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [refreshData]);
+  }, [refreshData]); // Run the effect when the refreshData state variable changes
 
+  // JSX to render the weather data
   return (
     <>
       {errorMessage && <div>{errorMessage}</div>}

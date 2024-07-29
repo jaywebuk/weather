@@ -1,5 +1,8 @@
+/* eslint-disable react/forbid-prop-types */
+/* eslint-disable react/require-default-props */
+// Import necessary modules and components
 import React, { useState, useRef, useCallback } from 'react';
-import { DailyPropTypes, DayPropTypes, HiddenDayPropTypes } from './lib/DailyPropTypes';
+import PropTypes from 'prop-types'; // For typechecking
 import styles from './styles/Daily.module.css';
 import {
   convertTemp,
@@ -14,17 +17,21 @@ import wind from './images/wind.png';
 import sun from './images/sun.png';
 import moon from './images/moon.png';
 
+// Day component
 function Day({ dayData, timezone, onClick, index, openHiddenDay, hiddenDaySections, currentTime }) {
   // eslint-disable-next-line no-unused-vars
   const whyDidYouRender = true;
+  // Extract relevant data from the dayData prop
   const thisDaysDate = getShortDate(dayData.dt, timezone);
   const weatherIcon = `http://openweathermap.org/img/wn/${dayData.weather[0].icon}.png`;
   const weatherDescription = toUpper(dayData.weather[0].description);
   const ohd = openHiddenDay;
 
+  // Check if the day is today or not
   const today = getShortDate(currentTime, timezone);
   const day = getShortDate(dayData.dt, timezone);
 
+  // Render the Day component
   return (
     <button className={styles.dayDiv} type="button" onClick={(e) => onClick(e, index)}>
       <section
@@ -83,7 +90,9 @@ function Day({ dayData, timezone, onClick, index, openHiddenDay, hiddenDaySectio
   );
 }
 
+// HiddenDay component
 function HiddenDay({ hiddenDaySections, dayData, index }) {
+  // Render the HiddenDay component
   const hds = hiddenDaySections;
   return (
     <section
@@ -105,7 +114,9 @@ function HiddenDay({ hiddenDaySections, dayData, index }) {
   );
 }
 
+// Daily component
 function Daily({ data, currentTime, timezone = 'Europe/London' }) {
+  // Initialize state and refs
   const [previousHiddenDay, setPreviousHiddenDay] = useState({
     thisId: null,
     thisElem: null,
@@ -113,6 +124,8 @@ function Daily({ data, currentTime, timezone = 'Europe/London' }) {
   });
   const openHiddenDay = useRef([]);
   const hiddenDaySections = useRef([]);
+
+  // Define the handleClickCallback function
   const handleClickCallback = useCallback(
     function handleClickCallback(e, i) {
       handleClick(
@@ -128,6 +141,7 @@ function Daily({ data, currentTime, timezone = 'Europe/London' }) {
     [previousHiddenDay],
   );
 
+  // Render the Daily component
   const days = data.map((dayData, index) => (
     <Day
       key={dayData.dt}
@@ -152,8 +166,88 @@ function Daily({ data, currentTime, timezone = 'Europe/London' }) {
   );
 }
 
-Daily.propTypes = DailyPropTypes;
-Day.propTypes = DayPropTypes;
-HiddenDay.propTypes = HiddenDayPropTypes;
+// Typechecking props for the components
+Daily.propTypes = {
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      dt: PropTypes.number.isRequired,
+      weather: PropTypes.arrayOf(
+        PropTypes.shape({
+          icon: PropTypes.string.isRequired,
+          description: PropTypes.string.isRequired,
+        }),
+      ).isRequired,
+      temp: PropTypes.shape({
+        day: PropTypes.number.isRequired,
+        night: PropTypes.number.isRequired,
+      }).isRequired,
+      wind_speed: PropTypes.number.isRequired,
+      wind_deg: PropTypes.number.isRequired,
+      pressure: PropTypes.number.isRequired,
+      pop: PropTypes.number.isRequired,
+      sunrise: PropTypes.number.isRequired,
+      sunset: PropTypes.number.isRequired,
+      summary: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
+  currentTime: PropTypes.number.isRequired,
+  // eslint-disable-next-line react/require-default-props
+  timezone: PropTypes.string,
+};
 
+Day.propTypes = {
+  dayData: PropTypes.shape({
+    dt: PropTypes.number.isRequired,
+    weather: PropTypes.arrayOf(
+      PropTypes.shape({
+        icon: PropTypes.string.isRequired,
+        description: PropTypes.string.isRequired,
+      }),
+    ).isRequired,
+    temp: PropTypes.shape({
+      day: PropTypes.number.isRequired,
+      night: PropTypes.number.isRequired,
+    }).isRequired,
+    wind_speed: PropTypes.number.isRequired,
+    wind_deg: PropTypes.number.isRequired,
+    pressure: PropTypes.number.isRequired,
+    pop: PropTypes.number.isRequired,
+    sunrise: PropTypes.number.isRequired,
+    sunset: PropTypes.number.isRequired,
+    summary: PropTypes.string.isRequired,
+  }).isRequired,
+  timezone: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
+  index: PropTypes.number.isRequired,
+  openHiddenDay: PropTypes.shape({ current: PropTypes.arrayOf(PropTypes.any) }),
+  hiddenDaySections: PropTypes.shape({ current: PropTypes.arrayOf(PropTypes.any) }),
+  currentTime: PropTypes.number.isRequired,
+};
+
+HiddenDay.propTypes = {
+  hiddenDaySections: PropTypes.shape({ current: PropTypes.arrayOf(PropTypes.any) }),
+  dayData: PropTypes.shape({
+    dt: PropTypes.number.isRequired,
+    weather: PropTypes.arrayOf(
+      PropTypes.shape({
+        icon: PropTypes.string.isRequired,
+        description: PropTypes.string.isRequired,
+      }),
+    ).isRequired,
+    temp: PropTypes.shape({
+      day: PropTypes.number.isRequired,
+      night: PropTypes.number.isRequired,
+    }).isRequired,
+    wind_speed: PropTypes.number.isRequired,
+    wind_deg: PropTypes.number.isRequired,
+    pressure: PropTypes.number.isRequired,
+    pop: PropTypes.number.isRequired,
+    sunrise: PropTypes.number.isRequired,
+    sunset: PropTypes.number.isRequired,
+    summary: PropTypes.string.isRequired,
+  }).isRequired,
+  index: PropTypes.number.isRequired,
+};
+
+// Export the Daily component
 export default Daily;
