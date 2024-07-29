@@ -1,127 +1,198 @@
+/* Define the daily section */
 section.daily {
+    /* Add margin to the top */
     margin-top: 10px;
+    /* Set the width to 1122px and limit it to 97vw */
     width: 1122px;
     max-width: 97vw;
+    /* Center-align the text */
     text-align: center;
+    /* Include padding and borders in the element's total width */
     box-sizing: border-box;
 }
 
+/* Style the h1 element inside the daily section */
 .daily h1 {
+    /* Use normal font weight */
     font-weight: normal;
+    /* Add margin to the bottom */
     margin-bottom: 10px;
+    /* Add a solid thin border in #333 color */
     outline: solid thin #333;
+    /* Set the background color to #d2e0ff */
     background-color: #d2e0ff;
+    /* Make the h1 element an inline-block element */
     display: inline-block;
+    /* Add padding to the top, right, bottom, and left */
     padding: 3px;
+    /* Set the font size to 1rem */
     font-size: 1rem;
 }
 
+/* Style the div element with class dayBar */
 div.dayBar {
+    /* Remove margin from all sides */
     margin: 0;
+    /* Align items horizontally with flexbox */
     display: flex;
+    /* Distribute items evenly in the container */
     justify-content: space-between;
+    /* Add a solid thin border in #333 color */
     border: solid thin #333;
+    /* Allow scrolling when the content overflows horizontally */
     overflow-x: scroll;
 }
 
+/* Style the div element with class day */
 .day {
+    /* Set the background color to #d2e0ff */
     background-color: #d2e0ff;
+    /* Add a solid thin border in #333 color */
     outline: solid thin #333;
+    /* Add padding to the top, right, bottom, and left */
     padding: 5px;
+    /* Set the font size to 0.9rem */
     font-size: 0.9rem;
+    /* Include padding and borders in the element's total width */
     box-sizing: border-box;
+    /* Center-align the text */
     text-align: center;
+    /* Add cursor style when hovering over the element */
     cursor: pointer;
+    /* Set the minimum width to 140px */
     min-width: 140px;
+    /* Center items vertically and horizontally */
     position: relative;
+    /* Align items vertically and horizontally */
     display: flex;
+    /* Align items vertically and horizontally */
     flex-direction: column;
+    /* Center items vertically and horizontally */
     align-items: center;
+    /* Disable text selection */
     user-select: none;
-
-    & p.openHiddenDay {
-        position: absolute;
-        font-size: 1.6rem;
-        color: #345;
-        right: 10px;
-        top: 20px;
-    }
 }
 
+/* Style the p element inside the div element with class day */
 .day p {
+    /* Remove margin from all sides */
     margin: 0;
-
+    /* Set the font size to 0.95rem */
     font-size: 0.95rem;
 }
 
+/* Style the img element inside the div element with class day */
 .day img {
+    /* Set the width to 50px */
     width: 50px;
+    /* Remove margin from all sides */
     margin: 0;
 }
 
+/* Style the section element with class daily and div element with class wind */
 section.daily div.wind {
+    /* Align items horizontally and vertically with flexbox */
     display: flex;
+    /* Align items vertically in the center */
     align-items: center;
+    /* Distribute items evenly in the container */
     justify-content: space-evenly;
+    /* Add margin to the bottom */
     margin-bottom: 8px;
+    /* Add a solid thin border in #333 color */
     width: 80%;
+    border: solid thin #333;
 }
 
+/* Style the p element inside the div element with class wind */
 div.wind p {
-    font-size: 1.1rem;
+    /* Remove margin from all sides */
     margin: 0;
+    /* Set the font size to 1.1rem */
+    font-size: 1.1rem;
 }
 
+/* Style the img element inside the div element with class wind */
 div.wind img {
+    /* Add margin to the right */
     margin-right: 10px;
+    /* Set the width to 22px */
     width: 22px;
 }
 
+/* Style the section element with class daily and div element with class dailyTemp */
 .dailyTemp {
+    /* Add width to the container */
     width: 100%;
+    /* Align items horizontally and vertically with flexbox */
     display: flex;
+    /* Distribute items evenly in the container */
     justify-content: space-around;
+    /* Align items vertically in the center */
     align-items: center;
+    /* Add margin to the top and bottom */
     margin: 5px;
 }
 
+/* Style the img element inside the div element with class dailyTemp */
 .dailyTemp img {
+    /* Set the width and height to 20px */
     width: 20px;
     height: 20px;
 }
 
+/* Style the p element inside the div element with class dailyTemp */
 .dailyTemp p {
+    /* Set the font size to 1rem */
     font-size: 1rem;
 }
 
+/* Style the hidden class */
 .hidden {
+    /* Hide the element */
     display: none;
+    /* Add width to the container */
     width: fit-content;
+    /* Align items horizontally and vertically with flexbox */
     flex-direction: column;
+    /* Distribute items evenly in the container */
     justify-content: space-around;
+    /* Add padding to the top, right, bottom, and left */
     padding: 5px;
+    /* Include padding and borders in the element's total width */
     box-sizing: border-box;
 }
 
+/* Style the p element inside the div element with class hidden */
 .hidden p {
+    /* Remove margin from all sides */
     margin: 0;
+    /* Set the font size to 0.9rem */
     font-size: 0.9rem;
 }
 
+/* Style the elem-selected and hidden classes */
 .elem-selected,
 .hidden {
+    /* Set the background color to #c2fff7 */
     background-color: #c2fff7;
+    /* Set the height to 100% */
     height: 100%;
+    /* Add cursor style when hovering over the element */
     cursor: pointer;
 }
 
+/* Style the show-hidden-elem class */
 .show-hidden-elem {
+    /* Display the element */
     display: flex;
 }
 
+/* Style the dayDiv class */
 .dayDiv {
+    /* Align items horizontally and vertically with flexbox */
     display: flex;
-    min-width: fit-content;
+    /* Remove borders and padding */
     border: none;
     padding: 0;
 }

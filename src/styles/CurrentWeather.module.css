@@ -1,97 +1,178 @@
+/* Define a heading style */
 h1 {
+  /* Set the font size to 1.4rem */
   font-size: 1.4rem;
+
+  /* Set the font weight to 700 */
   font-weight: 700;
+
+  /* Center align the text */
   text-align: center;
+
+  /* Add margin of 5px */
   margin: 5px;
 }
+
+/* Define a style for the current weather section */
 div.currentWeather {
+  /* Remove margin */
   margin: 0;
+
+  /* Add margin top of 20px */
   margin-top: 20px;
+
+  /* Display the section as a flex container with column direction */
   display: flex;
   flex-direction: column;
+
+  /* Add padding of 5px */
   padding: 5px;
+
+  /* Set the minimum width to 320px and maximum width to 420px */
   min-width: 320px;
   max-width: 420px;
+
+  /* Center align the content */
   justify-content: center;
+
+  /* Add border with solid thin #333 */
   border: solid thin #333;
+
+  /* Set the background color to #d2e0ff */
   background-color: #d2e0ff;
 
+  /* Define a style for the paragraphs inside the currentWeather section */
   & p {
+    /* Center align the text */
     text-align: center;
+
+    /* Add margin of 5px */
     margin: 5px;
 
+    /* Define a style for the description class inside the paragraphs */
     &.description {
+      /* Set the font weight to 500 */
       font-weight: 500;
+
+      /* Set the font size to 1.1rem */
       font-size: 1.1rem;
-    }    
+    }
   }
 }
+
+/* Define a style for the current date */
 .currentDate {
+  /* Set the font size to 1.1rem */
   font-size: 1.1rem;
+
+  /* Set the font weight to 500 */
   font-weight: 500;
+
+  /* Remove margin */
   margin: 0;
 }
 
+/* Define a style for the coordinates */
 .coords {
+  /* Set the font size to 0.9rem */
   font-size: 0.9rem;
+
+  /* Remove margin and padding */
   margin: 0;
   padding: 0;
+
+  /* Center align the text */
   text-align: center;
 }
 
+/* Define a style for the top information section */
 .topInfo {
+  /* Set the minimum height to 30px */
   min-height: 30px;
+
+  /* Display the section as a flex container with space-between justification */
   display: flex;
   justify-content: space-between;
+
+  /* Align the items in the center */
   align-items: center;
 
+  /* Define a style for the image inside the topInfo section */
   & img {
+    /* Set the width to 35px */
     width: 35px;
   }
 
+  /* Define a style for the button inside the topInfo section */
   & button {
+    /* Add border with solid thin #333 */
     border: solid thin #333;
+
+    /* Add padding of 4px */
     padding: 4px;
+
+    /* Display the button as a flex container */
     display: flex;
   }
 }
 
+/* Remove margin and padding for all elements inside the topInfo section */
 .topInfo * {
   margin: 0;
   padding: 0;
 }
 
+/* Define a style for the refresh image */
 img.refresh  {
+  /* Set the width to 20px */
   width: 20px;
+
+  /* Set the cursor to pointer */
   cursor: pointer;
 }
 
+/* Define a style for the temperature details section */
 .tempDetails {
+  /* Display the section as a flex container with space-between justification */
   display: flex;
   justify-content: space-between;
+
+  /* Align the items in the center */
   align-items: center;
 }
 
+/* Define a style for the wind section */
 div.wind {
+  /* Display the section as a flex container with align-items in the center */
   display: flex;
   align-items: center;
 }
 
+/* Define a style for the wind image */
 div.wind img {
+  /* Add margin right of 10px */
   margin-right: 10px;
+
+  /* Set the width to 22px */
   width: 22px;
 }
 
+/* Define a style for the sunrise section */
 .sunrise {
+  /* Display the section as a flex container with space-between justification and align-items in the center */
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
+/* Define a style for the gust paragraph */
 p.gust {
+  /* Set the font size to 0.9rem */
   font-size: 0.9rem;
 }
 
+/* Define a style for the temperature details paragraph with feelsLike class */
 .tempDetails p span.feelsLike {
+  /* Set the font size to 0.4rem */
   font-size: 0.4rem;
 }
