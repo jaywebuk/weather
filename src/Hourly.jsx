@@ -51,12 +51,13 @@ function Hour({
             src={wind}
             style={{ rotate: `${hourData.wind_deg}deg` }}
             alt=""
-            title={`Wind from the ${getCardinals(hourData.wind_deg)}`}
+            title={`From the ${getCardinals(hourData.wind_deg)}`}
           />
           <p title={toUpper(getWind(Math.round(hourData.wind_speed)))}>
             {Math.round(hourData.wind_speed)} mph
           </p>
         </div>
+        <p className={styles.gust}>Gusts: {Math.round(hourData.wind_gust)}mph</p>
         <p>
           {convertTemp(hourData.temp)}
           &deg;C / {Math.round(hourData.temp)}

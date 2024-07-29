@@ -1,54 +1,102 @@
+/* Section for alerts */
 section.alerts {
+    /* Style for the header of the alert section */
     & header {
+        /* Prevents text selection */
         user-select: none;
+        
+        /* Changes the cursor to a pointer on hover */
         cursor: pointer;
+
+        /* Position the header relative to its parent container */
         position: relative;
 
+        /* Style for the span element inside the header */
         & span {
+            /* Adds margin to the left of the span element */
             margin-left: 5px;
+
+            /* Sets the font size of the span element */
             font-size: 1.4rem;
+
+            /* Sets the font weight of the span element */
             font-weight: normal;
         }
 
+        /* Style for the h1 element inside the header */
         & h1 {
+            /* Sets the font size of the h1 element */
             font-size: 1.2rem;
         }
 
+        /* Style for the p element inside the header */
         & p {
+            /* Sets the line height of the p element */
             line-height: 1;
+
+            /* Positions the p element absolutely */
             position: absolute;
+
+            /* Sets the top margin and padding of the p element to 0 */
             top: 0;
             margin: 0;
+
+            /* Sets the color of the p element */
             color: #456;
+
+            /* Sets the font size of the p element */
             font-size: 1.6rem;
         }
     }
 
+    /* Sets the background color of the alert section */
     background-color: #d2e0ff;
+
+    /* Sets the border style of the alert section */
     border: solid thin #333;
+
+    /* Sets the margin block (margin-top and margin-bottom) of the alert section */
     margin-block: 10px;
+
+    /* Sets the width of the alert section */
     width: 430px;
+
+    /* Sets the maximum width of the alert section to 100vw (viewport width) */
     max-width: 100vw;
 }
 
+/* Style for the alert element that is not the last child */
 .alert:not(:last-child) {
+    /* Sets the border-bottom style of the alert element */
     border-bottom: dashed thin #333;
 }
 
+/* Style for the alertEvents section */
 .alertEvents {
+    /* Sets the display property of the alertEvents section to none */
     display: none;
+
+    /* Sets the text alignment of the alertEvents section */
     text-align: justify;
+
+    /* Sets the margin inline (margin-left and margin-right) of the alertEvents section */
     margin-inline: 10px;
 
+    /* Style for the p element with the class title inside the alertEvents section */
     & p.title {
+        /* Sets the text alignment of the p element with the class title to center */
         text-align: center;
     }
 }
 
+/* Style for the p element with the class alertArrow inside the header element */
 header p.alertArrow {
+    /* Sets the right property of the p element with the class alertArrow */
     right: 5px;
 }
 
+/* Style for the p element with the class tags */
 p.tags {
+    /* Sets the font size of the p element with the class tags */
     font-size: .9rem;
 }

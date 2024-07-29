@@ -1,109 +1,131 @@
+/* The container for each hourly weather block */
 .hourDiv {
-    display: flex;
-    min-width: fit-content;
-    border: none;
-    padding: 0;
+    display: flex; /* Display the elements in a flexible layout */
+    min-width: fit-content; /* Ensure the minimum width fits the content */
+    border: none; /* Remove any borders */
+    padding: 0; /* Remove any padding */
 }
 
+/* Container for the hourly weather section */
 section.hourly {
-    margin-top: 20px;
-    width: 1035px;
-    max-width: 97vw;
-    text-align: center;
+    margin-top: 20px; /* Add some margin at the top */
+    width: 1035px; /* Set the width */
+    max-width: 97vw; /* Ensure the width doesn't exceed 97% of the viewport width */
+    text-align: center; /* Center the text */
 }
 
+/* The main title for the hourly weather section */
 .hourly h1 {
-    font-weight: normal;
-    margin-bottom: 15px;
-    outline: solid thin #333;
-    background-color: #d2e0ff;
-    display: inline-block;
-    padding: 5px;
-    font-size: 1rem;
+    font-weight: normal; /* Use a normal font weight */
+    margin-bottom: 10px; /* Add some margin at the bottom */
+    outline: solid thin #333; /* Add a thin outline */
+    background-color: #d2e0ff; /* Set the background color */
+    display: inline-block; /* Display the element as an inline block */
+    padding: 3px; /* Add some padding */
+    font-size: 1rem; /* Set the font size */
 }
 
+/* Container for the hourly weather bars */
 div.hourBar {
-    margin: 0;
-    display: flex;
-    justify-content: space-between;
-    border: solid thin #333;
-    overflow-x: auto;
-    max-width: 100vw;
+    margin: 0; /* Remove any margin */
+    display: flex; /* Display the elements in a flexible layout */
+    justify-content: space-between; /* Distribute the elements evenly with space between them */
+    border: solid thin #333; /* Add a border */
+    overflow-x: auto; /* Enable horizontal scrolling if the content exceeds the container width */
+    max-width: 100vw; /* Set the maximum width to the viewport width */
 }
 
+/* Styles for each hourly weather block */
 .hour {
-    background-color: #d2e0ff;
-    outline: solid thin #333;
-    padding: 5px;
-    font-size: 0.9rem;
-    box-sizing: border-box;
-    text-align: center;
-    cursor: pointer;
-    min-width: 115px;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    user-select: none;
+    background-color: #d2e0ff; /* Set the background color */
+    outline: solid thin #333; /* Add a thin outline */
+    padding: 5px; /* Add some padding */
+    font-size: 0.9rem; /* Set the font size */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    text-align: center; /* Center the text */
+    cursor: pointer; /* Set the cursor to a pointer when hovering */
+    min-width: 115px; /* Set the minimum width */
+    position: relative; /* Position the element relative to its normal position */
+    display: flex; /* Display the elements in a flexible layout */
+    flex-direction: column; /* Stack the elements vertically */
+    align-items: center; /* Center the elements horizontally */
+    user-select: none; /* Prevent text selection */
 
+    /* Hidden paragraph for the open hour */
     & p.openHiddenHour {
-        position: absolute;
-        font-size: 1.6rem;
-        color: #345;
-        right: 10px;
-        top: 20px;
-        user-select: none;
+        position: absolute; /* Position the element absolutely */
+        font-size: 1.6rem; /* Set the font size */
+        color: #345; /* Set the text color */
+        right: 10px; /* Position the element 10px from the right edge */
+        top: 20px; /* Position the element 20px from the top edge */
+        user-select: none; /* Prevent text selection */
     }
 }
 
+/* Styles for the hour text */
 .hour p {
-    margin: 0;
+    margin: 0; /* Remove any margin */
 
-    font-size: 0.95rem;
+    font-size: 0.95rem; /* Set the font size */
 }
 
+/* Styles for the hour image */
 .hour img {
-    width: 50px;
-    margin: 0;
+    width: 50px; /* Set the width */
+    margin: 0; /* Remove any margin */
 }
 
+/* Container for the wind information */
 div.wind {
-    display: flex;
-    align-items: center;
-    margin-bottom: 8px;
+    display: flex; /* Display the elements in a flexible layout */
+    align-items: center; /* Align the elements vertically */
+    /* margin-bottom: 8px; */
 }
 
+/* Styles for the wind text */
 div.wind p {
-    font-size: 1.1rem;
-    margin: 0;
+    font-size: 1.1rem; /* Set the font size */
+    margin: 0; /* Remove any margin */
 }
 
+/* Styles for the wind image */
 div.wind img {
-    margin-right: 10px;
-    width: 22px;
+    margin-right: 10px; /* Add some margin to the right */
+    width: 22px; /* Set the width */
 }
 
+/* Container for the hidden elements */
 .hidden {
-    display: none;
-    width: fit-content;
-    flex-direction: column;
-    justify-content: space-around;
-    padding: 5px;
-    box-sizing: border-box;
+    display: none; /* Hide the elements */
+    width: fit-content; /* Set the width to fit the content */
+    flex-direction: column; /* Stack the elements vertically */
+    justify-content: space-around; /* Distribute the elements evenly with space between them */
+    padding: 5px; /* Add some padding */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
 
+/* Styles for the hidden text */
 .hidden p {
-    margin: 0;
-    font-size: 0.9rem;
+    margin: 0; /* Remove any margin */
+    font-size: 0.9rem; /* Set the font size */
 }
 
+/* Styles for the selected element and hidden elements */
 .elem-selected,
 .hidden {
-    background-color: #c2fff7;
-    height: 100%;
-    cursor: pointer;
+    background-color: #c2fff7; /* Set the background color */
+    height: 100%; /* Set the height to 100% */
+    cursor: pointer; /* Set the cursor to a pointer when hovering */
 }
 
+/* Container for showing the hidden elements */
 .show-hidden-elem {
-    display: flex;
+    display: flex; /* Display the elements in a flexible layout */
+}
+
+/* Styles for the gust text */
+p.gust {
+    font-size: 0.8rem; /* Set the font size */
+    margin: 5px; /* Add some margin */
+    padding: 0; /* Remove any padding */
 }

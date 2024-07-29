@@ -10,8 +10,8 @@ const ShowWeatherPropTypes = {
       dt: PropTypes.bool,
       sunrise: PropTypes.number,
       sunset: PropTypes.number,
-      temp: PropTypes.number,
-      feels_like: PropTypes.number,
+      temp: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+      feels_like: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
       pressure: PropTypes.number,
       humidity: PropTypes.number,
       dew_point: PropTypes.number,
@@ -38,8 +38,8 @@ const ShowWeatherPropTypes = {
     hourly: PropTypes.arrayOf(
       PropTypes.shape({
         dt: PropTypes.number,
-        temp: PropTypes.number,
-        feels_like: PropTypes.number,
+        temp: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+        feels_like: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         pressure: PropTypes.number,
         humidity: PropTypes.number,
         dew_point: PropTypes.number,
