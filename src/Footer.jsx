@@ -12,7 +12,9 @@ function Footer() {
   return (
     <footer className="footer">
       {/* Copyright notice with the start year and end year */}
-      <p>Copyright &copy; {startYear} {endDate} Jason Robinson</p>
+      <p>
+        Copyright &copy; {startYear} {endDate} Jason Robinson
+      </p>
       <div className="socialMedia">
         {/* GitHub link with appropriate ARIA label and target attributes */}
         <a
@@ -46,4 +48,3 @@ function Footer() {
 
 // Exporting the Footer component for use in other files
 export default Footer;
-

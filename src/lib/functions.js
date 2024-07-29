@@ -99,19 +99,19 @@ const getLongDate = (date, timezone) => {
   }).format(newDate);
 };
 // define an array of wind description keys
-const windDescriptions = Object.keys(windDesc);
+// const windDescriptions = Object.keys(windDesc);
 // define a variable to store the wind description
-let wind = 'wind';
+// let wind = 'wind';
 
 // iterate through the wind descriptions and check if the wind speed value falls within the corresponding range
-windDescriptions.forEach((key) => {
+/* windDescriptions.forEach((key) => {
   const [min, max] = windDesc[key];
   if (windSpeed >= min && windSpeed <= max) {
     // if the wind speed value falls within the range, set the wind description to the corresponding wind description
     wind = key;
   }
   return wind;
-});
+}); */
 
 // return the wind description
 
@@ -201,6 +201,7 @@ function showHiddenElement(element, thisElem, openElem, styles) {
   // add the "elem-selected" class to the current element
   thisElem.classList.add(styles['elem-selected']);
   // set the innerHTML of the open element to "<"
+  // eslint-disable-next-line no-param-reassign
   openElem.innerHTML = '&lt;';
 }
 

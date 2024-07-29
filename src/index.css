@@ -1,2 +1,121 @@
-/* Import the "Roboto" font from Google Fonts */
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@4
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap");
+
+:root {
+  --bgColor: #c4e7ff;
+  --borderColor: #333;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  background-color: #e6f4fa;
+  font-family: "Roboto", sans-serif;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+#root {
+  max-width: 1150px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+}
+
+.App {
+  text-align: center;
+  height: 100%;
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  
+}
+
+input,
+select {
+  font-size: 1.1rem;
+  margin: 8px;
+}
+
+input[type="text"] {
+  margin-right: 5px;
+}
+
+select {
+  padding: 5px;
+}
+
+.loading {
+  visibility: hidden;
+  user-select: none;
+}
+
+.location-label {
+  background-color: var(--bgColor);
+  border: solid thin var(--borderColor);
+  padding: 3px;
+}
+.wrapper {
+  grid-row: 1/2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+form {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.footer {
+  grid-row: 2/3;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  & p {
+    margin: 5px;
+
+    &.provider {
+      font-size: .95rem;
+    }
+  }
+  
+  /* & .socialMedia {
+    position: absolute;
+    right: 15px;
+    bottom: 10px;
+    /* outline: solid thin blue; *
+    width: 90px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  } */
+
+  & img {
+    width: 40px;
+  }
+  
+  & a {
+    color: #00f;
+  }
+}
+
+.footer .socialMedia {
+  position: absolute;
+  right: 15px;
+  bottom: 10px;
+  /* outline: solid thin blue; */
+  width: 90px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.multipleForm {
+  width: auto;
+  max-width: 100vw;
+  color: red;
+}

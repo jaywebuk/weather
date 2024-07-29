@@ -5,4 +5,3 @@ function NoResults() {
 
 // Export the `NoResults` function as the default export for the module
 export default NoResults;
-

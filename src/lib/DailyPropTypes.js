@@ -8,7 +8,8 @@ const DayPropTypes = {
     clouds: PropTypes.number.isRequired, // A number representing the cloudiness (0-100)
     dew_point: PropTypes.number.isRequired, // A number representing the dew point in Kelvin
     dt: PropTypes.number.isRequired, // A Unix timestamp representing the time the data was observed
-    feels_like: PropTypes.shape({ // An object representing the feels like temperature at different times of the day
+    feels_like: PropTypes.shape({
+      // An object representing the feels like temperature at different times of the day
       day: PropTypes.number.isRequired, // Feels like temperature during the day in Kelvin
       eve: PropTypes.number.isRequired, // Feels like temperature during the evening in Kelvin
       morn: PropTypes.number.isRequired, // Feels like temperature during the morning in Kelvin
@@ -23,7 +24,8 @@ const DayPropTypes = {
     rain: PropTypes.number, // A number representing the total precipitation in mm (optional)
     sunrise: PropTypes.number.isRequired, // A Unix timestamp representing the time of sunrise
     sunset: PropTypes.number.isRequired, // A Unix timestamp representing the time of sunset
-    temp: PropTypes.shape({ // An object representing the temperature at different times of the day
+    temp: PropTypes.shape({
+      // An object representing the temperature at different times of the day
       day: PropTypes.number.isRequired, // Temperature during the day in Kelvin
       eve: PropTypes.number.isRequired, // Temperature during the evening in Kelvin
       max: PropTypes.number.isRequired, // Maximum temperature in Kelvin
@@ -32,7 +34,8 @@ const DayPropTypes = {
       night: PropTypes.number.isRequired, // Temperature during the night in Kelvin
     }).isRequired,
     uvi: PropTypes.number.isRequired, // A number representing the UV index
-    weather: PropTypes.arrayOf( // An array of objects representing the weather conditions
+    weather: PropTypes.arrayOf(
+      // An array of objects representing the weather conditions
       PropTypes.shape({
         description: PropTypes.string.isRequired, // A string representing the weather description
         icon: PropTypes.string.isRequired, // A string representing the weather icon

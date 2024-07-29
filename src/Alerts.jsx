@@ -42,6 +42,7 @@ function Alert({ description }) {
  */
 function Alerts({ data, timezone }) {
   Alerts.propTypes = {
+    // eslint-disable-next-line react/forbid-prop-types
     data: PropTypes.object.isRequired, // Ensure data is provided
     timezone: PropTypes.string.isRequired, // Ensure timezone is provided
   };

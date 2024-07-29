@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 // Import PropTypes for prop validation
 import CurrentWeatherPropTypes from './lib/CurrentWeatherPropTypes';
+import styles from './styles/CurrentWeather.module.css';
 
 // Import utility functions
 import {
@@ -28,13 +29,7 @@ import sunset from './images/sunset.png';
  * @param {object} weatherAlerts - The weather alerts data.
  * @returns {JSX.Element} - The rendered CurrentWeather component.
  */
-function CurrentWeather({
-  currentWeather,
-  timezone,
-  cityData,
-  handleRefresh,
-  weatherAlerts,
-}) {
+function CurrentWeather({ currentWeather, timezone, cityData, handleRefresh, weatherAlerts }) {
   const refreshButton = useRef();
 
   return (
