@@ -47,14 +47,6 @@ function ShowWeather({ data, setLoading }) {
     return () => clearTimeout(timeoutId); // Clear the timeout when the component unmounts
   };
 
-  // newAbortSignal function creates a new abort signal with a timeout
-  function newAbortSignal(timeoutMs) {
-    const abortController = new AbortController();
-    setTimeout(() => abortController.abort(), timeoutMs || 0); // Abort the request after the specified timeout
-
-    return abortController.signal; // Return the abort signal
-  }
-
   // useEffect hook to fetch the weather data
   useEffect(() => {
     setFetchCount((prevCount) => prevCount + 1);
@@ -69,9 +61,12 @@ function ShowWeather({ data, setLoading }) {
 
     const options = {
       method: 'GET',
-      // url: `http://192.168.1.81:5000/weather/location?lat=${lat}&lon=${lon}`,
-      url: `http://localhost:5000/weather/location?lat=${lat}&lon=${lon}`,
-      signal: newAbortSignal(30000), // Use the abort signal to cancel the request if it takes too long
+      // url: `http://192.168.1.81:6010/weather/location?lat=${lat}&lon=${lon}`,
+      url: `https://localhost:6010/weather/location?lat=${lat}&lon=${lon}`,
+      timeout: 30000,
+      headers: {
+        'x-api-key': process.env.REACT_APP_API_KEY,
+      },
     };
     axios
       .request(options)
@@ -103,7 +98,6 @@ function ShowWeather({ data, setLoading }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refreshData]); // Run the effect when the refreshData state variable changes
 
-  // JSX to render the weather data
   return (
     <>
       {errorMessage && <div>{errorMessage}</div>}
