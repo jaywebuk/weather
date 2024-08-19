@@ -6,7 +6,6 @@ import ShowWeather from './ShowWeather';
 import Footer from './Footer';
 import loading from './images/loading.gif';
 
-// Define the App component
 function App() {
   // Initialize state variables
   const [data, setData] = useState(); // To store the fetched data
@@ -15,6 +14,7 @@ function App() {
   const loadingRef = useRef(); // A reference to the loading image element
   const [longLoading, setLongLoading] = useState(false); // To indicate if the long loading message should be displayed
   const [abortFetch, setAbortFetch] = useState(false); // To indicate if the fetch request was aborted
+  const [errorMessage, setErrorMessage] = useState(null); // To store any error messages
 
   // Handle changes in the data
   const handleChange = (thisData) => {
@@ -25,14 +25,6 @@ function App() {
   const setLoading = (value) => {
     loadingRef.current.style.visibility = value;
   };
-
-  // Create a new abort signal with a timeout
-  function newAbortSignal(timeoutMs) {
-    const abortController = new AbortController();
-    setTimeout(() => abortController.abort(), timeoutMs || 0);
-
-    return abortController.signal;
-  }
 
   // Start a long loading timer
   const startLongLoading = () => {
@@ -47,8 +39,11 @@ function App() {
   const fetchData = async (location) => {
     const options = {
       method: 'GET',
-      url: `http://localhost:5000/weather?location=${location}`,
-      signal: newAbortSignal(30000), // Set a timeout of 30 seconds for the request
+      url: `https://localhost:6010/weather?location=${location}`,
+      timeout: 30000, // Set a timeout of 30 seconds for the request
+      headers: {
+        'x-api-key': process.env.REACT_APP_API_KEY,
+      },
     };
 
     const response = await axios(options);
@@ -71,6 +66,7 @@ function App() {
 
     try {
       const fetchedData = await fetchData(location); // Fetch data from the API
+      setErrorMessage(null);
       setData(fetchedData);
     } catch (error) {
       if (error.name === 'Cancel') {
@@ -78,6 +74,7 @@ function App() {
         setAbortFetch(true);
       } else {
         // Otherwise, set the request error
+        setErrorMessage(`Shucks, an error occurred. Please try again. ${requestError}`);
         setRequestError(error.message);
       }
     } finally {
@@ -86,7 +83,6 @@ function App() {
     }
   };
 
-  // Render the ShowWeather component based on the fetched data
   const renderShowWeather = () => {
     if (Array.isArray(data)) {
       return <ShowWeather data={data[0]} setLoading={setLoading} />;
@@ -94,7 +90,6 @@ function App() {
     return <ShowWeather data={data} setLoading={setLoading} />;
   };
 
-  // Render the MultipleResults component based on the fetched data
   const renderMultipleResults = () => {
     return <MultipleResults data={data} setData={handleChange} setLoading={setLoading} />;
   };
@@ -102,17 +97,13 @@ function App() {
   return (
     <div className="App" role="main">
       <div className="wrapper">
-        {/* Render the SearchForm component */}
         <SearchForm handleSubmit={handleSubmit} inputRef={inputRef} />
-        {/* Render the loading image */}
         <img id="loading" className="loading" src={loading} alt="" ref={loadingRef} />
-        {/* Display the long loading message */}
         {longLoading && (
           <div>
             <p>This is taking longer than usual. Please wait...</p>
           </div>
         )}
-        {/* Display the abort fetch message */}
         {abortFetch && !requestError && (
           <div>
             <p>
@@ -121,31 +112,24 @@ function App() {
             </p>
           </div>
         )}
-        {/* Display the fetched data */}
+        {errorMessage && <div>{errorMessage}</div>}
         {data && !requestError && (
           <>
-            {/* Display the "No Results" message if no results were found */}
             {Array.isArray(data) && data.length === 0 && (
               <p>No Results were found. Please try again!</p>
             )}
 
-            {/* Render the MultipleResults component if multiple results were found */}
             {Array.isArray(data) && data.length > 1 && renderMultipleResults()}
 
-            {/* Render the ShowWeather component if a single result was found */}
             {((Array.isArray(data) && data.length === 1) || !Array.isArray(data)) &&
               renderShowWeather()}
           </>
         )}
-        {/* Display the request error */}
         {requestError && <p>{requestError.error}</p>}
-        {/* {data && console.log(data)} */}
       </div>
-      {/* Render the Footer component */}
       <Footer />
     </div>
   );
 }
 
-// Export the App component
 export default App;

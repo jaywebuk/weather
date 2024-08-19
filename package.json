@@ -16,6 +16,7 @@
   "scripts": {
     "start:frontend": "react-scripts start",
     "build": "react-scripts build",
+    "build:stage": "env-cmd -f ./.env.stage npm run-script build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "npx eslint 'src/**/*.{js,jsx}' --fix"
@@ -33,6 +34,8 @@
     ]
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
+    "env-cmd": "^10.1.0",
     "@babel/plugin-proposal-private-property-in-object": "latest",
     "eslint": "^8.53.0",
     "eslint-config-airbnb": "^19.0.4",

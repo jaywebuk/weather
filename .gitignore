@@ -33,3 +33,5 @@ test.json
 test.js
 README.md.old
 useToggleSection.js
+.env.stage
+*.pem
