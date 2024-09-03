@@ -8,7 +8,7 @@ import { getAlertDate } from './lib/functions';
  * @param {string} description - The description to parse.
  * @returns {JSX.Element[]} - An array of elements containing parsed text.
  */
-const parseDescription = (description) => {
+/* const parseDescription = (description) => {
   const urlRegex = /(https?:\/\/[^\s]+)/g;
   return description.split(urlRegex).map((part) =>
     urlRegex.test(part) ? (
@@ -19,6 +19,36 @@ const parseDescription = (description) => {
       <span key={part}>{part}</span>
     ),
   );
+}; */
+
+const parseDescription = (description) => {
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+
+  // Split by URLs and process each part separately
+  return description.split(urlRegex).map((part) => {
+    // Check if the part is a URL
+    if (urlRegex.test(part)) {
+      return (
+        <a key={part} href={part}>
+          {part}
+        </a>
+      );
+      /// eslint-disable-next-line no-else-return
+    }
+    // If it's not a URL, split by sentence-ending punctuation
+    return part.split(/([.\n]+)/).map((sentence, index) => {
+      if (sentence.trim() === '' || /[.\n]+/.test(sentence)) {
+        // Skip empty strings and sentence-ending punctuation alone
+        return null;
+      }
+      return (
+        // eslint-disable-next-line react/no-array-index-key
+        <p className={styles.alertText} key={index}>
+          {sentence.trim()}
+        </p>
+      );
+    });
+  });
 };
 
 /**

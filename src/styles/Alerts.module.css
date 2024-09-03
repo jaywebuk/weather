@@ -63,6 +63,10 @@ section.alerts {
 
     /* Sets the maximum width of the alert section to 100vw (viewport width) */
     max-width: 100vw;
+
+    .alertText {
+        margin: 10px 0;
+    }
 }
 
 /* Style for the alert element that is not the last child */
