@@ -59,13 +59,13 @@ section.alerts {
     margin-block: 10px;
 
     /* Sets the width of the alert section */
-    width: 430px;
+    width: 600px;
 
     /* Sets the maximum width of the alert section to 100vw (viewport width) */
     max-width: 100vw;
 
     .alertText {
-        margin: 10px 0;
+        margin: 12px 0;
     }
 }
 
