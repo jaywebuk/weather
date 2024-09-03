@@ -7,40 +7,34 @@ import Footer from './Footer';
 import loading from './images/loading.gif';
 
 function App() {
-  // Initialize state variables
-  const [data, setData] = useState(); // To store the fetched data
-  const [requestError, setRequestError] = useState(); // To store any request errors
-  const inputRef = useRef(null); // A reference to the search input field
-  const loadingRef = useRef(); // A reference to the loading image element
-  const [longLoading, setLongLoading] = useState(false); // To indicate if the long loading message should be displayed
-  const [abortFetch, setAbortFetch] = useState(false); // To indicate if the fetch request was aborted
-  const [errorMessage, setErrorMessage] = useState(null); // To store any error messages
+  const [data, setData] = useState();
+  const [requestError, setRequestError] = useState();
+  const loadingRef = useRef();
+  const [longLoading, setLongLoading] = useState(false);
+  const [abortFetch, setAbortFetch] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
 
-  // Handle changes in the data
   const handleChange = (thisData) => {
     setData(thisData);
   };
 
-  // Set the visibility of the loading image
   const setLoading = (value) => {
     loadingRef.current.style.visibility = value;
   };
 
-  // Start a long loading timer
   const startLongLoading = () => {
     const timeoutId = setTimeout(() => {
       setLongLoading(true);
-    }, 10000); // Set the long loading message after 10 seconds
+    }, 10000);
 
     return timeoutId;
   };
 
-  // Fetch data from the API
   const fetchData = async (location) => {
     const options = {
       method: 'GET',
       url: `https://localhost:6010/weather?location=${location}`,
-      timeout: 30000, // Set a timeout of 30 seconds for the request
+      timeout: 30000,
       headers: {
         'x-api-key': process.env.REACT_APP_API_KEY,
       },
@@ -50,9 +44,9 @@ function App() {
     return response.data;
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(e.target.city.value);
 
     setData(null);
     setRequestError(null);
@@ -62,23 +56,21 @@ function App() {
 
     const timeoutId = startLongLoading();
 
-    const location = encodeURIComponent(inputRef.current.value.trim()); // Encode and trim the search input value
+    const location = e.target.city.value.trim();
 
     try {
-      const fetchedData = await fetchData(location); // Fetch data from the API
+      const fetchedData = await fetchData(location);
       setErrorMessage(null);
       setData(fetchedData);
     } catch (error) {
       if (error.name === 'Cancel') {
-        // If the request was aborted, set the abortFetch state variable
         setAbortFetch(true);
       } else {
-        // Otherwise, set the request error
         setErrorMessage(`Shucks, an error occurred. Please try again. ${requestError}`);
         setRequestError(error.message);
       }
     } finally {
-      clearTimeout(timeoutId); // Clear the long loading timer
+      clearTimeout(timeoutId);
       setLoading('hidden');
     }
   };
@@ -97,7 +89,7 @@ function App() {
   return (
     <div className="App" role="main">
       <div className="wrapper">
-        <SearchForm handleSubmit={handleSubmit} inputRef={inputRef} />
+        <SearchForm handleSubmit={handleSubmit} />
         <img id="loading" className="loading" src={loading} alt="" ref={loadingRef} />
         {longLoading && (
           <div>

@@ -6,38 +6,26 @@
 
 // Disable ESLint rule for prop-types as this component does not use prop-types
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, { useState } from 'react';
 
-function SearchForm({ handleSubmit, inputRef }) {
-  // Return the JSX for the search form
+function SearchForm({ handleSubmit /* , inputRef */ }) {
+  const [searchTerm, setSearchTerm] = useState();
   return (
     <form onSubmit={handleSubmit} role="search" id="searchForm">
       <input
-        // Attach the inputRef ref to the input field
-        ref={inputRef}
-        // Set the type attribute of the input field to 'text'
+        // ref={inputRef}
         type="text"
-        // Set the name attribute of the input field to 'city'
         name="city"
-        // Set the id attribute of the input field to 'city'
         id="city"
-        // Set the placeholder attribute of the input field to 'Location'
         placeholder="Location"
-        // Set the background color of the input field to white
         style={{ backgroundColor: 'white' }}
-        // Set the required attribute of the input field to true
+        onChange={(e) => {
+          setSearchTerm(e.target.value);
+        }}
+        value={searchTerm}
         required
       />
-
-      {/* Include a submit button for the form */}
-      <input
-        // Set the type attribute of the submit button to 'submit'
-        type="submit"
-        // Set the className attribute of the submit button to 'search-button'
-        className="search-button"
-        // Set the value attribute of the submit button to 'Go'
-        value="Go"
-      />
+      <input type="submit" className="search-button" value="Go" />
     </form>
   );
 }
