@@ -52,7 +52,7 @@ function CurrentWeather({ currentWeather, timezone, cityData, handleRefresh, wea
               className={styles.warning}
               src={warning}
               alt="Weather Warning Icon"
-              title="Weather warnings issued"
+              title="Weather warnings in effect"
             />
           )}
         </div>
