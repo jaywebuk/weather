@@ -125,3 +125,10 @@ div.wind img {
     border: none;
     padding: 0;
 }
+
+.warning {
+    position: absolute;
+    left: 0px;
+    top: 26px;
+    scale: .6;
+}

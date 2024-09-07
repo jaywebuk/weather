@@ -12,15 +12,29 @@ import {
   getWind,
   getShortTime,
   handleClick,
+  getDay,
 } from './lib/functions';
 import wind from './images/wind.png';
 import sun from './images/sun.png';
 import moon from './images/moon.png';
+import warning from './images/warning.png';
 
 // Day component
-function Day({ dayData, timezone, onClick, index, openHiddenDay, hiddenDaySections, currentTime }) {
+function Day({
+  dayData,
+  timezone,
+  onClick,
+  index,
+  openHiddenDay,
+  hiddenDaySections,
+  currentTime,
+  weatherAlerts,
+}) {
   // Extract relevant data from the dayData prop
   const thisDaysDate = getShortDate(dayData.dt, timezone);
+  const thisDaysDateTS = dayData.dt;
+  console.log(getDay(thisDaysDateTS) === getDay(weatherAlerts[0].start));
+
   const weatherIcon = `http://openweathermap.org/img/wn/${dayData.weather[0].icon}.png`;
   const weatherDescription = toUpper(dayData.weather[0].description);
   const ohd = openHiddenDay;
@@ -28,6 +42,13 @@ function Day({ dayData, timezone, onClick, index, openHiddenDay, hiddenDaySectio
   // Check if the day is today or not
   const today = getShortDate(currentTime, timezone);
   const day = getShortDate(dayData.dt, timezone);
+
+  const isAlert =
+    (thisDaysDateTS <= weatherAlerts[0].end &&
+      getDay(thisDaysDateTS) === getDay(weatherAlerts[0].start)) ||
+    getDay(thisDaysDateTS) === getDay(weatherAlerts[0].end);
+
+  console.log(thisDaysDate, thisDaysDateTS, weatherAlerts[0].start, weatherAlerts[0].end);
 
   // Render the Day component
   return (
@@ -39,6 +60,14 @@ function Day({ dayData, timezone, onClick, index, openHiddenDay, hiddenDaySectio
         tabIndex={index}
         title="Click to Expand / Close"
       >
+        {weatherAlerts && isAlert && (
+          <img
+            className={styles.warning}
+            src={warning}
+            alt="Weather Warning Icon"
+            title="Weather warnings issued for today"
+          />
+        )}
         {today === day && <p>Today</p>}
         {today !== day && <p>{thisDaysDate}</p>}
         <img src={weatherIcon} alt="Weather Icon" title={toUpper(weatherDescription)} />
@@ -83,13 +112,14 @@ function Day({ dayData, timezone, onClick, index, openHiddenDay, hiddenDaySectio
         hiddenDaySections={hiddenDaySections}
         dayData={dayData}
         index={index}
+        isAlert={isAlert}
       />
     </button>
   );
 }
 
 // HiddenDay component
-function HiddenDay({ hiddenDaySections, dayData, index }) {
+function HiddenDay({ hiddenDaySections, dayData, index, isAlert }) {
   // Render the HiddenDay component
   const hds = hiddenDaySections;
   return (
@@ -99,6 +129,7 @@ function HiddenDay({ hiddenDaySections, dayData, index }) {
         hds.current[index] = e;
       }}
     >
+      {isAlert && <p>See &quot;Weather Warnings Issued&quot;</p>}
       <p>{dayData.summary}</p>
       <p className={styles.wind}>
         {toUpper(getWind(Math.round(dayData.wind_speed)))} from the {getCardinals(dayData.wind_deg)}
@@ -113,7 +144,7 @@ function HiddenDay({ hiddenDaySections, dayData, index }) {
 }
 
 // Daily component
-function Daily({ data, currentTime, timezone = 'Europe/London' }) {
+function Daily({ data, currentTime, timezone = 'Europe/London', weatherAlerts }) {
   // Initialize state and refs
   const [previousHiddenDay, setPreviousHiddenDay] = useState({
     thisId: null,
@@ -122,6 +153,8 @@ function Daily({ data, currentTime, timezone = 'Europe/London' }) {
   });
   const openHiddenDay = useRef([]);
   const hiddenDaySections = useRef([]);
+
+  // console.log(weatherAlerts[0].start);
 
   // Define the handleClickCallback function
   const handleClickCallback = useCallback(
@@ -150,6 +183,7 @@ function Daily({ data, currentTime, timezone = 'Europe/London' }) {
       openHiddenDay={openHiddenDay}
       hiddenDaySections={hiddenDaySections}
       currentTime={currentTime}
+      weatherAlerts={weatherAlerts}
     />
   ));
 
@@ -166,6 +200,7 @@ function Daily({ data, currentTime, timezone = 'Europe/London' }) {
 
 // Typechecking props for the components
 Daily.propTypes = {
+  currentTime: PropTypes.number.isRequired, // eslint-disable-next-line react/require-default-props
   data: PropTypes.arrayOf(
     PropTypes.shape({
       dt: PropTypes.number.isRequired,
@@ -188,63 +223,70 @@ Daily.propTypes = {
       summary: PropTypes.string.isRequired,
     }),
   ).isRequired,
-  currentTime: PropTypes.number.isRequired,
-  // eslint-disable-next-line react/require-default-props
   timezone: PropTypes.string,
+  weatherAlerts: PropTypes.any,
 };
 
 Day.propTypes = {
+  currentTime: PropTypes.number.isRequired,
   dayData: PropTypes.shape({
     dt: PropTypes.number.isRequired,
+    pop: PropTypes.number.isRequired,
+    pressure: PropTypes.number.isRequired,
+    summary: PropTypes.string.isRequired,
+    sunrise: PropTypes.number.isRequired,
+    sunset: PropTypes.number.isRequired,
+    temp: PropTypes.shape({
+      day: PropTypes.number.isRequired,
+      night: PropTypes.number.isRequired,
+    }).isRequired,
     weather: PropTypes.arrayOf(
       PropTypes.shape({
         icon: PropTypes.string.isRequired,
         description: PropTypes.string.isRequired,
       }),
     ).isRequired,
-    temp: PropTypes.shape({
-      day: PropTypes.number.isRequired,
-      night: PropTypes.number.isRequired,
-    }).isRequired,
-    wind_speed: PropTypes.number.isRequired,
     wind_deg: PropTypes.number.isRequired,
-    pressure: PropTypes.number.isRequired,
-    pop: PropTypes.number.isRequired,
-    sunrise: PropTypes.number.isRequired,
-    sunset: PropTypes.number.isRequired,
-    summary: PropTypes.string.isRequired,
+    wind_speed: PropTypes.number.isRequired,
   }).isRequired,
-  timezone: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired,
+  hiddenDaySections: PropTypes.shape({
+    current: PropTypes.arrayOf(PropTypes.any),
+  }),
   index: PropTypes.number.isRequired,
-  openHiddenDay: PropTypes.shape({ current: PropTypes.arrayOf(PropTypes.any) }),
-  hiddenDaySections: PropTypes.shape({ current: PropTypes.arrayOf(PropTypes.any) }),
-  currentTime: PropTypes.number.isRequired,
+  onClick: PropTypes.func.isRequired,
+  openHiddenDay: PropTypes.shape({
+    current: PropTypes.arrayOf(PropTypes.any),
+  }),
+  timezone: PropTypes.string.isRequired,
+  weatherAlerts: PropTypes.any,
 };
 
 HiddenDay.propTypes = {
-  hiddenDaySections: PropTypes.shape({ current: PropTypes.arrayOf(PropTypes.any) }),
   dayData: PropTypes.shape({
     dt: PropTypes.number.isRequired,
+    pop: PropTypes.number.isRequired,
+    pressure: PropTypes.number.isRequired,
+    summary: PropTypes.string.isRequired,
+    sunrise: PropTypes.number.isRequired,
+    sunset: PropTypes.number.isRequired,
+    temp: PropTypes.shape({
+      day: PropTypes.number.isRequired,
+      night: PropTypes.number.isRequired,
+    }).isRequired,
     weather: PropTypes.arrayOf(
       PropTypes.shape({
         icon: PropTypes.string.isRequired,
         description: PropTypes.string.isRequired,
       }),
     ).isRequired,
-    temp: PropTypes.shape({
-      day: PropTypes.number.isRequired,
-      night: PropTypes.number.isRequired,
-    }).isRequired,
-    wind_speed: PropTypes.number.isRequired,
     wind_deg: PropTypes.number.isRequired,
-    pressure: PropTypes.number.isRequired,
-    pop: PropTypes.number.isRequired,
-    sunrise: PropTypes.number.isRequired,
-    sunset: PropTypes.number.isRequired,
-    summary: PropTypes.string.isRequired,
+    wind_speed: PropTypes.number.isRequired,
   }).isRequired,
+  hiddenDaySections: PropTypes.shape({
+    current: PropTypes.arrayOf(PropTypes.any),
+  }),
   index: PropTypes.number.isRequired,
+  isAlert: PropTypes.any,
 };
 
 // Export the Daily component
