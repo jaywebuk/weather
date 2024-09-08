@@ -12,7 +12,7 @@ import {
   getWind,
   getShortTime,
   handleClick,
-  getDay,
+  // getDay,
 } from './lib/functions';
 import wind from './images/wind.png';
 import sun from './images/sun.png';
@@ -42,14 +42,17 @@ function Day({
   const today = getShortDate(currentTime, timezone);
   const day = getShortDate(dayData.dt, timezone);
 
-  let isAlert = 0;
+  let isAlert = null;
 
   if (weatherAlerts && weatherAlerts.length > 0) {
-    const isWithinAlertPeriod = thisDaysDateTS <= weatherAlerts[0].end;
-    const isStartDay = getDay(thisDaysDateTS) === getDay(weatherAlerts[0].start);
-    const isEndDay = getDay(thisDaysDateTS) === getDay(weatherAlerts[0].end);
+    // console.log(new Date(thisDaysDateTS * 1000), new Date(weatherAlerts[0].start * 1000));
 
-    isAlert = isWithinAlertPeriod && (isStartDay || isEndDay);
+    isAlert = new Date(thisDaysDateTS * 1000) <= new Date(weatherAlerts[0].end * 1000);
+    // console.log(isWithinAlertPeriod);
+    // const isStartDay = getDay(thisDaysDateTS) === getDay(weatherAlerts[0].start);
+    // const isEndDay = getDay(thisDaysDateTS) === getDay(weatherAlerts[0].end);
+
+    // isAlert = isWithinAlertPeriod; // && (isStartDay || isEndDay);
   }
 
   // Render the Day component
