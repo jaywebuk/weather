@@ -46,7 +46,6 @@ function App() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(e.target.city.value);
 
     setData(null);
     setRequestError(null);

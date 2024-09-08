@@ -33,9 +33,8 @@ function Day({
   // Extract relevant data from the dayData prop
   const thisDaysDate = getShortDate(dayData.dt, timezone);
   const thisDaysDateTS = dayData.dt;
-  console.log(getDay(thisDaysDateTS) === getDay(weatherAlerts[0].start));
 
-  const weatherIcon = `http://openweathermap.org/img/wn/${dayData.weather[0].icon}.png`;
+  const weatherIcon = `https://openweathermap.org/img/wn/${dayData.weather[0].icon}.png`;
   const weatherDescription = toUpper(dayData.weather[0].description);
   const ohd = openHiddenDay;
 
@@ -43,12 +42,15 @@ function Day({
   const today = getShortDate(currentTime, timezone);
   const day = getShortDate(dayData.dt, timezone);
 
-  const isAlert =
-    (thisDaysDateTS <= weatherAlerts[0].end &&
-      getDay(thisDaysDateTS) === getDay(weatherAlerts[0].start)) ||
-    getDay(thisDaysDateTS) === getDay(weatherAlerts[0].end);
+  let isAlert = 0;
 
-  console.log(thisDaysDate, thisDaysDateTS, weatherAlerts[0].start, weatherAlerts[0].end);
+  if (weatherAlerts && weatherAlerts.length > 0) {
+    const isWithinAlertPeriod = thisDaysDateTS <= weatherAlerts[0].end;
+    const isStartDay = getDay(thisDaysDateTS) === getDay(weatherAlerts[0].start);
+    const isEndDay = getDay(thisDaysDateTS) === getDay(weatherAlerts[0].end);
+
+    isAlert = isWithinAlertPeriod && (isStartDay || isEndDay);
+  }
 
   // Render the Day component
   return (

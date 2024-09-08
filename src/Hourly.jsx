@@ -24,7 +24,7 @@ function Hour({
 }) {
   const todayTime = getTime(hourData.dt, timezone);
   const currentShortTime = getShortTime(hourData.dt, timezone);
-  const weatherIcon = `http://openweathermap.org/img/wn/${hourData.weather[0].icon}.png`;
+  const weatherIcon = `https://openweathermap.org/img/wn/${hourData.weather[0].icon}.png`;
   const weatherDescription = toUpper(hourData.weather[0].description);
   const ohh = openHiddenHour;
 
