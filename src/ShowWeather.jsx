@@ -61,7 +61,7 @@ function ShowWeather({ data, setLoading }) {
 
     const options = {
       method: 'GET',
-      // url: `http://192.168.1.81:6010/weather/location?lat=${lat}&lon=${lon}`,
+      // url: `https://192.168.1.81:6010/weather/location?lat=${lat}&lon=${lon}`,
       url: `https://localhost:6010/weather/location?lat=${lat}&lon=${lon}`,
       timeout: 30000,
       headers: {

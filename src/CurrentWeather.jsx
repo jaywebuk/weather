@@ -75,7 +75,7 @@ function CurrentWeather({ currentWeather, timezone, cityData, handleRefresh, wea
         <div className={styles.tempDetails}>
           {/* Display the weather icon and description */}
           <img
-            src={`http://openweathermap.org/img/wn/${currentWeather.weather[0].icon}.png`}
+            src={`https://openweathermap.org/img/wn/${currentWeather.weather[0].icon}.png`}
             alt="Weather Icon"
             title={toUpper(currentWeather.weather[0].description)}
           />
