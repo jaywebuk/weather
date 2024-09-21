@@ -26,14 +26,14 @@ section.alerts {
         /* Style for the h1 element inside the header */
         & h1 {
             /* Sets the font size of the h1 element */
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             /* margin: 0; */
         }
 
         & h2 {
             /* Sets the font size of the h1 element */
             text-align: center;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             margin: 0;
         }
 
