@@ -57,12 +57,12 @@ const parseDescription = (description) => {
  * @param {string} props.description - The description of the alert.
  */
 function Alert({ description }) {
-  Alert.propTypes = {
-    description: PropTypes.string.isRequired, // Ensure description is provided
-  };
-
   return <p>{parseDescription(description)}</p>;
 }
+
+Alert.propTypes = {
+  description: PropTypes.string.isRequired,
+};
 
 /**
  * Displays a list of alerts with provided data and timezone.
@@ -106,10 +106,13 @@ function Alerts({ data, timezone }) {
     const alertsList = [];
 
     keys.forEach((key) => {
+      const alertColour = data[key].event.split(' ')[0];
       alertsList.push(
         <div className={styles.alert} key={`alert-${key}`}>
-          <p className={styles.title}>{data[key].sender_name}</p>
-          <p className={styles.title}>{data[key].event}</p>
+          <header>
+            <h1 className={styles.title}>{data[key].sender_name}</h1>
+            <h2 className={`${styles.title} ${styles[alertColour]}`}>{data[key].event}</h2>
+          </header>
           <p className={styles.title}>
             From: {getAlertDate(data[key].start, timezone)} to{' '}
             {getAlertDate(data[key].end, timezone)}
@@ -133,12 +136,13 @@ function Alerts({ data, timezone }) {
         role="button"
         tabIndex={0}
       >
-        <h1>Weather Warnings Issued</h1>
+        <h1>Weather Warnings Issued ({data.length})</h1>
         <p className={styles.alertArrow} ref={arrowRef}>
           &#709;
         </p>
       </header>
       <div className={styles.alertEvents} ref={alertsRef}>
+        <hr />
         {getAlerts()}
       </div>
     </section>

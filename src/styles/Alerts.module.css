@@ -26,7 +26,15 @@ section.alerts {
         /* Style for the h1 element inside the header */
         & h1 {
             /* Sets the font size of the h1 element */
+            font-size: 1.3rem;
+            /* margin: 0; */
+        }
+
+        & h2 {
+            /* Sets the font size of the h1 element */
+            text-align: center;
             font-size: 1.2rem;
+            margin: 0;
         }
 
         /* Style for the p element inside the header */
@@ -67,6 +75,14 @@ section.alerts {
     .alertText {
         margin: 12px 0;
     }
+}
+
+.Yellow {
+    background-color: rgb(255, 255, 94);
+}
+
+.Red {
+    background-color: rgb(255, 103, 103);
 }
 
 /* Style for the alert element that is not the last child */
