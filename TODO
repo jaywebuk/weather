@@ -1,0 +1,1 @@
+weatherAlerts is a good candidate for global state management such as contexts or redux
