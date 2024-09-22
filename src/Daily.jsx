@@ -12,7 +12,7 @@ import {
   getWind,
   getShortTime,
   handleClick,
-  // getDay,
+  getDay,
 } from './lib/functions';
 import wind from './images/wind.png';
 import sun from './images/sun.png';
@@ -42,17 +42,15 @@ function Day({
   const today = getShortDate(currentTime, timezone);
   const day = getShortDate(dayData.dt, timezone);
 
-  let isAlert = null;
+  let isAlert;
 
   if (weatherAlerts && weatherAlerts.length > 0) {
-    // console.log(new Date(thisDaysDateTS * 1000), new Date(weatherAlerts[0].start * 1000));
-
-    isAlert = new Date(thisDaysDateTS * 1000) <= new Date(weatherAlerts[0].end * 1000);
-    // console.log(isWithinAlertPeriod);
-    // const isStartDay = getDay(thisDaysDateTS) === getDay(weatherAlerts[0].start);
-    // const isEndDay = getDay(thisDaysDateTS) === getDay(weatherAlerts[0].end);
-
-    // isAlert = isWithinAlertPeriod; // && (isStartDay || isEndDay);
+    isAlert = weatherAlerts.some(
+      (alert) =>
+        index < 7 &&
+        (getDay(thisDaysDateTS) === getDay(alert.start) ||
+          getDay(thisDaysDateTS) === getDay(alert.end)),
+    );
   }
 
   // Render the Day component
@@ -73,8 +71,7 @@ function Day({
             title="Weather warnings issued for today"
           />
         )}
-        {today === day && <p>Today</p>}
-        {today !== day && <p>{thisDaysDate}</p>}
+        <p>{today === day ? 'Today' : thisDaysDate}</p>
         <img src={weatherIcon} alt="Weather Icon" title={toUpper(weatherDescription)} />
         <div className={styles.wind}>
           <img
@@ -233,37 +230,14 @@ Daily.propTypes = {
 };
 
 Day.propTypes = {
-  currentTime: PropTypes.number.isRequired,
-  dayData: PropTypes.shape({
-    dt: PropTypes.number.isRequired,
-    pop: PropTypes.number.isRequired,
-    pressure: PropTypes.number.isRequired,
-    summary: PropTypes.string.isRequired,
-    sunrise: PropTypes.number.isRequired,
-    sunset: PropTypes.number.isRequired,
-    temp: PropTypes.shape({
-      day: PropTypes.number.isRequired,
-      night: PropTypes.number.isRequired,
-    }).isRequired,
-    weather: PropTypes.arrayOf(
-      PropTypes.shape({
-        icon: PropTypes.string.isRequired,
-        description: PropTypes.string.isRequired,
-      }),
-    ).isRequired,
-    wind_deg: PropTypes.number.isRequired,
-    wind_speed: PropTypes.number.isRequired,
-  }).isRequired,
-  hiddenDaySections: PropTypes.shape({
-    current: PropTypes.arrayOf(PropTypes.any),
-  }),
-  index: PropTypes.number.isRequired,
-  onClick: PropTypes.func.isRequired,
-  openHiddenDay: PropTypes.shape({
-    current: PropTypes.arrayOf(PropTypes.any),
-  }),
+  dayData: PropTypes.object.isRequired,
   timezone: PropTypes.string.isRequired,
-  weatherAlerts: PropTypes.any,
+  onClick: PropTypes.func.isRequired,
+  index: PropTypes.number.isRequired,
+  openHiddenDay: PropTypes.object.isRequired,
+  hiddenDaySections: PropTypes.object.isRequired,
+  currentTime: PropTypes.number.isRequired,
+  weatherAlerts: PropTypes.array,
 };
 
 HiddenDay.propTypes = {

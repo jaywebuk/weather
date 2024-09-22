@@ -85,6 +85,10 @@ section.alerts {
     background-color: rgb(255, 103, 103);
 }
 
+.Amber {
+    background-color: rgb(255, 191, 0);
+}
+
 /* Style for the alert element that is not the last child */
 .alert:not(:last-child) {
     /* Sets the border-bottom style of the alert element */
