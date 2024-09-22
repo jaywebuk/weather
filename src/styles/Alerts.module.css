@@ -77,12 +77,15 @@ section.alerts {
   }
 
   & button {
-    /* background-color: #d2e0ff; */
+    background-color: #d2e0ff;
+    /* background-color: #ddd; */
     border: solid thin #333;
     font-size: 1.2rem;
     width: fit-content;
     cursor: pointer;
-    box-shadow: 2px 2px 2px 0px rgba(0,0,0,0.75);
+    font-weight: bold;
+    /* box-shadow: 2px 2px 2px 0px rgba(0,0,0,0.75); */
+    /* margin: 0; */
 
   }
 }
@@ -128,7 +131,8 @@ section.alerts {
   border: solid thin #333;
 
   /* Sets the margin inline (margin-left and margin-right) of the alertEvents section */
-  margin-inline: 10px;
+  /* margin-inline: 10px; */
+  margin: 0;
 
   /* Style for the p element with the class title inside the alertEvents section */
   & p.title {
@@ -151,6 +155,8 @@ section.alerts {
   }
 
   button.close {
+    background-color: #f0f0f0;
+    font-weight: normal;
     font-size: 1.1rem;
     margin-bottom: 5px;
     border: solid thin #333;

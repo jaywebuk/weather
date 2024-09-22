@@ -67,7 +67,6 @@ function Alerts({ data, timezone }) {
   };
 
   const alertsRef = useRef();
-  // const arrowRef = useRef();
 
   const [alertOpen, setAlertOpen] = useState(false);
 
@@ -77,11 +76,10 @@ function Alerts({ data, timezone }) {
   const handleClick = () => {
     if (alertOpen) {
       alertsRef.current.style.display = 'none';
-      // arrowRef.current.innerHTML = '&#709;';
       setAlertOpen(false);
     } else {
       alertsRef.current.style.display = 'block';
-      // arrowRef.current.innerHTML = '&#708;';
+      alertsRef.current.scroll(0, 0);
       setAlertOpen(true);
     }
   };
@@ -127,7 +125,7 @@ function Alerts({ data, timezone }) {
   return (
     <section className={styles.alerts}>
       <button type="button" onClick={handleClick} title="Click to Open" tabIndex={0}>
-        Weather Warnings Issued ({data.length})
+        Click To Open Weather Alerts ({data.length})
       </button>
       <div className={styles.alertEvents} ref={alertsRef}>
         {getAlerts()}
