@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types'; // Import PropTypes for typechecking
 import styles from './styles/Alerts.module.css';
@@ -8,18 +9,6 @@ import { getAlertDate } from './lib/functions';
  * @param {string} description - The description to parse.
  * @returns {JSX.Element[]} - An array of elements containing parsed text.
  */
-/* const parseDescription = (description) => {
-  const urlRegex = /(https?:\/\/[^\s]+)/g;
-  return description.split(urlRegex).map((part) =>
-    urlRegex.test(part) ? (
-      <a key={part} href={part}>
-        {part}
-      </a>
-    ) : (
-      <span key={part}>{part}</span>
-    ),
-  );
-}; */
 
 const parseDescription = (description) => {
   const urlRegex = /(https?:\/\/[^\s]+)/g;
@@ -29,7 +18,7 @@ const parseDescription = (description) => {
     // Check if the part is a URL
     if (urlRegex.test(part)) {
       return (
-        <a key={part} href={part}>
+        <a key={part} href={part} target="_blank" rel="noreferrer">
           {part}
         </a>
       );
@@ -78,7 +67,7 @@ function Alerts({ data, timezone }) {
   };
 
   const alertsRef = useRef();
-  const arrowRef = useRef();
+  // const arrowRef = useRef();
 
   const [alertOpen, setAlertOpen] = useState(false);
 
@@ -88,11 +77,11 @@ function Alerts({ data, timezone }) {
   const handleClick = () => {
     if (alertOpen) {
       alertsRef.current.style.display = 'none';
-      arrowRef.current.innerHTML = '&#709;';
+      // arrowRef.current.innerHTML = '&#709;';
       setAlertOpen(false);
     } else {
       alertsRef.current.style.display = 'block';
-      arrowRef.current.innerHTML = '&#708;';
+      // arrowRef.current.innerHTML = '&#708;';
       setAlertOpen(true);
     }
   };
@@ -119,6 +108,15 @@ function Alerts({ data, timezone }) {
           </p>
           <Alert description={data[key].description} />
           <p className={styles.tags}>Tags: {data[key].tags.toString()}</p>
+          <button
+            className={styles.close}
+            type="button"
+            onClick={() => {
+              handleClick();
+            }}
+          >
+            Close Window
+          </button>
         </div>,
       );
     });
@@ -128,21 +126,10 @@ function Alerts({ data, timezone }) {
 
   return (
     <section className={styles.alerts}>
-      <header
-        className={styles.alertsHeader}
-        onClick={handleClick}
-        onKeyDown={handleClick}
-        title="Click to Expand / Close / collapse"
-        role="button"
-        tabIndex={0}
-      >
-        <h1>Weather Warnings Issued ({data.length})</h1>
-        <p className={styles.alertArrow} ref={arrowRef}>
-          &#709;
-        </p>
-      </header>
+      <button type="button" onClick={handleClick} title="Click to Open" tabIndex={0}>
+        Weather Warnings Issued ({data.length})
+      </button>
       <div className={styles.alertEvents} ref={alertsRef}>
-        <hr />
         {getAlerts()}
       </div>
     </section>
